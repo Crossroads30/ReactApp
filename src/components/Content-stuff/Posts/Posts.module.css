@@ -1,0 +1,12 @@
+.posts {
+	width: 100%;
+}
+
+.newPost {
+	width: 100%;
+	background-color: aliceblue;
+}
+
+.posts button {
+	float: right;
+}
