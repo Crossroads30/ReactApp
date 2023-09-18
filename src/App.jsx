@@ -1,7 +1,7 @@
 import './styles/App.css'
 import Content from './components/Profile-stuff/Profile/Content'
 import Header from './components/Header/Header'
-import Sidebar from './components/Sidebar/Sidebar'
+import Sidebar from './components/sidebar-stuff/Sidebar/Sidebar'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Dialogs from './components/dialogs-stuff/Dialogs/Dialogs'
 import Settings from './components/settings-stuff/Settings/Settings'
@@ -13,7 +13,7 @@ const App = props => {
 		<BrowserRouter>
 			<div className='app-wrapper'>
 				<Header />
-				<Sidebar />
+				<Sidebar data={props.appData.sidebar}/>
 				<div className='app-content'>
 					<Routes>
 						<Route
