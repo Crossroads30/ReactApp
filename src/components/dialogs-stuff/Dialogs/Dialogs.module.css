@@ -1,0 +1,28 @@
+.dialogs {
+display: grid;
+grid-template-columns: 2fr 10fr;
+padding: 20px;
+
+}
+
+.dialogsItems {
+border-right: 2px solid rgb(40, 38, 38);
+margin-left: 20px;
+}
+
+.item a {
+text-decoration: none;
+color: aliceblue;
+}
+
+.messages {
+margin-left: 20px;
+}
+
+.message {
+
+}
+
+.link.active {
+  color: gold;
+}

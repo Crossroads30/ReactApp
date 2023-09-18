@@ -1,0 +1,26 @@
+.user {
+	display: flex;
+	width: 400px;
+	margin: 20px 0;
+	padding: 20px;
+}
+
+.userImg {
+	width: 130px;
+	height: 130px;
+	margin-right: 10px;
+}
+
+.name {
+	font-size: 20px;
+}
+
+.user p {
+	margin-bottom: 10px;
+	color: aliceblue;
+}
+
+.contentImg {
+	width: 100%;
+	height: 230px;
+}
