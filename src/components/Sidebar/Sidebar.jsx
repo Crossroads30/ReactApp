@@ -1,24 +1,52 @@
 import cl from './Sidebar.module.css'
+import { NavLink } from 'react-router-dom'
 
 const Sidebar = () => {
 	return (
 		<aside className={cl.sidebar}>
 			<nav className={cl.nav}>
-				<li>
-					<a>Profile</a>
-				</li>
-				<li>
-					<a>Messages</a>
-				</li>
-				<li>
-					<a>News</a>
-				</li>
-				<li>
-					<a>Music</a>
-				</li>
-				<li>
-					<a>Settings</a>
-				</li>
+				<ul className={cl.list}>
+					<li>
+						<NavLink
+							className={navData => (navData.isActive ? cl.active : cl.link)}
+							to='/profile'
+						>
+							Profile
+						</NavLink>
+					</li>
+					<li>
+						<NavLink
+							className={navData => (navData.isActive ? cl.active : cl.link)}
+							to='/dialogs'
+						>
+							Messages
+						</NavLink>
+					</li>
+					<li>
+						<NavLink
+							className={navData => (navData.isActive ? cl.active : cl.link)}
+							to='/news'
+						>
+							News
+						</NavLink>
+					</li>
+					<li>
+						<NavLink
+							className={navData => (navData.isActive ? cl.active : cl.link)}
+							to='/music'
+						>
+							Music
+						</NavLink>
+					</li>
+					<li>
+						<NavLink
+							className={navData => (navData.isActive ? cl.active : cl.link)}
+							to='/settings'
+						>
+							Settings
+						</NavLink>
+					</li>
+				</ul>
 			</nav>
 		</aside>
 	)

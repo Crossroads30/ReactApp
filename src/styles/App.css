@@ -21,5 +21,4 @@ body {
 .app-content {
 	grid-area: content;
 	background-color: teal;
-	padding: 20px;
 }
