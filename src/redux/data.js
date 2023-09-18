@@ -27,6 +27,14 @@ const state = {
 			{ id: 6, message: 'Good night!' },
 		],
 	},
+	sidebar: {
+		friends: [
+			{ id: 1, name: 'Peter', avatarUrl: ''},
+			{ id: 2, name: 'Richard', avatarUrl: ''},
+			{ id: 3, name: 'Helen', avatarUrl: ''},
+			{ id: 4, name: 'Zed', avatarUrl: ''},
+		]
+	}
 }
 
 export default state
