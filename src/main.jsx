@@ -1,8 +1,27 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import data from './redux/data.js'
+import App from './App'
+import state, {
+	updateNewPostText,
+	updateNewMessage,
+	addMessage,
+	addPost,
+  subscribe,
+} from './redux/state'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-	<App appData={data} />
-)
+let root = ReactDOM.createRoot(document.getElementById('root'))
+
+const rerenderTree = (state) => {
+	root.render(
+		<App
+			appData={state}
+			addPost={addPost}
+			updateNewPostText={updateNewPostText}
+			addMessage={addMessage}
+			updateNewMessage={updateNewMessage}
+		/>
+	)
+}
+rerenderTree(state)
+
+subscribe(rerenderTree)
