@@ -1,5 +1,5 @@
 import './styles/App.css'
-import Content from './components/Profile-stuff/Profile/Content'
+import Profile from './components/Profile-stuff/Profile/Content'
 import Header from './components/Header/Header'
 import Sidebar from './components/sidebar-stuff/Sidebar/Sidebar'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -13,18 +13,26 @@ const App = props => {
 		<BrowserRouter>
 			<div className='app-wrapper'>
 				<Header />
-				<Sidebar data={props.appData.sidebar}/>
+				<Sidebar data={props.appData.sidebar} />
 				<div className='app-content'>
 					<Routes>
 						<Route
 							path='/profile'
-							element={<Content data={props.appData.profilePage} />}
+							element={
+								<Profile
+									data={props.appData.profilePage}
+									addPost={props.addPost}
+									updateNewPostText={props.updateNewPostText}
+								/>
+							}
 						/>
 						<Route
 							path='/dialogs/*'
 							element={
 								<Dialogs
 									data={props.appData.messagesPage}
+									updateNewMessage={props.updateNewMessage}
+									addMessage={props.addMessage}
 								/>
 							}
 						/>
@@ -33,7 +41,13 @@ const App = props => {
 						<Route path='/settings' element={<Settings />} />
 						<Route
 							path='/'
-							element={<Content data={props.appData.profilePage} />}
+							element={
+								<Profile
+									data={props.appData.profilePage}
+									addPost={props.addPost}
+									updateNewPostText={props.updateNewPostText}
+								/>
+							}
 						/>
 					</Routes>
 				</div>
