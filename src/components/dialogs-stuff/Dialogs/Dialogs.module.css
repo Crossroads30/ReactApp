@@ -1,28 +1,37 @@
-.dialogs {
-display: grid;
-grid-template-columns: 2fr 10fr;
-padding: 20px;
+.dialogsWrapper {
+	padding: 20px;
+}
 
+.dialogs {
+	display: flex;
+	padding: 20px;
 }
 
 .dialogsItems {
-border-right: 2px solid rgb(40, 38, 38);
-margin-left: 20px;
+	width: 100px;
+	border-right: 2px solid rgb(40, 38, 38);
 }
 
 .item a {
-text-decoration: none;
-color: aliceblue;
+	text-decoration: none;
+	color: aliceblue;
 }
 
 .messages {
-margin-left: 20px;
-}
-
-.message {
-
+	margin-left: 20px;
 }
 
 .link.active {
-  color: gold;
+	color: gold;
+}
+
+.dialogsWrapper textarea {
+  width: 100%;
+	display: block;
+	margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.dialogsWrapper button {
+padding: 0 10px;
 }
