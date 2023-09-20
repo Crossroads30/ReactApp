@@ -4,7 +4,6 @@
 
 .dialogs {
 	display: flex;
-	padding: 20px;
 }
 
 .dialogsItems {
@@ -34,4 +33,16 @@
 
 .dialogsWrapper button {
 padding: 0 10px;
+}
+
+.avatar {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.image {
+	width: 30px;
+	height: 30px;
+	background-color: gold;
+	border-radius: 30px;
 }

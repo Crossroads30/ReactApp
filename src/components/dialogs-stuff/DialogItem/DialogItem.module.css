@@ -4,6 +4,6 @@ color: aliceblue;
 }
 
 .item {
-  list-style-type: disc;
+  list-style-type: none;
   padding: 5px;
 }
