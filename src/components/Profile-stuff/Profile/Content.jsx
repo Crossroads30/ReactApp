@@ -8,9 +8,10 @@ const Profile = (props) => {
 			<User />
 			<Posts
 				posts={props.data.posts}
-				addPost={props.addPost}
 				newPostText={props.data.newPostText}
-				updateNewPostText={props.updateNewPostText}
+				dispatch={props.dispatch}
+				// addPost={props.addPost}
+				// updateNewPostText={props.updateNewPostText}
 			/>
 			{/*addPost - это функция*/}
 		</main>

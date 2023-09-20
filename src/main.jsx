@@ -9,10 +9,11 @@ const rerenderTree = (state) => {
 	root.render(
 		<App
 			appData={state}
-			addPost={store.addPost.bind(store)}
-			updateNewPostText={store.updateNewPostText.bind(store)}
-			addMessage={store.addMessage.bind(store)}
-			updateNewMessage={store.updateNewMessage.bind(store)}
+			dispatch={store.dispatch.bind(store)}
+			// addPost={store.addPost.bind(store)}
+			// updateNewPostText={store.updateNewPostText.bind(store)}
+			// addMessage={store.addMessage.bind(store)}
+			// updateNewMessage={store.updateNewMessage.bind(store)}
 		/>
 	)
 }
