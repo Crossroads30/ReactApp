@@ -1,3 +1,8 @@
+const ADD_POST = 'ADD-POST'
+const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
+const ADD_MESSAGE = 'ADD-MESSAGE'
+const UPDATE_NEW_MESSAGE = 'UPDATE-NEW-MESSAGE'
+
 const store = {
 	_state: {
 		profilePage: {
@@ -32,7 +37,7 @@ const store = {
 		},
 		sidebar: {
 			friends: [
-				{ id: 1, name: 'Peter', avatarUrl: '' },
+				{ id: 1, name: 'Darken', avatarUrl: '' },
 				{ id: 2, name: 'Richard', avatarUrl: '' },
 				{ id: 3, name: 'Helen', avatarUrl: '' },
 				{ id: 4, name: 'Zed', avatarUrl: '' },
@@ -49,34 +54,77 @@ const store = {
 		this._callRerenderTree = observer
 	},
 
-	addPost() {
-		let newPost = {
-			id: 7,
-			message: this._state.profilePage.newPostText,
-			likes: 0,
+	// addPost() {
+	// 	let newPost = {
+	// 		id: 7,
+	// 		message: this._state.profilePage.newPostText,
+	// 		likes: 0,
+	// 	}
+	// 	this._state.profilePage.posts.push(newPost)
+	// 	this._state.profilePage.newPostText = ''
+	// 	this._callRerenderTree(this._state)
+	// },
+	// addMessage() {
+	// 	let newMessage = {
+	// 		id: 7,
+	// 		message: this._state.messagesPage.newMessageText,
+	// 	}
+	// 	this._state.messagesPage.messages.push(newMessage)
+	// 	this._state.messagesPage.newMessageText = ''
+	// 	this._callRerenderTree(this._state)
+	// },
+	// updateNewPostText(newText) {
+	// 	this._state.profilePage.newPostText = newText
+	// 	this._callRerenderTree(this._state)
+	// },
+	// updateNewMessage(newMessage) {
+	// 	this._state.messagesPage.newMessageText = newMessage
+	// 	this._callRerenderTree(this._state)
+	// },
+
+	dispatch(action) {
+		if (action.type === ADD_POST) {
+			let newPost = {
+				id: 7,
+				message: this._state.profilePage.newPostText,
+				likes: 0,
+			}
+			this._state.profilePage.posts.push(newPost)
+			this._state.profilePage.newPostText = ''
+			this._callRerenderTree(this._state)
+		} else if (action.type === UPDATE_NEW_POST_TEXT) {
+			this._state.profilePage.newPostText = action.newText
+			this._callRerenderTree(this._state)
+		} else if (action.type === ADD_MESSAGE) {
+			let newMessage = {
+				id: 7,
+				message: this._state.messagesPage.newMessageText,
+			}
+			this._state.messagesPage.messages.push(newMessage)
+			this._state.messagesPage.newMessageText = ''
+			this._callRerenderTree(this._state)
+		} else if (action.type === UPDATE_NEW_MESSAGE) {
+			this._state.messagesPage.newMessageText = action.newMessage
+			this._callRerenderTree(this._state)
 		}
-		this._state.profilePage.posts.push(newPost)
-		this._state.profilePage.newPostText = ''
-		this._callRerenderTree(this._state)
-	},
-	addMessage() {
-		let newMessage = {
-			id: 7,
-			message: this._state.messagesPage.newMessageText,
-		}
-		this._state.messagesPage.messages.push(newMessage)
-		this._state.messagesPage.newMessageText = ''
-		this._callRerenderTree(this._state)
-	},
-	updateNewPostText(newText) {
-		this._state.profilePage.newPostText = newText
-		this._callRerenderTree(this._state)
-	},
-	updateNewMessage(newMessage) {
-		this._state.messagesPage.newMessageText = newMessage
-		this._callRerenderTree(this._state)
 	},
 }
 
+// export const addPostActionCreator = () => {
+// 	return { type: ADD_POST }
+// }
+export const addPostActionCreator = () => ({ type: ADD_POST }) //тоже самое что и выше, только без return!
+export const updateNewPostActionCreator = text => ({
+	type: UPDATE_NEW_POST_TEXT,
+	newText: text,
+})
+export const addMessageActionCreator = () => ({ type: ADD_MESSAGE })
+ 
+export const updateNewMessageActionCreator = message => ({
+	type: UPDATE_NEW_MESSAGE,
+	newMessage: message,
+})
+
 export default store
-window.state = store
+
+// window.state = store
