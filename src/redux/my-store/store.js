@@ -1,6 +1,6 @@
-import profileReducer from "./profile-reducer"
-import messageReducer from "./message-reducer"
-import sidebarReducer from "./sidebar-reducer"
+import profileReducer from "../profile-reducer"
+import messageReducer from "../message-reducer"
+import sidebarReducer from "../sidebar-reducer"
 
 //эти константы были перенесены в файлы к reducers(в message-reducer и в profile-reducer)
 // const ADD_POST = 'ADD-POST'
@@ -54,7 +54,7 @@ const store = {
 	getState() {
 		return this._state
 	},
-	rerender(observer) {
+	subscribe(observer) {
 		//эта функция передается в main.js в которой вызывается функция "rerenderTree" для отрисовки заново стэйта
 		this._callRerenderTree = observer
 	},
@@ -93,7 +93,7 @@ const store = {
 		this._state.messagesPage = messageReducer(this._state.messagesPage, action)
 		this._state.sidebar = sidebarReducer(this._state.sidebar, action)
 
-		this._callRerenderTree(this._state)
+		this._callRerenderTree(this._state) // для redux-store этот колбэк не вызывается
 		//reducers заменяют код c ветвлением (if) ниже
 
 		// if (action.type === ADD_POST) {
