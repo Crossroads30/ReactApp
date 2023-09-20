@@ -5,14 +5,14 @@ import React from 'react'
 import {
 	addMessageActionCreator,
 	updateNewMessageActionCreator,
-} from '../../../redux/state'
+} from '../../../redux/message-reducer'
 
 const Dialogs = props => {
 
 	const dialogItems = props.data.dialogs.map(dialog => (
-		<div className={cl.avatar}>
+		<div className={cl.avatar} key={dialog.id}>
 			<div className={cl.image}></div>
-			<DialogItem name={dialog.name} id={dialog.id} key={dialog.id} />
+			<DialogItem name={dialog.name} id={dialog.id} />
 		</div>
 	))
 
