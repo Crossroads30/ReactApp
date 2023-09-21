@@ -49,9 +49,10 @@ const Sidebar = (props) => {
 					</li>
 				</ul>
 			</nav>
-			<Friends data={props.state}/>
+			<Friends />
 		</aside>
 	)
 }
 
 export default Sidebar
+// data={props.state}

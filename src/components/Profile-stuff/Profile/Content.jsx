@@ -6,9 +6,12 @@ const Profile = props => {
 	return (
 		<main className={cl.content}>
 			<User />
-			<PostsContainer store={props.store} />
+			<PostsContainer  />
 		</main>
 	)
 }
 
 export default Profile
+{
+	/*store={props.store}*/
+}
