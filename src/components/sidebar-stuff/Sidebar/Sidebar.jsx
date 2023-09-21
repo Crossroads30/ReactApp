@@ -49,7 +49,7 @@ const Sidebar = (props) => {
 					</li>
 				</ul>
 			</nav>
-			<Friends data={props.data}/>
+			<Friends data={props.state}/>
 		</aside>
 	)
 }
