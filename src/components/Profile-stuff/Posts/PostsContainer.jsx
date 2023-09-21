@@ -1,56 +1,56 @@
-import React from 'react'
 import {
 	addPostActionCreator,
 	updateNewPostActionCreator,
 } from '../../../redux/profile-reducer'
 import Posts from './Posts'
-import StoreContext from '../../../context/Store-context'
-import store from '../../../redux/redux-store'
+import { connect } from 'react-redux'
 
-const PostsContainer = props => {
-	// const state = props.store.getState()
-
-	// const onAddPost = () => {
-	// 	props.store.dispatch(addPostActionCreator())
-	// }
-
-	// const onPostChange = newText => {
-	// 	const action = updateNewPostActionCreator(newText)
-	// 	props.store.dispatch(action)
-	// }
-
-	return (
-		<StoreContext.Consumer>
-			{store => {
+// const PostsContainer = props => {
+// 	return (
+// 		<StoreContext.Consumer>
+// 			{store => {
 				
-				const state = store.getState()
-				const onAddPost = () => {
-					store.dispatch(addPostActionCreator())
-				}
+// 				const state = store.getState()
+// 				const onAddPost = () => {
+// 					store.dispatch(addPostActionCreator())
+// 				}
 
-				const onPostChange = newText => {
-					const action = updateNewPostActionCreator(newText)
-					store.dispatch(action)
-				}
+// 				const onPostChange = newText => {
+// 					const action = updateNewPostActionCreator(newText)
+// 					store.dispatch(action)
+// 				}
 
-				return (
-					<Posts
-						updateNewPostText={onPostChange}
-						addPost={onAddPost}
-						posts={store.getState().profilePage.posts}
-						newPostText={store.getState().profilePage.newPostText}
-					/>
-				)
-			}}
-		</StoreContext.Consumer>
-	)
+// 				return (
+// 					<Posts
+// 						updateNewPostText={onPostChange}
+// 						addPost={onAddPost}
+// 						posts={store.getState().profilePage.posts}
+// 						newPostText={store.getState().profilePage.newPostText}
+// 					/>
+// 				)
+// 			}}
+// 		</StoreContext.Consumer>
+// 	)
+// }
+
+const setStateToProps = state => {
+	return {
+		posts: state.profilePage.posts,
+		newPostText: state.profilePage.newPostText,
+	}
 }
 
-export default PostsContainer
+const setDispatchTpProps = dispatch => {
+	return {
+		addPost: () => {
+			dispatch(addPostActionCreator())
+		},
+		updateNewPostText: newText => {
+			dispatch(updateNewPostActionCreator(newText))
+		},
+	}
+}
 
-// <Posts
-// 	updateNewPostText={onPostChange}
-// 	addPost={onAddPost}
-// 	posts={state.profilePage.posts}
-// 	newPostText={state.profilePage.newPostText}
-// />
+const PostsContainer = connect(setStateToProps, setDispatchTpProps)(Posts) 
+
+export default PostsContainer
