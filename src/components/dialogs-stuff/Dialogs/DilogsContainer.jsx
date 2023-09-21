@@ -44,7 +44,9 @@ import { connect } from 'react-redux'
 
 const setStateToProps = (state) => {
 	return {
-		messagesPage: state.messagePage
+		dialogs: state.messagesPage.dialogs,
+		messages: state.messagesPage.messages,
+		newMessageText: state.messagesPage.newMessageText
 	}
 }
 
