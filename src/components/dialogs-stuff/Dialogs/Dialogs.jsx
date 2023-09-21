@@ -5,16 +5,16 @@ import React from 'react'
 
 const Dialogs = props => {
 
-	const state = props.messagesPage
+	// const state = props.messagesPage
 
-	const dialogItems = state.dialogs.map(dialog => (
+	const dialogItems = props.dialogs.map(dialog => (
 		<div className={cl.avatar} key={dialog.id}>
 			<div className={cl.image}></div>
 			<DialogItem name={dialog.name} id={dialog.id} />
 		</div>
 	))
 
-	const DialogMessages = state.messages.map(message => (
+	const DialogMessages = props.messages.map(message => (
 		<DialogMessage message={message.message} id={message.id} key={message.id} />
 	))
 
@@ -36,7 +36,7 @@ const Dialogs = props => {
 			<textarea
 				onChange={onMessageTextChange}
 				placeholder=' enter message'
-				value={state.newMessageText}
+				value={props.newMessageText}
 			></textarea>
 			<button onClick={onAddMessage}>send</button>
 		</div>
