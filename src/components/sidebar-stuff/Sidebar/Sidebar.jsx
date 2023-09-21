@@ -1,6 +1,7 @@
 import cl from './Sidebar.module.css'
 import { NavLink } from 'react-router-dom'
 import Friends from '../Friends/Friends'
+import FriendsContainer from '../Friends/FriendsContainer'
 
 const Sidebar = (props) => {
 	return (
@@ -49,7 +50,7 @@ const Sidebar = (props) => {
 					</li>
 				</ul>
 			</nav>
-			<Friends />
+			<FriendsContainer />
 		</aside>
 	)
 }
