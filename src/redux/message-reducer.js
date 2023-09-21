@@ -21,26 +21,24 @@ let initialState = {
 	newMessageText: '',
 }
 
+//улучшены вариант кода
 const messageReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case ADD_MESSAGE: {
+		case ADD_MESSAGE:
 			let newMessage = {
 				id: 7,
 				message: state.newMessageText,
 			}
-			let stateCopy = {...state}
-			stateCopy.messages = [...state.messages]
-			stateCopy.messages.push(newMessage)
-			stateCopy.newMessageText = ''
-			return stateCopy
-		}
-
-		case UPDATE_NEW_MESSAGE: {
-			let stateCopy = { ...state }
-			
-			stateCopy.newMessageText = action.newMessage
-			return stateCopy
-		}
+			return {
+				...state,
+				newMessageText: '',
+				messages: [...state.messages, newMessage],
+			}
+		case UPDATE_NEW_MESSAGE:
+			return {
+				...state,
+				newMessageText: action.newMessage,
+			}
 		default:
 			return state
 	}
@@ -53,3 +51,31 @@ export const updateNewMessageActionCreator = message => ({
 })
 
 export default messageReducer
+
+//старый вариант кода
+// const messageReducer = (state = initialState, action) => {
+// 	switch (action.type) {
+// 		case ADD_MESSAGE: {
+// 			let newMessage = {
+// 				id: 7,
+// 				message: state.newMessageText,
+// 			}
+// 			let stateCopy = {
+// 				...state,
+// 				messages: [...state.messages],
+// 			}
+// 			stateCopy.messages.push(newMessage)
+// 			stateCopy.newMessageText = ''
+// 			return stateCopy
+// 		}
+
+// 		case UPDATE_NEW_MESSAGE: {
+// 			let stateCopy = { ...state }
+
+// 			stateCopy.newMessageText = action.newMessage
+// 			return stateCopy
+// 		}
+// 		default:
+// 			return state
+// 	}
+// }
