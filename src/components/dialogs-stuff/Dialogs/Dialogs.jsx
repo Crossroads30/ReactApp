@@ -5,10 +5,9 @@ import React from 'react'
 import {
 	addMessageActionCreator,
 	updateNewMessageActionCreator,
-} from '../../../redux/message-reducer'
+} from '../../../my-redux/message-reducer'
 
 const Dialogs = props => {
-
 	const dialogItems = props.data.dialogs.map(dialog => (
 		<div className={cl.avatar} key={dialog.id}>
 			<div className={cl.image}></div>
@@ -22,7 +21,7 @@ const Dialogs = props => {
 
 	// const newDialogMessage = React.createRef()
 
-	const onMessageTextChange = (event) => {
+	const onMessageTextChange = event => {
 		const message = event.target.value // вместо React.createRef() добавляем в textarea значения через event.target.value
 		// const message = newDialogMessage.current.value
 		// props.updateNewMessage(newMessage)
