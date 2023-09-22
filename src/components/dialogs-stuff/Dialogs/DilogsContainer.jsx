@@ -1,7 +1,7 @@
 import {
 	addMessageActionCreator,
 	updateNewMessageActionCreator,
-} from '../../../redux/message-reducer'
+} from '../../../react-redux/message-reducer'
 import Dialogs from './Dialogs'
 import { connect } from 'react-redux'
 
@@ -42,11 +42,11 @@ import { connect } from 'react-redux'
 // 	)
 // }
 
-const setStateToProps = (state) => {
+const setStateToProps = state => {
 	return {
 		dialogs: state.messagesPage.dialogs,
 		messages: state.messagesPage.messages,
-		newMessageText: state.messagesPage.newMessageText
+		newMessageText: state.messagesPage.newMessageText,
 	}
 }
 
@@ -61,6 +61,6 @@ const setDispatchTpProps = dispatch => {
 	}
 }
 
-const DialogsContainer = connect(setStateToProps,setDispatchTpProps)(Dialogs)
+const DialogsContainer = connect(setStateToProps, setDispatchTpProps)(Dialogs)
 
 export default DialogsContainer

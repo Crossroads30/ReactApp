@@ -1,10 +1,9 @@
 import {
 	addPostActionCreator,
 	updateNewPostActionCreator,
-} from '../../../redux/profile-reducer'
+} from '../../../react-redux/profile-reducer'
 import Posts from './Posts'
 import { connect } from 'react-redux'
-
 
 const setStateToProps = state => {
 	return {
@@ -24,6 +23,6 @@ const setDispatchTpProps = dispatch => {
 	}
 }
 
-const PostsContainer = connect(setStateToProps, setDispatchTpProps)(Posts) 
+const PostsContainer = connect(setStateToProps, setDispatchTpProps)(Posts)
 
 export default PostsContainer
