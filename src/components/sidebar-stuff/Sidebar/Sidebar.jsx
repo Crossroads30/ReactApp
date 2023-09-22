@@ -27,6 +27,14 @@ const Sidebar = (props) => {
 					<li>
 						<NavLink
 							className={navData => (navData.isActive ? cl.active : cl.link)}
+							to='/users'
+						>
+							Users
+						</NavLink>
+					</li>
+					<li>
+						<NavLink
+							className={navData => (navData.isActive ? cl.active : cl.link)}
 							to='/news'
 						>
 							News
