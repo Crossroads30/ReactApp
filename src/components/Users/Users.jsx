@@ -1,5 +1,6 @@
 import cl from './Users.module.css'
 import defaultUserPhoto from '../../assets/images/userDefaultImage.png'
+import Preloader from '../Preloader/Preloader'
 
 const Users = props => {
 	let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
@@ -28,7 +29,10 @@ const Users = props => {
 						</span>
 					))}
 				</div>
-				{props.users.map(user => (
+				{props.isLoading ? (
+					 <Preloader/>
+				) : 
+				props.users.map(user => (
 					<div key={user.id} className={cl.user}>
 						<div className={cl.avatarWrapper}>
 							<img

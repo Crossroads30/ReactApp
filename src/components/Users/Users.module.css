@@ -1,5 +1,6 @@
 .usersWrapper {
 	padding: 20px;
+	min-width: 550px;
 }
 
 .user {
@@ -53,7 +54,7 @@
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 }
 
 .pagination span {
@@ -64,6 +65,7 @@
 	border-radius: 20px;
 	text-align: center;
 	margin-right: 5px;
+	margin-bottom: 0;
 	border: 2px solid rgb(37, 124, 167);
 	cursor: pointer;
 }
