@@ -1,20 +1,33 @@
-import axios from 'axios'
 import cl from './Users.module.css'
 import defaultUserPhoto from '../../assets/images/userDefaultImage.png'
 
 const Users = props => {
-	const getAllUsers = () => {
-		if (props.users.length === 0) {
-			axios.get('http://localhost:3000/items').then(response => {
-				props.setUsers(response.data)
-			})
-		}
+	let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
+	let pages = []
+	for (let i = 1; i <= pagesCount; i++) {
+		pages.push(i)
 	}
 
 	return (
 		<>
-		<button onClick={getAllUsers}>Get all users</button>
 			<div className={cl.usersWrapper}>
+				<div className={cl.pagination}>
+					{pages.map(page => (
+						<span
+							key={page}
+							className={
+								props.currentPage === page
+									? cl.selectedPage
+									: cl.pagination + ' ' + 'span'
+							}
+							onClick={() => {
+								props.onPageChange(page)
+							}}
+						>
+							{page}
+						</span>
+					))}
+				</div>
 				{props.users.map(user => (
 					<div key={user.id} className={cl.user}>
 						<div className={cl.avatarWrapper}>

@@ -5,7 +5,8 @@ import {
 	setCurrentPageAC,
 	// setTotalUsersCountAC
 } from '../../react-redux/users-reducer'
-import Users from './UsersClass'
+import UsersApiContainer from './UsersApiContainer'
+import Users from './Users(Class)'
 import { connect } from 'react-redux'
 
 const setStateToProps = state => {
@@ -37,4 +38,5 @@ const setDispatchTpProps = dispatch => {
 	}
 }
 
-export default connect(setStateToProps, setDispatchTpProps)(Users)
+export default connect(setStateToProps, setDispatchTpProps)(UsersApiContainer)
+// export default connect(setStateToProps, setDispatchTpProps)(Users)
