@@ -1,5 +1,5 @@
 import './styles/App.css'
-import Profile from './components/Profile-stuff/Profile/Content'
+import ProfileContainer from './components/Profile-stuff/Profile/ProfileContainer'
 import Header from './components/Header/Header'
 import Sidebar from './components/sidebar-stuff/Sidebar/Sidebar'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -17,16 +17,14 @@ const App = props => {
 				<Sidebar />
 				<div className='app-content'>
 					<Routes>
-						<Route path='/profile' element={<Profile  />} />
-						<Route
-							path='/dialogs/*'
-							element={<DialogsContainer />}
-						/>
+						<Route path='/profile/*' element={<ProfileContainer />} />{' '}
+						{/* чтобы отображался 'profile' вне зависимости от URL звездочку добавляем в конец */}
+						<Route path='/dialogs/*' element={<DialogsContainer />} />
 						<Route path='/news' element={<News />} />
 						<Route path='/users' element={<UsersContainer />} />
 						<Route path='/music' element={<Music />} />
 						<Route path='/settings' element={<Settings />} />
-						<Route path='/' element={<Profile />} />
+						<Route path='/' element={<ProfileContainer />} />
 					</Routes>
 				</div>
 			</div>

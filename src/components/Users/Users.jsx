@@ -1,6 +1,7 @@
 import cl from './Users.module.css'
 import defaultUserPhoto from '../../assets/images/userDefaultImage.png'
 import Preloader from '../Preloader/Preloader'
+import { NavLink } from 'react-router-dom'
 
 const Users = props => {
 	let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
@@ -30,52 +31,55 @@ const Users = props => {
 					))}
 				</div>
 				{props.isLoading ? (
-					 <Preloader/>
-				) : 
-				props.users.map(user => (
-					<div key={user.id} className={cl.user}>
-						<div className={cl.avatarWrapper}>
-							<img
-								className={cl.photo}
-								src={
-									user.photos.small !== null
-										? user.photos.small
-										: defaultUserPhoto
-								}
-								alt='User'
-							/>
-							{user.isFollowed ? (
-								<button
-									className={cl.button}
-									onClick={() => {
-										props.unfollow(user.id)
-									}}
-								>
-									Unfollow
-								</button>
-							) : (
-								<button
-									className={cl.button}
-									onClick={() => {
-										props.follow(user.id)
-									}}
-								>
-									follow
-								</button>
-							)}
-						</div>
-						<div className={cl.userInfo}>
-							<div className={cl.infoWrapper}>
-								<p>{user.name}</p>
-								<p>{user.status}</p>
+					<Preloader />
+				) : (
+					props.users.map(user => (
+						<div key={user.id} className={cl.user}>
+							<div className={cl.avatarWrapper}>
+								<NavLink to={'/profile/' + user.id}>
+									<img
+										className={cl.photo}
+										src={
+											user.photos.small !== null
+												? user.photos.small
+												: defaultUserPhoto
+										}
+										alt='User'
+									/>
+								</NavLink>
+								{user.isFollowed ? (
+									<button
+										className={cl.button}
+										onClick={() => {
+											props.unfollow(user.id)
+										}}
+									>
+										Unfollow
+									</button>
+								) : (
+									<button
+										className={cl.button}
+										onClick={() => {
+											props.follow(user.id)
+										}}
+									>
+										follow
+									</button>
+								)}
 							</div>
-							<div className={cl.locationWrapper}>
-								<p>{'user.location.city'}</p>
-								<p>{'user.location.land'}</p>
+							<div className={cl.userInfo}>
+								<div className={cl.infoWrapper}>
+									<p>{user.name}</p>
+									<p>{user.status}</p>
+								</div>
+								<div className={cl.locationWrapper}>
+									<p>{'user.location.city'}</p>
+									<p>{'user.location.land'}</p>
+								</div>
 							</div>
 						</div>
-					</div>
-				))}
+					))
+				)}
 			</div>
 		</>
 	)

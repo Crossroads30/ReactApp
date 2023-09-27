@@ -1,6 +1,10 @@
+import Preloader from '../../Preloader/Preloader'
 import cl from './User.module.css'
 
-const User = () => {
+const User = props => {
+	if (!props.userProfile) {
+		return <Preloader />
+	}
 	return (
 		<>
 			<img
@@ -9,17 +13,35 @@ const User = () => {
 				alt='some image'
 			/>
 			<div className={cl.user}>
+				{/* {props.userProfile.fullName.aboutMe} */}
 				<img
 					className={cl.userImg}
-					src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP6-MfoJ0MLH3ZH7oIyNvP_PfLRoYI-ZgPeQ&usqp=CAU'
-					alt=''
+					src={props.userProfile.photos.small}
+					alt='user-profile'
 				/>
 				<div className={cl.userInfo}>
-					<p className={cl.name}>James Z</p>
-					<p className={cl.birth}>11-16-1980</p>
-					<p className={cl.city}>City: Minsk</p>
-					<p className={cl.education}>Education: BCIM</p>
-					<p className={cl.email}>Email: Crossroads30@mail.ru</p>
+					<p className={cl.name}>Name: {props.userProfile.fullName}</p>
+					<div className={cl.contactsWrapper}>
+						<ul className={cl.contacts}>
+							{Object.entries(props.userProfile.contacts).map(
+								([key, value]) => {
+									return (
+										<li>
+											<div className={cl.contactWrapper}>
+												<p className={cl.key}>{key}:</p>
+												<p className={cl.value}>{value}</p>
+											</div>
+										</li>
+									)
+								}
+							)}
+						</ul>
+					</div>
+					<p className={cl.jobLooking}>{props.userProfile.lookingForAJob}</p>
+					<p className={cl.jobLookingDes}>
+						{props.userProfile.lookingForAJobDescription}
+					</p>
+					<p className={cl.aboutMe}>About Me: {props.userProfile.aboutMe}</p>
 				</div>
 			</div>
 		</>
