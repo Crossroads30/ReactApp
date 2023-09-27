@@ -44,7 +44,7 @@ let initialState = {
 		// },
 	],
 	pageSize: 5,
-	totalUsersCount: 40,
+	totalUsersCount: 45,
 	currentPage: 1,
 }
 
