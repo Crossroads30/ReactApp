@@ -2,6 +2,7 @@ const SET_USERS = 'SET-USERS'
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE'
+const TOGGLE_IS_LOADING = 'TOGGLE-IS-LOADING'
 // const SET_USERS_COUNT = 'SET-USERS-COUNT'
 
 let initialState = {
@@ -46,6 +47,7 @@ let initialState = {
 	pageSize: 5,
 	totalUsersCount: 45,
 	currentPage: 1,
+	isLoading: true,
 }
 
 const UsersReducer = (state = initialState, action) => {
@@ -82,6 +84,11 @@ const UsersReducer = (state = initialState, action) => {
 				...state,
 				currentPage: action.currentPage,
 			}
+		case TOGGLE_IS_LOADING:
+			return {
+				...state,
+				isLoading: action.isLoading,
+			}
 		// case SET_USERS_COUNT:
 		// 	return {
 		// 		...state,
@@ -92,12 +99,17 @@ const UsersReducer = (state = initialState, action) => {
 	}
 }
 
-export const setUsersAC = users => ({ type: SET_USERS, users })
-export const followUserAC = userId => ({ type: FOLLOW, userId })
-export const unfollowUserAC = userId => ({ type: UNFOLLOW, userId })
-export const setCurrentPageAC = currentPage => ({
+//функции Action Creators:
+export const setUsers = users => ({ type: SET_USERS, users })
+export const followUser = userId => ({ type: FOLLOW, userId })
+export const unfollowUser = userId => ({ type: UNFOLLOW, userId })
+export const setCurrentPage = currentPage => ({
 	type: SET_CURRENT_PAGE,
 	currentPage
+})
+export const setIsLoading = isLoading => ({
+	type: TOGGLE_IS_LOADING,
+	isLoading,
 })
 // export const setTotalUsersCountAC = totalUsersCount => ({
 // 	type: SET_USERS_COUNT,
