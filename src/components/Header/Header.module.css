@@ -4,6 +4,7 @@
 	display: flex;
 	align-items: center;
 	padding: 0 30px;
+	justify-content: space-between;
 }
 
 .header h1 {
@@ -17,4 +18,12 @@
 	width: 30px;
 	height: 30px;
 	border-radius: 30px;
+}
+
+.loginBlock a {
+	color: aliceblue;
+}
+
+.login {
+	color: aliceblue;
 }
