@@ -8,12 +8,13 @@ import News from './components/news-stuff/News/News'
 import Music from './components/music-stuff/Music/Music'
 import DialogsContainer from './components/dialogs-stuff/Dialogs/DialogsContainer'
 import UsersContainer from './components/Users/UsersContainer'
+import HeaderContainer from './components/Header/HeaderContainer'
 
 const App = props => {
 	return (
 		<BrowserRouter>
 			<div className='app-wrapper'>
-				<Header />
+				<HeaderContainer />
 				<Sidebar />
 				<div className='app-content'>
 					<Routes>
