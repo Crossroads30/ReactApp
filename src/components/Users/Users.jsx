@@ -2,6 +2,7 @@ import cl from './Users.module.css'
 import defaultUserPhoto from '../../assets/images/userDefaultImage.png'
 import Preloader from '../Preloader/Preloader'
 import { NavLink } from 'react-router-dom'
+import axios from 'axios'
 
 const Users = props => {
 	let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
@@ -51,7 +52,15 @@ const Users = props => {
 									<button
 										className={cl.button}
 										onClick={() => {
-											props.unfollow(user.id)
+											axios
+												.delete(
+													`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
+													{ withCredentials: true } // в delete объект настройки идет вторым параметром
+												)
+												.then(response => {
+													response.data.resultCode === 0 &&
+														props.unfollow(user.id)
+												})
 										}}
 									>
 										Unfollow
@@ -60,10 +69,19 @@ const Users = props => {
 									<button
 										className={cl.button}
 										onClick={() => {
-											props.follow(user.id)
+											axios
+												.post(
+													`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
+													{},
+													{ withCredentials: true } // в post объект настройки идет третьем параметром
+												)
+												.then(response => {
+													response.data.resultCode === 0 &&
+														props.follow(user.id)
+												})
 										}}
 									>
-										follow
+										Follow
 									</button>
 								)}
 							</div>
@@ -86,3 +104,72 @@ const Users = props => {
 }
 
 export default Users
+
+//версия кнопок без запроса на сервер:
+// {
+// 	user.isFollowed ? (
+// 		<button
+// 			className={cl.button}
+// 			onClick={() => {
+// 				props.unfollow(user.id)
+// 			}}
+// 		>
+// 			Unfollow
+// 		</button>
+// 	) : (
+// 		<button
+// 			className={cl.button}
+// 			onClick={() => {
+// 				props.follow(user.id)
+// 			}}
+// 		>
+// 			follow
+// 		</button>
+// 	)
+// }
+//------------------------
+
+// {//версия кнопок c запросом на сервер:
+// 	{user.isFollowed ? (
+// 		<button
+// 			className={cl.button}
+// 			onClick={() => {
+// 				axios
+// 					.delete(
+// 						`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
+// 						{ withCredentials: true } // в delete объект настройки идет вторым параметром
+// 					)
+// 					.then(response => {
+// 						response.data.resultCode === 0 && props.unfollow(user.id)
+// 					})
+// 			}}
+// 		>
+// 			Unfollow
+// 		</button>
+// 	) : (
+// 		<button
+// 			className={cl.button}
+// 			onClick={() => {
+// 				// axios.create({
+// 				// 	withCredentials: true,
+// 				// 	baseURL:
+// 				// 		'https://social-network.samuraijs.com/api/1.0/',
+// 				// 	headers: {
+// 				// 		'API-KEY': '3f7ad031-df1b-42ff-b2a2-b96c84e80631',
+// 				// 	},
+// 				// })
+// 				axios
+// 					.post(
+// 						`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
+// 						{},
+// 						{ withCredentials: true } // в post объект настройки идет третьем параметром
+// 					)
+// 					.then(response => {
+// 						response.data.resultCode === 0 && props.follow(user.id)
+// 					})
+// 			}}
+// 		>
+// 			Follow
+// 		</button>
+// 	)
+// }
