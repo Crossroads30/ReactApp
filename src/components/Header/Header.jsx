@@ -1,6 +1,8 @@
+import { NavLink } from 'react-router-dom'
 import cl from './Header.module.css'
 
-const Header = () => {
+const Header = (props) => {
+	// debugger
 	return (
 		<div className={cl.header}>
 			<img
@@ -8,6 +10,13 @@ const Header = () => {
 				alt=''
 			/>
 			<h1>Social Net</h1>
+			<div className={cl.loginBlock}>
+				{props.isAuth ? (
+					<p className={cl.login}>{props.login}</p>
+				) : (
+					<NavLink to={'/login'}>Login</NavLink>
+				)}
+			</div>
 		</div>
 	)
 }
