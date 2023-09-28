@@ -17,14 +17,14 @@ const App = props => {
 				<Sidebar />
 				<div className='app-content'>
 					<Routes>
-						<Route path='/profile/*' element={<ProfileContainer />} />{' '}
+						<Route path='/profile/:userId?' element={<ProfileContainer />} />
 						{/* чтобы отображался 'profile' вне зависимости от URL звездочку добавляем в конец */}
 						<Route path='/dialogs/*' element={<DialogsContainer />} />
 						<Route path='/news' element={<News />} />
 						<Route path='/users' element={<UsersContainer />} />
 						<Route path='/music' element={<Music />} />
 						<Route path='/settings' element={<Settings />} />
-						<Route path='/' element={<ProfileContainer />} />
+						<Route path='*' element={<ProfileContainer />} />
 					</Routes>
 				</div>
 			</div>
