@@ -3,7 +3,11 @@ import cl from './User.module.css'
 
 const User = props => {
 	if (!props.userProfile) {
-		return <Preloader />
+		return (
+			<div className={cl.preloader}>
+				<Preloader />
+			</div>
+		)
 	}
 	return (
 		<>
@@ -13,7 +17,6 @@ const User = props => {
 				alt='some image'
 			/>
 			<div className={cl.user}>
-				{/* {props.userProfile.fullName.aboutMe} */}
 				<img
 					className={cl.userImg}
 					src={props.userProfile.photos.small}
@@ -26,7 +29,7 @@ const User = props => {
 							{Object.entries(props.userProfile.contacts).map(
 								([key, value]) => {
 									return (
-										<li>
+										<li key={value+key}>
 											<div className={cl.contactWrapper}>
 												<p className={cl.key}>{key}:</p>
 												<p className={cl.value}>{value}</p>
