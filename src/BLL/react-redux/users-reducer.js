@@ -4,6 +4,7 @@ const UNFOLLOW = 'UNFOLLOW'
 const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE'
 const TOGGLE_IS_LOADING = 'TOGGLE-IS-LOADING'
 const SET_USERS_COUNT = 'SET-USERS-COUNT'
+const DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS = 'DISABLE-FETCHING-BUTTON'
 
 let initialState = {
 	users: [
@@ -48,6 +49,7 @@ let initialState = {
 	totalUsersCount: 50,
 	currentPage: 1,
 	isLoading: true,
+	followingInProgress: [],
 }
 
 const UsersReducer = (state = initialState, action) => {
@@ -63,7 +65,7 @@ const UsersReducer = (state = initialState, action) => {
 				// users: [...state.users], //если внутри массива не надо что либо менять
 				users: state.users.map(user => {
 					if (user.id === action.userId) {
-						return { ...user, isFollowed: true }
+						return { ...user, followed: true }
 					}
 					return user
 				}), //если внутри массива надо изменить какие-либо объекты
@@ -74,7 +76,7 @@ const UsersReducer = (state = initialState, action) => {
 				// users: [...state.users], //если внутри массива не надо что либо менять
 				users: state.users.map(user => {
 					if (user.id === action.userId) {
-						return { ...user, isFollowed: false }
+						return { ...user, followed: false }
 					}
 					return user
 				}), //если внутри массива надо изменить какие-либо объекты
@@ -93,6 +95,15 @@ const UsersReducer = (state = initialState, action) => {
 			return {
 				...state,
 				totalUsersCount: action.count,
+			}
+		case DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS:
+			return {
+				...state,
+				// followingInProgress: action.isLoading,
+				followingInProgress: action.isLoading
+					? [...state.followingInProgress, action.userId]
+					: [state.followingInProgress.filter(id => id != action.userId)]
+					,
 			}
 		default:
 			return state
@@ -114,6 +125,11 @@ export const setIsLoading = isLoading => ({
 export const setTotalUsersCount = totalUsersCount => ({
 	type: SET_USERS_COUNT,
 	count: totalUsersCount,
+})
+export const setDisableFetchingButton = (isLoading, userId) => ({
+	type: DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS,
+	isLoading,
+	userId,
 })
 
 

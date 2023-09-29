@@ -9,6 +9,7 @@ import {
 	setCurrentPage,
 	setIsLoading,
 	setTotalUsersCount,
+	setDisableFetchingButton,
 } from '../../../BLL/react-redux/users-reducer'
 import { connect } from 'react-redux'
 
@@ -48,6 +49,8 @@ class UsersContainer extends React.Component {
 					unfollow={this.props.unfollowUser}
 					follow={this.props.followUser}
 					isLoading={this.props.isLoading}
+					setDisableButton={this.props.setDisableFetchingButton}
+					followingInProgress={this.props.followingInProgress}
 				/>
 			</>
 		)
@@ -61,6 +64,7 @@ const setStateToProps = state => {
 		totalUsersCount: state.usersPage.totalUsersCount,
 		currentPage: state.usersPage.currentPage,
 		isLoading: state.usersPage.isLoading,
+		followingInProgress: state.usersPage.followingInProgress,
 	}
 }
 
@@ -87,7 +91,7 @@ const setStateToProps = state => {
 // 	}
 // }
 
-//вместо setDispatchTpProps помещаем объект с ссылками на объекты в 'connect'
+//вместо setDispatchTpProps помещаем объект с ссылками на action creators в 'connect'
 export default connect(setStateToProps, {
 	followUser,
 	unfollowUser,
@@ -95,4 +99,5 @@ export default connect(setStateToProps, {
 	setCurrentPage,
 	setIsLoading,
 	setTotalUsersCount,
+	setDisableFetchingButton,
 })(UsersContainer)
