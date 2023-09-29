@@ -50,32 +50,26 @@ const Users = props => {
 								</NavLink>
 								{user.followed ? (
 									<button
-										disabled={props.followingInProgress.some( // кнопка становится неактивной во время запроса на подписку/отписку(follow/unfollow) на пользователя
+										disabled={props.followingInProgress.some(
+											// кнопка становится неактивной во время запроса на подписку/отписку(follow/unfollow) на пользователя
 											id => id === user.id
 										)}
 										className={cl.button}
 										onClick={() => {
-											props.setDisableButton(true, user.id) // передаем id пользователя кнопку которого надо сделать неактивной во время запроса на подписку
-											userApi.getUnFollow(user.id).then(data => {
-												data.resultCode === 0 && props.unfollow(user.id)
-												props.setDisableButton(false, user.id) // // передаем id пользователя кнопку которого надо вернуть в активное состояние после того как запрос на подписку закончится
-											})
+											props.unfollow(user.id) // thunkCreator unfollow
 										}}
 									>
 										Unfollow
 									</button>
 								) : (
 									<button
-										disabled={props.followingInProgress.some( // кнопка становится неактивной во время запроса на подписку/отписку(follow/unfollow) на пользователя
+										disabled={props.followingInProgress.some(
+											// кнопка становится неактивной во время запроса на подписку/отписку(follow/unfollow) на пользователя
 											id => id === user.id
 										)}
 										className={cl.button}
 										onClick={() => {
-											props.setDisableButton(true, user.id) // передаем id пользователя кнопку которого надо сделать неактивной во время запроса на подписку
-											userApi.getFollow(user.id).then(data => {
-												data.resultCode === 0 && props.follow(user.id)
-												props.setDisableButton(false, user.id) // // передаем id пользователя кнопку которого надо вернуть в активное состояние после того как запрос на подписку закончится
-											})
+											props.follow(user.id) // thunkCreator follow
 										}}
 									>
 										Follow

@@ -1,5 +1,4 @@
-import { userApi } from "../../DAL/api/api"
-
+import { userApi } from '../../DAL/api/api'
 
 const SET_USERS = 'SET-USERS'
 const FOLLOW = 'FOLLOW'
@@ -10,44 +9,7 @@ const SET_USERS_COUNT = 'SET-USERS-COUNT'
 const DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS = 'DISABLE-FETCHING-BUTTON'
 
 let initialState = {
-	users: [
-		// {
-		// 	id: 1,
-		// 	isFollowed: false,
-		// 	fullName: 'Darken Rahl',
-		// 	avatarUrl:
-		// 		'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2w35-ywQxAxsVTPs5rHEF2m0b_CBnLHJNgA&usqp=CAU',
-		// 	status: 'I`m want to rule all Midlands!!!',
-		// 	location: { city: 'city of D`Hara', land: 'D`Hara' },
-		// },
-		// {
-		// 	id: 2,
-		// 	isFollowed: true,
-		// 	fullName: 'Richard Cypher-Rahl',
-		// 	avatarUrl:
-		// 		'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2w35-ywQxAxsVTPs5rHEF2m0b_CBnLHJNgA&usqp=CAU',
-		// 	status: 'I`m a truth seeker',
-		// 	location: { city: 'Hartland', land: 'Westland' },
-		// },
-		// {
-		// 	id: 3,
-		// 	isFollowed: true,
-		// 	fullName: ' Kahlan Amnell',
-		// 	avatarUrl:
-		// 		'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2w35-ywQxAxsVTPs5rHEF2m0b_CBnLHJNgA&usqp=CAU',
-		// 	status: 'The whole Middle lands under my protection!',
-		// 	location: { city: 'Aydindril', land: 'Midlands' },
-		// },
-		// {
-		// 	id: 4,
-		// 	isFollowed: true,
-		// 	fullName: 'Zeddicus Zu`l Zorander ',
-		// 	avatarUrl:
-		// 		'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2w35-ywQxAxsVTPs5rHEF2m0b_CBnLHJNgA&usqp=CAU',
-		// 	status: 'I`m a greatest wizard of the First Order!',
-		// 	location: { city: 'Aydindril', land: 'Midlands' },
-		// },
-	],
+	users: [],
 	pageSize: 5,
 	totalUsersCount: 50,
 	currentPage: 1,
@@ -105,8 +67,7 @@ const UsersReducer = (state = initialState, action) => {
 				// followingInProgress: action.isLoading,
 				followingInProgress: action.isLoading
 					? [...state.followingInProgress, action.userId]
-					: [state.followingInProgress.filter(id => id != action.userId)]
-					,
+					: [state.followingInProgress.filter(id => id != action.userId)],
 			}
 		default:
 			return state
@@ -119,7 +80,7 @@ export const followUser = userId => ({ type: FOLLOW, userId })
 export const unfollowUser = userId => ({ type: UNFOLLOW, userId })
 export const setCurrentPage = currentPage => ({
 	type: SET_CURRENT_PAGE,
-	currentPage
+	currentPage,
 })
 export const setIsLoading = isLoading => ({
 	type: TOGGLE_IS_LOADING,
@@ -138,7 +99,7 @@ export const setDisableFetchingButton = (isLoading, userId) => ({
 //thunk функции:
 
 //ThunkCreator getUsers:
-export const getUsers = (currentPage,pageSize) => {
+export const getUsers = (currentPage, pageSize) => {
 	//берем параметры с помощью замыкания в thunkCreator и возвращаем из нее thunk функцию с диспатчем, в которую приходят эти параметры:
 	return dispatch => {
 		dispatch(setIsLoading(true)) //диспатчем actionCreator
@@ -150,7 +111,28 @@ export const getUsers = (currentPage,pageSize) => {
 			dispatch(setUsers(data)) //диспатчем actionCreator
 		})
 	}
-} 
+}
 
+//ThunkCreator follow:
+export const follow = userId => {
+	return dispatch => {
+		dispatch(setDisableFetchingButton(true, userId)) // передаем id пользователя кнопку которого надо сделать неактивной во время запроса на подписку
+		userApi.getFollow(user.id).then(data => {
+			data.resultCode === 0 && dispatch(followUser(userId))
+			dispatch(setDisableButton(false, userId)) // // передаем id пользователя кнопку которого надо вернуть в активное состояние после того как запрос на подписку закончится
+		})
+	}
+}
+
+//ThunkCreator unfollow:
+export const unfollow = userId => {
+	return dispatch => {
+		dispatch(setDisableFetchingButton(true, userId)) // передаем id пользователя кнопку которого надо сделать неактивной во время запроса на отписку
+		userApi.getUnFollow(user.id).then(data => {
+			data.resultCode === 0 && dispatch(unfollowUser(userId))
+			dispatch(setDisableButton(false, userId)) // // передаем id пользователя кнопку которого надо вернуть в активное состояние после того как запрос на отписку закончится
+		})
+	}
+}
 
 export default UsersReducer
