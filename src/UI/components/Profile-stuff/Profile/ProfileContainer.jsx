@@ -1,9 +1,9 @@
 import Profile from './Profile'
 import React from 'react'
-import axios from 'axios'
 import { setUserProfile } from '../../../../BLL/react-redux/profile-reducer'
 import { connect } from 'react-redux'
 import { withRouter } from './HookWithRoute'
+import { userApi } from '../../../../DAL/api/api'
 
 class ProfileContainer extends React.Component {
 	componentDidMount() {
@@ -12,29 +12,19 @@ class ProfileContainer extends React.Component {
 		if (!profileId) {
 			profileId = 2
 		}
-			axios
-				.get(
-					`https://social-network.samuraijs.com/api/1.0/profile/` + profileId
-				)
-
-				.then(response => {
-					// console.log(response)
-					// console.log(profileId)
-					this.props.setUserProfile(response.data)
-				})
+		userApi
+			.getProfile(profileId)
+			.then(data => {
+				// console.log(response)
+				// console.log(profileId)
+				this.props.setUserProfile(data)
+			})
 	}
-
-	// getId() {
-	// 	
-	// 	return console.log(profileId)
-	// }
 
 	render() {
 		return <Profile {...this.props} userProfile={this.props.userProfile} />
 	}
 }
-
-
 
 const setStateToProps = state => {
 	return {
@@ -42,9 +32,9 @@ const setStateToProps = state => {
 	}
 }
 
-const WithUrlDataContainerComponent = withRouter(ProfileContainer)
+const WithUrlDataContainerComponent = withRouter(ProfileContainer) //экспортируем функцию обертку 'withRouter' из ./HookWithRoute
 
-// export default connect(setStateToProps, { setUserProfile })(ProfileContainer)
 export default connect(setStateToProps, { setUserProfile })(
-	WithUrlDataContainerComponent
+	WithUrlDataContainerComponent // передаем ее в connect что бы получить данные из строки браузера
 )
+// export default connect(setStateToProps, { setUserProfile })(ProfileContainer)
