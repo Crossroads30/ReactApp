@@ -1,6 +1,6 @@
-import axios from 'axios'
 import React from 'react'
 import Users from './Users'
+import { userApi } from '../../../DAL/api/api'
 
 import {
 	followUser,
@@ -9,45 +9,31 @@ import {
 	setCurrentPage,
 	setIsLoading,
 	setTotalUsersCount,
-} from '../../react-redux/users-reducer'
+} from '../../../BLL/react-redux/users-reducer'
 import { connect } from 'react-redux'
 
 class UsersContainer extends React.Component {
 	componentDidMount() {
 		this.props.setIsLoading(true)
-		axios.create({
-			withCredentials: true,
-			baseURL: 'https://social-network.samuraijs.com/api/1.0/',
-			headers: {
-				'API-KEY': '3f7ad031-df1b-42ff-b2a2-b96c84e80631',
-			},
-		})
 
-		axios
-			.get(
-				// `http://localhost:3000/items/?_limit=${this.props.pageSize}&_page=${this.props.currentPage}`
-				`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`
-			)
-			.then(response => {
-				this.props.setIsLoading(false)
-				this.props.setUsers(response.data.items)
-				// this.props.setTotalUsersCount(response.data.totalCount)
-			})
+		userApi.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+			// data - то что пришло из ajax-запроса в DAL/api/api.js
+			this.props.setIsLoading(false)
+			this.props.setUsers(data)
+			// this.props.setTotalUsersCount(data.data.totalCount)
+		})
 	}
 
 	onPageChange = pageNumber => {
 		//!!!!обратить внимание что этот синтаксис этого метода - стрелочная функция!!!!
 		this.props.setCurrentPage(pageNumber)
 		this.props.setIsLoading(true)
-		axios
-			.get(
-				// `http://localhost:3000/items?_limit=${this.props.pageSize}&_page=${pageNumber}`
-				`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${pageNumber}`
-			)
-			.then(response => {
-				this.props.setUsers(response.data.items)
-				this.props.setIsLoading(false)
-			})
+
+		userApi.getUsers(pageNumber, this.props.pageSize).then(data => {
+			// data - то что пришло из ajax-запроса в DAL/api/api.js
+			this.props.setUsers(data)
+			this.props.setIsLoading(false)
+		})
 	}
 
 	render() {
@@ -108,5 +94,5 @@ export default connect(setStateToProps, {
 	setUsers,
 	setCurrentPage,
 	setIsLoading,
-	setTotalUsersCount
+	setTotalUsersCount,
 })(UsersContainer)
