@@ -1,40 +1,23 @@
 import React from 'react'
 import Users from './Users'
-import { userApi } from '../../../DAL/api/api'
-
 import {
 	followUser,
-	setUsers,
 	unfollowUser,
 	setCurrentPage,
-	setIsLoading,
 	setTotalUsersCount,
 	setDisableFetchingButton,
+	getUsers,
 } from '../../../BLL/react-redux/users-reducer'
 import { connect } from 'react-redux'
 
 class UsersContainer extends React.Component {
 	componentDidMount() {
-		this.props.setIsLoading(true)
-
-		userApi.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-			// data - то что пришло из ajax-запроса в DAL/api/api.js
-			this.props.setIsLoading(false)
-			this.props.setUsers(data)
-			// this.props.setTotalUsersCount(data.data.totalCount)
-		})
+		this.props.getUsers(this.props.currentPage, this.props.pageSize)//этот колбэк(getUsers) передает эти параметры в thunkCreator
 	}
 
 	onPageChange = pageNumber => {
 		//!!!!обратить внимание что этот синтаксис этого метода - стрелочная функция!!!!
-		this.props.setCurrentPage(pageNumber)
-		this.props.setIsLoading(true)
-
-		userApi.getUsers(pageNumber, this.props.pageSize).then(data => {
-			// data - то что пришло из ajax-запроса в DAL/api/api.js
-			this.props.setUsers(data)
-			this.props.setIsLoading(false)
-		})
+		this.props.getUsers(pageNumber, this.props.pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator getUsers
 	}
 
 	render() {
@@ -91,13 +74,24 @@ const setStateToProps = state => {
 // 	}
 // }
 
-//вместо setDispatchTpProps помещаем объект с ссылками на action creators в 'connect'
 export default connect(setStateToProps, {
 	followUser,
 	unfollowUser,
-	setUsers,
 	setCurrentPage,
-	setIsLoading,
 	setTotalUsersCount,
 	setDisableFetchingButton,
+	getUsers,
 })(UsersContainer)
+
+// сокращенный вариант записи:
+//вместо setDispatchTpProps помещаем объект с ссылками на action creators в 'connect' и возвращаем именно callback не 'creators'(это просто сокращенный синтаксис того что написано выше в 'setDispatchTpProps') 
+// export default connect(setStateToProps, {
+// 	followUser,
+// 	unfollowUser,
+// 	setUsers,
+// 	setCurrentPage,
+// 	setIsLoading,
+// 	setTotalUsersCount,
+// 	setDisableFetchingButton,
+// 	getUsersThunkCreator,
+// })(UsersContainer)

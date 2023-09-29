@@ -1,3 +1,6 @@
+import { userApi } from "../../DAL/api/api"
+
+
 const SET_USERS = 'SET-USERS'
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
@@ -131,6 +134,23 @@ export const setDisableFetchingButton = (isLoading, userId) => ({
 	isLoading,
 	userId,
 })
+
+//thunk функции:
+
+//ThunkCreator getUsers:
+export const getUsers = (currentPage,pageSize) => {
+	//берем параметры с помощью замыкания в thunkCreator и возвращаем из нее thunk функцию с диспатчем, в которую приходят эти параметры:
+	return dispatch => {
+		dispatch(setIsLoading(true)) //диспатчем actionCreator
+
+		userApi.getUsers(currentPage, pageSize).then(data => {
+			// data - то что пришло из ajax-запроса в DAL/api/api.js
+			dispatch(setCurrentPage(currentPage)) //диспатчем actionCreator
+			dispatch(setIsLoading(false)) //диспатчем actionCreator
+			dispatch(setUsers(data)) //диспатчем actionCreator
+		})
+	}
+} 
 
 
 export default UsersReducer
