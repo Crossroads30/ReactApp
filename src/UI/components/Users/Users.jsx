@@ -2,7 +2,7 @@ import cl from './Users.module.css'
 import defaultUserPhoto from '../../../assets/images/userDefaultImage.png'
 import Preloader from '../Preloader/Preloader'
 import { NavLink } from 'react-router-dom'
-import axios from 'axios'
+import { userApi } from '../../../DAL/api/api'
 
 const Users = props => {
 	let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
@@ -52,15 +52,9 @@ const Users = props => {
 									<button
 										className={cl.button}
 										onClick={() => {
-											axios
-												.delete(
-													`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
-													{ withCredentials: true } // в delete объект настройки идет вторым параметром
-												)
-												.then(response => {
-													response.data.resultCode === 0 &&
-														props.unfollow(user.id)
-												})
+											userApi.getUnFollow(user.id).then(data => {
+												data.resultCode === 0 && props.unfollow(user.id)
+											})
 										}}
 									>
 										Unfollow
@@ -69,16 +63,9 @@ const Users = props => {
 									<button
 										className={cl.button}
 										onClick={() => {
-											axios
-												.post(
-													`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
-													{},
-													{ withCredentials: true } // в post объект настройки идет третьем параметром
-												)
-												.then(response => {
-													response.data.resultCode === 0 &&
-														props.follow(user.id)
-												})
+											userApi.getFollow(user.id).then(data => {
+												data.resultCode === 0 && props.follow(user.id)
+											})
 										}}
 									>
 										Follow
@@ -128,9 +115,9 @@ export default Users
 // 	)
 // }
 //------------------------
-
 // {//версия кнопок c запросом на сервер:
-// 	{user.isFollowed ? (
+// 	{
+// user.isFollowed ? (
 // 		<button
 // 			className={cl.button}
 // 			onClick={() => {

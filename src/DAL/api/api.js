@@ -9,7 +9,6 @@ const instance = axios.create({
 })
 
 export const userApi = {
-
 	async getUsers(currentPage = 1, pageSize = 5) {
 		return await instance
 			.get(
@@ -19,7 +18,8 @@ export const userApi = {
 			.then(response => response.data.items)
 	},
 
-	async getAuth() { //запрос на подтверждения аутентификации
+	async getAuth() {
+		//запрос на подтверждения аутентификации
 		return await instance.get(`auth/me`).then(response => response.data)
 	},
 
@@ -27,6 +27,20 @@ export const userApi = {
 		//запрос на получения id из profile
 		return await instance
 			.get(`profile/` + profileId)
+			.then(response => response.data)
+	},
+
+	async getFollow(userId) {
+		//запрос на follow users
+		return await instance
+			.post(`follow/${userId}`) // в post объект настройки { withCredentials: true } идет третьем параметром
+			.then(response => response.data)
+	},
+
+	async getUnFollow(userId) {
+		//запрос на follow users
+		return await instance
+			.delete(`follow/${userId}`) // в delete объект настройки { withCredentials: true } идет вторым параметром
 			.then(response => response.data)
 	},
 }
