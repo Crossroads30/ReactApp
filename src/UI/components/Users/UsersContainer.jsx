@@ -5,7 +5,6 @@ import {
 	unfollowUser,
 	setCurrentPage,
 	setTotalUsersCount,
-	setDisableFetchingButton,
 	getUsers,
 } from '../../../BLL/react-redux/users-reducer'
 import { connect } from 'react-redux'
@@ -32,7 +31,6 @@ class UsersContainer extends React.Component {
 					unfollow={this.props.unfollowUser}
 					follow={this.props.followUser}
 					isLoading={this.props.isLoading}
-					setDisableButton={this.props.setDisableFetchingButton}
 					followingInProgress={this.props.followingInProgress}
 				/>
 			</>
@@ -79,7 +77,6 @@ export default connect(setStateToProps, {
 	unfollowUser,
 	setCurrentPage,
 	setTotalUsersCount,
-	setDisableFetchingButton,
 	getUsers,
 })(UsersContainer)
 
