@@ -1,14 +1,13 @@
 import './styles/App.css'
-import ProfileContainer from './components/Profile-stuff/Profile/ProfileContainer'
-import Header from './components/Header/Header'
-import Sidebar from './components/sidebar-stuff/Sidebar/Sidebar'
+import ProfileContainer from './UI/components/Profile-stuff/Profile/ProfileContainer'
+import Sidebar from './UI/components/sidebar-stuff/Sidebar/Sidebar'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Settings from './components/settings-stuff/Settings/Settings'
-import News from './components/news-stuff/News/News'
-import Music from './components/music-stuff/Music/Music'
-import DialogsContainer from './components/dialogs-stuff/Dialogs/DialogsContainer'
-import UsersContainer from './components/Users/UsersContainer'
-import HeaderContainer from './components/Header/HeaderContainer'
+import Settings from './UI/components/settings-stuff/Settings/Settings'
+import News from './UI/components/news-stuff/News/News'
+import Music from './UI/components/music-stuff/Music/Music'
+import DialogsContainer from './UI/components/dialogs-stuff/Dialogs/DialogsContainer'
+import UsersContainer from './UI/components/Users/UsersContainer'
+import HeaderContainer from './UI/components/Header/HeaderContainer'
 
 const App = props => {
 	return (
