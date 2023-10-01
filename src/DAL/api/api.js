@@ -18,16 +18,10 @@ export const userApi = {
 			.then(response => response.data.items)
 	},
 
-	async getAuth() {
-		//запрос на подтверждения аутентификации
-		return await instance.get(`auth/me`).then(response => response.data)
-	},
-
 	async getProfile(profileId) {
 		//запрос на получения id из profile
 		return await instance
 			.get(`profile/` + profileId)
-			.then(response => response.data)
 	},
 
 	async getFollow(userId) {
@@ -42,5 +36,12 @@ export const userApi = {
 		return await instance
 			.delete(`follow/${userId}`) // в delete объект настройки { withCredentials: true } идет вторым параметром
 			.then(response => response.data)
+	},
+}
+
+export const authAPI = {
+	async getAuth() {
+		//запрос на подтверждения аутентификации
+		return await instance.get(`auth/me`)//.then(response => response.data)
 	},
 }
