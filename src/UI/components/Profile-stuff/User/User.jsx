@@ -1,5 +1,6 @@
 import Preloader from '../../Preloader/Preloader'
 import cl from './User.module.css'
+import defaultUserPhoto from '../../../../assets/images/userDefaultImage.png'
 
 const User = props => {
 	if (!props.userProfile) {
@@ -19,7 +20,11 @@ const User = props => {
 			<div className={cl.user}>
 				<img
 					className={cl.userImg}
-					src={props.userProfile.photos.small}
+					src={
+						props.userProfile.photos.small !== null
+							? props.userProfile.photos.small
+							: defaultUserPhoto
+					}
 					alt='user-profile'
 				/>
 				<div className={cl.userInfo}>
@@ -29,7 +34,7 @@ const User = props => {
 							{Object.entries(props.userProfile.contacts).map(
 								([key, value]) => {
 									return (
-										<li key={value+key}>
+										<li key={value + key}>
 											<div className={cl.contactWrapper}>
 												<p className={cl.key}>{key}:</p>
 												<p className={cl.value}>{value}</p>
