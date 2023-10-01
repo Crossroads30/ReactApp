@@ -1,6 +1,6 @@
 import Profile from './Profile'
 import React from 'react'
-import { setUserProfile } from '../../../../BLL/react-redux/profile-reducer'
+import { getUserProfile } from '../../../../BLL/react-redux/profile-reducer'
 import { connect } from 'react-redux'
 import { withRouter } from './HookWithRoute'
 import { userApi } from '../../../../DAL/api/api'
@@ -12,13 +12,10 @@ class ProfileContainer extends React.Component {
 		if (!profileId) {
 			profileId = 2
 		}
-		userApi
-			.getProfile(profileId)
-			.then(data => {
-				// console.log(response)
-				// console.log(profileId)
-				this.props.setUserProfile(data)
-			})
+		this.props.getUserProfile(profileId)
+		// userApi.getProfile(profileId).then(response => {
+		// 	this.props.setUserProfile(response.data)
+		// })
 	}
 
 	render() {
@@ -34,7 +31,7 @@ const setStateToProps = state => {
 
 const WithUrlDataContainerComponent = withRouter(ProfileContainer) //экспортируем функцию обертку 'withRouter' из ./HookWithRoute
 
-export default connect(setStateToProps, { setUserProfile })(
+export default connect(setStateToProps, { getUserProfile })(
 	WithUrlDataContainerComponent // передаем ее в connect что бы получить данные из строки браузера
 )
 // export default connect(setStateToProps, { setUserProfile })(ProfileContainer)
