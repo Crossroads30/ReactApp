@@ -9,7 +9,7 @@ const Header = (props) => {
 				src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB0BwpcUPAu9WH5bOICKbpExWFUk4nExbc1g&usqp=CAU'
 				alt=''
 			/>
-			<h1>Social Net</h1>
+			<h1>React-Redux Social Net</h1>
 			<div className={cl.loginBlock}>
 				{props.isAuth ? (
 					<p className={cl.login}>{props.login}</p>
