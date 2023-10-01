@@ -32,6 +32,7 @@ export const setAuthUserData = (id, email, login) => ({
 //thunk Creators:
 export const getAuthUserData = () => dispatch => {// короткая запись в одну строку
 	authAPI.getAuth().then(response => {
+		// debugger
 			const { id, email, login } = response.data.data
 			response.data.resultCode === 0 && 
 			dispatch(setAuthUserData(id, email, login))

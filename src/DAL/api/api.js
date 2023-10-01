@@ -11,17 +11,13 @@ const instance = axios.create({
 export const userApi = {
 	async getUsers(currentPage = 1, pageSize = 5) {
 		return await instance
-			.get(
-				`users?page=${currentPage}&count=${pageSize}`
-				// `http://localhost:3000/items/?_limit=${this.props.pageSize}&_page=${this.props.currentPage}`
-			)
+			.get(`users?page=${currentPage}&count=${pageSize}`)
 			.then(response => response.data.items)
 	},
 
 	async getProfile(profileId) {
 		//запрос на получения id из profile
-		return await instance
-			.get(`profile/` + profileId)
+		return await instance.get(`profile/` + profileId)
 	},
 
 	async getFollow(userId) {
@@ -37,11 +33,18 @@ export const userApi = {
 			.delete(`follow/${userId}`) // в delete объект настройки { withCredentials: true } идет вторым параметром
 			.then(response => response.data)
 	},
+
+	async getFriends(totalUsersCount = 30) {
+		// debugger
+		return await instance
+			.get(`users?friend=true&count=${totalUsersCount}`)
+			.then(response => response.data.items)
+	},
 }
 
 export const authAPI = {
 	async getAuth() {
 		//запрос на подтверждения аутентификации
-		return await instance.get(`auth/me`)//.then(response => response.data)
+		return await instance.get(`auth/me`)
 	},
 }
