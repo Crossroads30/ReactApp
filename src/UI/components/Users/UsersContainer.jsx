@@ -72,6 +72,8 @@ const setStateToProps = state => {
 // 	}
 // }
 
+// сокращенный вариант записи:
+//вместо setDispatchTpProps помещаем объект с ссылками на action creators в 'connect' и возвращаем именно callback не 'creators'(это просто сокращенный синтаксис того что написано выше в 'setDispatchTpProps') 
 export default connect(setStateToProps, {
 	followUser,
 	unfollowUser,
@@ -79,16 +81,3 @@ export default connect(setStateToProps, {
 	setTotalUsersCount,
 	getUsers,
 })(UsersContainer)
-
-// сокращенный вариант записи:
-//вместо setDispatchTpProps помещаем объект с ссылками на action creators в 'connect' и возвращаем именно callback не 'creators'(это просто сокращенный синтаксис того что написано выше в 'setDispatchTpProps') 
-// export default connect(setStateToProps, {
-// 	followUser,
-// 	unfollowUser,
-// 	setUsers,
-// 	setCurrentPage,
-// 	setIsLoading,
-// 	setTotalUsersCount,
-// 	setDisableFetchingButton,
-// 	getUsersThunkCreator,
-// })(UsersContainer)
