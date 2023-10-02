@@ -2,9 +2,9 @@ import cl from './Dialogs.module.css'
 import DialogItem from '../DialogItem/DialogItem'
 import DialogMessage from '../DialogMessage/DialogMessage'
 import React from 'react'
+import { Navigate } from 'react-router-dom'
 
 const Dialogs = props => {
-
 	// const state = props.messagesPage
 
 	const dialogItems = props.dialogs.map(dialog => (
@@ -18,9 +18,14 @@ const Dialogs = props => {
 		<DialogMessage message={message.message} id={message.id} key={message.id} />
 	))
 
-	const onMessageTextChange = (event) => {
+	const onMessageTextChange = event => {
 		const message = event.target.value // вместо React.createRef() добавляем в textarea значения через event.target.value
 		props.updateNewMessage(message)
+	}
+
+	// alert(props.isAuth)
+	if (props.isAuth == false) {
+		return <Navigate to='/login' />
 	}
 
 	const onAddMessage = () => {

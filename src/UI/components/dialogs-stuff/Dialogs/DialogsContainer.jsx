@@ -47,6 +47,7 @@ const setStateToProps = state => {
 		dialogs: state.messagesPage.dialogs,
 		messages: state.messagesPage.messages,
 		newMessageText: state.messagesPage.newMessageText,
+		isAuth: state.auth.isAuth
 	}
 }
 
@@ -60,6 +61,7 @@ const setDispatchTpProps = dispatch => {
 		},
 	}
 }
+
 
 const DialogsContainer = connect(setStateToProps, setDispatchTpProps)(Dialogs)
 
