@@ -1,10 +1,7 @@
 import React from 'react'
 import Friends from './Friends'
 import { connect } from 'react-redux'
-import {
-	getFriendsTC,
-	setTotalUsersCount,
-} from '../../../../BLL/react-redux/sidebar-reducer'
+import { getFriendsTC } from '../../../../BLL/react-redux/sidebar-reducer'
 
 class FriendsContainer extends React.Component {
 	componentDidMount() {
@@ -16,7 +13,6 @@ class FriendsContainer extends React.Component {
 		return (
 			<Friends
 				friends={this.props.friends}
-				setTotalUsersCount={this.props.totalUsersCount}
 			/>
 		)
 	}
@@ -32,5 +28,4 @@ const setStateToProps = state => {
 
 export default connect(setStateToProps, {
 	getFriendsTC,
-	setTotalUsersCount,
 })(FriendsContainer)
