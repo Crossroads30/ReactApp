@@ -64,7 +64,6 @@ const UsersReducer = (state = initialState, action) => {
 		case DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS:
 			return {
 				...state,
-				// followingInProgress: action.isLoading,
 				followingInProgress: action.isLoading
 					? [...state.followingInProgress, action.userId]
 					: [state.followingInProgress.filter(id => id != action.userId)],
@@ -117,9 +116,9 @@ export const getUsers = (currentPage, pageSize) => {
 export const follow = userId => {
 	return dispatch => {
 		dispatch(setDisableFetchingButton(true, userId)) // передаем id пользователя кнопку которого надо сделать неактивной во время запроса на подписку
-		userApi.getFollow(user.id).then(data => {
+		userApi.getFollow(userId).then(data => {
 			data.resultCode === 0 && dispatch(followUser(userId))
-			dispatch(setDisableButton(false, userId)) // // передаем id пользователя кнопку которого надо вернуть в активное состояние после того как запрос на подписку закончится
+			dispatch(setDisableFetchingButton(false, userId)) // // передаем id пользователя кнопку которого надо вернуть в активное состояние после того как запрос на подписку закончится
 		})
 	}
 }
@@ -128,9 +127,9 @@ export const follow = userId => {
 export const unfollow = userId => {
 	return dispatch => {
 		dispatch(setDisableFetchingButton(true, userId)) // передаем id пользователя кнопку которого надо сделать неактивной во время запроса на отписку
-		userApi.getUnFollow(user.id).then(data => {
+		userApi.getUnFollow(userId).then(data => {
 			data.resultCode === 0 && dispatch(unfollowUser(userId))
-			dispatch(setDisableButton(false, userId)) // // передаем id пользователя кнопку которого надо вернуть в активное состояние после того как запрос на отписку закончится
+			dispatch(setDisableFetchingButton(false, userId)) // // передаем id пользователя кнопку которого надо вернуть в активное состояние после того как запрос на отписку закончится
 		})
 	}
 }

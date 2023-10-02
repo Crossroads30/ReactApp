@@ -1,8 +1,8 @@
 import React from 'react'
 import Users from './Users'
 import {
-	followUser,
-	unfollowUser,
+	follow,
+	unfollow,
 	setCurrentPage,
 	setTotalUsersCount,
 	getUsers,
@@ -28,8 +28,8 @@ class UsersContainer extends React.Component {
 					currentPage={this.props.currentPage}
 					onPageChange={this.onPageChange}
 					users={this.props.users}
-					unfollow={this.props.unfollowUser}
-					follow={this.props.followUser}
+					unfollow={this.props.unfollow}
+					follow={this.props.follow}
 					isLoading={this.props.isLoading}
 					followingInProgress={this.props.followingInProgress}
 				/>
@@ -75,8 +75,8 @@ const setStateToProps = state => {
 // сокращенный вариант записи:
 //вместо setDispatchTpProps помещаем объект с ссылками на action creators в 'connect' и возвращаем именно callback не 'creators'(это просто сокращенный синтаксис того что написано выше в 'setDispatchTpProps') 
 export default connect(setStateToProps, {
-	followUser,
-	unfollowUser,
+	follow,
+	unfollow,
 	setCurrentPage,
 	setTotalUsersCount,
 	getUsers,
