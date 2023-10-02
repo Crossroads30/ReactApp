@@ -8,6 +8,7 @@ import Music from './UI/components/music-stuff/Music/Music'
 import DialogsContainer from './UI/components/dialogs-stuff/Dialogs/DialogsContainer'
 import UsersContainer from './UI/components/Users/UsersContainer'
 import HeaderContainer from './UI/components/Header/HeaderContainer'
+import LoginPageContainer from './UI/components/LoginPage/LoginPageContainer'
 
 const App = props => {
 	return (
@@ -25,6 +26,7 @@ const App = props => {
 						<Route path='/music' element={<Music />} />
 						<Route path='/settings' element={<Settings />} />
 						<Route path='*' element={<ProfileContainer />} />
+						<Route path='/login' element={<LoginPageContainer />} />
 					</Routes>
 				</div>
 			</div>
