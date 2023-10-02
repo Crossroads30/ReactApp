@@ -56,6 +56,7 @@ const Users = props => {
 										className={cl.button}
 										onClick={() => {
 											props.unfollow(user.id) // thunkCreator unfollow
+											props.setFriend() // ссылка на thunkCreator getFriendsTC из sidebar-reducer
 										}}
 									>
 										Unfollow
@@ -69,6 +70,7 @@ const Users = props => {
 										className={cl.button}
 										onClick={() => {
 											props.follow(user.id) // thunkCreator follow
+											props.setFriend() // ссылка на thunkCreator getFriendsTC из sidebar-reducer
 										}}
 									>
 										Follow

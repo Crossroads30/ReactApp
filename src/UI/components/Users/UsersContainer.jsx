@@ -7,6 +7,7 @@ import {
 	setTotalUsersCount,
 	getUsers,
 } from '../../../BLL/react-redux/users-reducer'
+import { getFriendsTC } from '../../../BLL/react-redux/sidebar-reducer'
 import { connect } from 'react-redux'
 
 class UsersContainer extends React.Component {
@@ -17,6 +18,10 @@ class UsersContainer extends React.Component {
 	onPageChange = pageNumber => {
 		//!!!!обратить внимание что этот синтаксис этого метода - стрелочная функция!!!!
 		this.props.getUsers(pageNumber, this.props.pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator getUsers
+	}
+
+	onUserToFriends = () => {
+		this.props.getFriendsTC()
 	}
 
 	render() {
@@ -32,6 +37,7 @@ class UsersContainer extends React.Component {
 					follow={this.props.follow}
 					isLoading={this.props.isLoading}
 					followingInProgress={this.props.followingInProgress}
+					setFriend={this.props.getFriendsTC}
 				/>
 			</>
 		)
@@ -80,4 +86,5 @@ export default connect(setStateToProps, {
 	setCurrentPage,
 	setTotalUsersCount,
 	getUsers,
+	getFriendsTC,
 })(UsersContainer)
