@@ -5,8 +5,7 @@ import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 const Dialogs = props => {
-	// const state = props.messagesPage
-
+	
 	const dialogItems = props.dialogs.map(dialog => (
 		<div className={cl.avatar} key={dialog.id}>
 			<div className={cl.image}></div>
@@ -21,11 +20,6 @@ const Dialogs = props => {
 	const onMessageTextChange = event => {
 		const message = event.target.value // вместо React.createRef() добавляем в textarea значения через event.target.value
 		props.updateNewMessage(message)
-	}
-
-	// alert(props.isAuth)
-	if (props.isAuth == false) {
-		return <Navigate to='/login' />
 	}
 
 	const onAddMessage = () => {

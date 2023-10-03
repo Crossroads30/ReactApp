@@ -1,68 +1,75 @@
 import {
-	addMessageActionCreator,
-	updateNewMessageActionCreator,
+	addMessage,
+	updateNewMessage,
 } from '../../../../BLL/react-redux/message-reducer'
 import Dialogs from './Dialogs'
+import React from 'react'
 import { connect } from 'react-redux'
+import { withAuthRedirect } from '../../../../HOC/withAuthRedirect'
+import { compose } from 'redux'
 
-// const DialogsContainer = props => {
+class DialogsContainer extends React.Component {
+	componentDidMount() {
+		// debugger
+	}
 
-// // 	const state = props.store.getState().messagesPage
-
-// // 	const onMessageTextChange = message => {
-// // 		const action = updateNewMessageActionCreator(message)
-// // 		props.store.dispatch(action)
-// // 	}
-
-// // 	const onAddMessage = () => {
-// // 		props.store.dispatch(addMessageActionCreator())
-// // 	}
-
-// 	return (
-// 		<StoreContext.Consumer>
-// 			{store => {
-// 				const state = store.getState().messagesPage
-
-// 				const onMessageTextChange = message => {
-// 					const action = updateNewMessageActionCreator(message)
-// 					store.dispatch(action)
-// 				}
-
-// 				const onAddMessage = () => {
-// 					store.dispatch(addMessageActionCreator())
-// 				}
-
-// 				return <Dialogs
-// 					addMessage={onAddMessage}
-// 					updateNewMessage={onMessageTextChange}
-// 					messagesPage={store}
-// 				/>
-// 			}}
-// 		</StoreContext.Consumer>
-// 	)
-// }
+	render() {
+		return <Dialogs {...this.props} />
+	}
+}
 
 const setStateToProps = state => {
 	return {
 		dialogs: state.messagesPage.dialogs,
 		messages: state.messagesPage.messages,
 		newMessageText: state.messagesPage.newMessageText,
-		isAuth: state.auth.isAuth
 	}
 }
+//-------------------------------------------------
+// let AuthRedirectComponent = withAuthRedirect(DialogsContainer) //HOC отвечающий за отправку на страницу логина если пользователь без аутентификации 
 
-const setDispatchTpProps = dispatch => {
-	return {
-		addMessage: () => {
-			dispatch(addMessageActionCreator())
-		},
-		updateNewMessage: message => {
-			dispatch(updateNewMessageActionCreator(message))
-		},
-	}
-}
+// export default connect(setStateToProps, {
+// 	updateNewMessage,
+// 	addMessage,
+// })(AuthRedirectComponent)
+//------------------------------------------------
+
+//вместо того что выше:
+// экспортируем по умолчанию функцию “конвейер” в которую передаются другие функции в которые по цепочке вкладываются как бы друг в друга с определенным компонентом в основании:
+export default compose(
+	connect(setStateToProps, {
+		// то во что вкладывается другая функция(withAuthRedirect) с самим компонентом
+		updateNewMessage,
+		addMessage,
+	}),
+	withAuthRedirect // то во что вкладывается сам компонент
+)(DialogsContainer)//сам компонент
 
 
-const DialogsContainer = connect(setStateToProps, setDispatchTpProps)(Dialogs)
 
-export default DialogsContainer
+
+
+//версия без класса:
+// const setStateToProps = state => {
+// 	return {
+// 		dialogs: state.messagesPage.dialogs,
+// 		messages: state.messagesPage.messages,
+// 		newMessageText: state.messagesPage.newMessageText,
+// 		isAuth: state.auth.isAuth
+// 	}
+// }
+
+// const setDispatchTpProps = dispatch => {
+// 	return {
+// 		addMessage: () => {
+// 			dispatch(addMessageActionCreator())
+// 		},
+// 		updateNewMessage: message => {
+// 			dispatch(updateNewMessageActionCreator(message))
+// 		},
+// 	}
+// }
+
+// const DialogsContainer = connect(setStateToProps, setDispatchTpProps)(Dialogs)
+
+// export default DialogsContainer
