@@ -10,7 +10,7 @@ import UsersContainer from './UI/components/Users/UsersContainer'
 import HeaderContainer from './UI/components/Header/HeaderContainer'
 import LoginPageContainer from './UI/components/LoginPage/LoginPageContainer'
 
-const App = props => {
+const App = () => {
 	return (
 		<BrowserRouter>
 			<div className='app-wrapper'>
@@ -35,4 +35,3 @@ const App = props => {
 }
 
 export default App
-{/*store={props.store}*/}
