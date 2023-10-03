@@ -1,6 +1,7 @@
 import Preloader from '../../Preloader/Preloader'
 import cl from './User.module.css'
 import defaultUserPhoto from '../../../../assets/images/userDefaultImage.png'
+import ProfileStatus from '../ProfileStatus/ProfileStatus'
 
 const User = props => {
 	if (!props.userProfile) {
@@ -12,11 +13,11 @@ const User = props => {
 	}
 	return (
 		<>
-			<img
+			{/* <img
 				className={cl.contentImg}
 				src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNFbPnraZxme2bIxu6D099w5lJ3p86n6fqww&usqp=CAU'
 				alt='some image'
-			/>
+			/> */}
 			<div className={cl.user}>
 				<img
 					className={cl.userImg}
@@ -28,7 +29,11 @@ const User = props => {
 					alt='user-profile'
 				/>
 				<div className={cl.userInfo}>
-					<p className={cl.name}>Name: {props.userProfile.fullName}</p>
+					<p className={cl.name}>
+						{props.userProfile.fullName.charAt(0).toUpperCase() +
+							props.userProfile.fullName.slice(1)}
+					</p>
+					<ProfileStatus status={'Hello, i`m here!'} />
 					<div className={cl.contactsWrapper}>
 						<ul className={cl.contacts}>
 							{Object.entries(props.userProfile.contacts).map(

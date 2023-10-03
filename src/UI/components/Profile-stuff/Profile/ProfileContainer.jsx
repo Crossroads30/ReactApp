@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { withRouter } from './HookWithRoute'
 import { withAuthRedirect } from '../../../../HOC/withAuthRedirect'
 import { compose } from 'redux'
+import ProfileStatus from '../ProfileStatus/ProfileStatus'
 
 class ProfileContainer extends React.Component {
 	componentDidMount() {
@@ -40,11 +41,9 @@ const setStateToProps = state => {
 //вместо того что выше:
 // экспортируем по умолчанию функцию “конвейер” в которую передаются другие функции в которые по цепочке вкладываются как бы друг в друга с определенным компонентом в основании:
 export default compose(
-	connect(setStateToProps, { getUserProfile }),//все что ниже вкладывается в connect
-	withRouter, //экспортируем функцию обертку 'withRouter' из ./HookWithRoute в которую вкладывается withAuthRedirect с ProfileContainer внутри
-	withAuthRedirect // то во что вкладывается сам компонент
-)(ProfileContainer)//сам компонент
-
-
+	connect(setStateToProps, { getUserProfile }), //все что ниже вкладывается в connect
+	withRouter //экспортируем функцию обертку 'withRouter' из ./HookWithRoute в которую вкладывается withAuthRedirect с ProfileContainer внутри
+	// withAuthRedirect // то во что вкладывается сам компонент
+)(ProfileContainer) //сам компонент
 
 // export default connect(setStateToProps, { setUserProfile })(ProfileContainer)// без withRouter

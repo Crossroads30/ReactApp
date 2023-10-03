@@ -14,9 +14,10 @@ import { compose } from 'redux'
 
 class UsersContainer extends React.Component {
 	componentDidMount() {
-		this.props.getUsers(this.props.currentPage, this.props.pageSize)//этот колбэк(getUsers) передает эти параметры в thunkCreator
+		this.props.getUsers(this.props.currentPage, this.props.pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator
 	}
 
+	// onPageChange (pageNumber) { //для обычного синтаксиса метода класса в вызове этого метода необходимо использовать bind!!!!
 	onPageChange = pageNumber => {
 		//!!!!обратить внимание что этот синтаксис этого метода - стрелочная функция!!!!
 		this.props.getUsers(pageNumber, this.props.pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator getUsers
@@ -34,7 +35,8 @@ class UsersContainer extends React.Component {
 					pageSize={this.props.pageSize}
 					currentPage={this.props.currentPage}
 					onPageChange={this.onPageChange}
-					users={this.props.users}
+					// onPageChange={this.onPageChange.bind(this)} //для обычного синтаксиса метода класса!!!
+					users={this.props.users}// для метода с синтаксисом стрелочной функции!!!
 					unfollow={this.props.unfollow}
 					follow={this.props.follow}
 					isLoading={this.props.isLoading}
