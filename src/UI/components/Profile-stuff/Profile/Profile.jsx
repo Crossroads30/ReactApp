@@ -5,7 +5,11 @@ import cl from './Profile.module.css'
 const Profile = props => {
 	return (
 		<main className={cl.content}>
-			<User userProfile={props.userProfile} />
+			<User
+				userProfile={props.userProfile}
+				status={props.status}
+				updateStatus={props.updateStatus}
+			/>
 			<PostsContainer />
 		</main>
 	)

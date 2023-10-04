@@ -1,30 +1,41 @@
 import Profile from './Profile'
 import React from 'react'
-import { getUserProfile } from '../../../../BLL/react-redux/profile-reducer'
+import { getUserProfile, getStatus, updateStatus } from '../../../../BLL/react-redux/profile-reducer'
 import { connect } from 'react-redux'
 import { withRouter } from './HookWithRoute'
-import { withAuthRedirect } from '../../../../HOC/withAuthRedirect'
 import { compose } from 'redux'
-import ProfileStatus from '../ProfileStatus/ProfileStatus'
 
 class ProfileContainer extends React.Component {
 	componentDidMount() {
 		// debugger
 		let profileId = this.props.match.params.userId
 		if (!profileId) {
-			profileId = 2
+			profileId = 30064
+			// profileId = this.props.mainUserId
+			// profileId = 2
 		}
 		this.props.getUserProfile(profileId)
+		this.props.getStatus(profileId)
 	}
 
 	render() {
-		return <Profile {...this.props} userProfile={this.props.userProfile} />
+		return (
+			<Profile
+				{...this.props}
+				userProfile={this.props.userProfile}
+				status={this.props.status}
+				updateStatus={this.props.updateStatus}
+				mainUserId={this.props.mainUserId}
+			/>
+		)
 	}
 }
 
 const setStateToProps = state => {
 	return {
 		userProfile: state.profilePage.userProfile,
+		status: state.profilePage.status,
+		mainUserId: state.auth.id,
 	}
 }
 
@@ -41,7 +52,11 @@ const setStateToProps = state => {
 //вместо того что выше:
 // экспортируем по умолчанию функцию “конвейер” в которую передаются другие функции в которые по цепочке вкладываются как бы друг в друга с определенным компонентом в основании:
 export default compose(
-	connect(setStateToProps, { getUserProfile }), //все что ниже вкладывается в connect
+	connect(setStateToProps, {
+		getUserProfile,
+		getStatus,
+		updateStatus,
+	}), //все что ниже вкладывается в connect
 	withRouter //экспортируем функцию обертку 'withRouter' из ./HookWithRoute в которую вкладывается withAuthRedirect с ProfileContainer внутри
 	// withAuthRedirect // то во что вкладывается сам компонент
 )(ProfileContainer) //сам компонент
