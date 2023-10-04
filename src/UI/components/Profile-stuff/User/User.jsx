@@ -33,7 +33,7 @@ const User = props => {
 						{props.userProfile.fullName.charAt(0).toUpperCase() +
 							props.userProfile.fullName.slice(1)}
 					</p>
-					<ProfileStatus status={'Hello, i`m here!'} />
+					<ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
 					<div className={cl.contactsWrapper}>
 						<ul className={cl.contacts}>
 							{Object.entries(props.userProfile.contacts).map(
