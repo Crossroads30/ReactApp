@@ -8,7 +8,7 @@ import Music from './UI/components/music-stuff/Music/Music'
 import DialogsContainer from './UI/components/dialogs-stuff/Dialogs/DialogsContainer'
 import UsersContainer from './UI/components/Users/UsersContainer'
 import HeaderContainer from './UI/components/Header/HeaderContainer'
-import LoginPageContainer from './UI/components/LoginPage/LoginPageContainer'
+import LoginPageContainer from './UI/components/login-stuff/LoginPage/LoginPageContainer'
 
 const App = () => {
 	return (
