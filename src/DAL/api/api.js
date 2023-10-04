@@ -16,8 +16,9 @@ export const userApi = {
 	},
 
 	async getProfile(profileId) {
+		console.warn('Deprecated method. Please use profileApi object!')
 		//запрос на получения id из profile
-		return await instance.get(`profile/` + profileId)
+		return await profileApi.getProfile(profileId) //делегировали вызов этого метода из profileApi
 	},
 
 	async getFollow(userId) {
@@ -39,6 +40,21 @@ export const userApi = {
 		return await instance
 			.get(`users?friend=true&count=${totalUsersCount}`)
 			.then(response => response.data.items)
+	},
+}
+
+export const profileApi = {
+	async getProfile(profileId) {
+		//запрос на получения id из profile
+		return await instance.get(`profile/` + profileId)
+	},
+	async getStatus(profileId) {
+		//запрос на получения id из profile
+		return await instance.get(`profile/status/` + profileId)
+	},
+	async updateStatus(status) {
+		//запрос на получения id из profile
+		return await instance.put(`profile/status`, { status }) //вторым параметром передаем объект, то что требует документация: (status: required(string - maxLength: 300))
 	},
 }
 
