@@ -1,8 +1,10 @@
-import { userApi } from '../../DAL/api/api'
+import { userApi, profileApi } from '../../DAL/api/api'
 
 const ADD_POST = 'ADD-POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
+const SET_USER_STATUS = 'SET-USER-STATUS'
+const UPDATE_USER_STATUS = 'UPDATE-USER-STATUS'
 
 let initialState = {
 	posts: [
@@ -15,6 +17,7 @@ let initialState = {
 	],
 	newPostText: '',
 	userProfile: null,
+	status: '',
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -40,11 +43,22 @@ const profileReducer = (state = initialState, action) => {
 				...state,
 				userProfile: action.userProfile,
 			}
+		case SET_USER_STATUS:
+			return {
+				...state,
+				status: action.status,
+			}
+		case UPDATE_USER_STATUS:
+			return {
+				...state,
+				status: action.status,
+			}
 		default:
 			return state
 	}
 }
 
+//-------------------------------------------------------------
 //Action Creators
 export const addPostActionCreator = () => ({ type: ADD_POST })
 export const updateNewPostActionCreator = newText => ({
@@ -55,12 +69,37 @@ export const setUserProfile = userProfile => ({
 	type: SET_USER_PROFILE,
 	userProfile,
 })
+export const setUserStatus = status => ({
+	type: SET_USER_STATUS,
+	status,
+})
+export const updateUserStatus = status => ({
+	type: UPDATE_USER_STATUS,
+	status,
+})
 
+//--------------------------------------------------------
 //thunk creators:
 export const getUserProfile = profileId => {
 	return dispatch => {
-		userApi.getProfile(profileId).then(response => {
+		profileApi.getProfile(profileId).then(response => {
+			// debugger
 			dispatch(setUserProfile(response.data))
+		})
+	}
+}
+export const getStatus = profileId => {
+	return dispatch => {
+		profileApi.getStatus(profileId).then(response => {
+			// debugger
+			dispatch(setUserStatus(response.data))
+		})
+	}
+}
+export const updateStatus = status => {
+	return dispatch => {
+		profileApi.updateStatus(status).then(response => {
+			response.data.resultCode === 0 && dispatch(setUserStatus(status))
 		})
 	}
 }
