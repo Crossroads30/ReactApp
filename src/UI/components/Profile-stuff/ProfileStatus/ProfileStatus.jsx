@@ -1,12 +1,11 @@
 import cl from './ProfileStatus.module.css'
 import React, { useState } from 'react'
 
-const ProfileStatus = (props) => {
+const ProfileStatus = props => {
+	let [editMode, setEditMode] = useState(false)
+	let [status, setStatus] = useState(props.status)
 
-  let [editMode, setEditMode] = useState(false)
-  let [status, setStatus] = useState('Everything you can imagine is real')
-    
-  return (
+	return (
 		<div className={cl.status}>
 			{!editMode && (
 				<div className={cl.statusText}>
@@ -15,23 +14,25 @@ const ProfileStatus = (props) => {
 							setEditMode(true)
 						}}
 					>
-						{status}
+						{props.status || 'No status'}
 					</p>
 				</div>
 			)}
 			{editMode && (
 				<div className={cl.input}>
 					<input
-          size='30'
+						size='30'
 						autoFocus={true}
 						defaultValue={status}
 						onKeyDown={event => {
 							if (event.key === 'Enter') {
 								setEditMode(false)
+								props.updateStatus(status)
 							}
 						}}
 						onBlur={() => {
 							setEditMode(false)
+							props.updateStatus(status)
 						}}
 						onChange={event => {
 							setStatus(event.currentTarget.value)
@@ -45,34 +46,48 @@ const ProfileStatus = (props) => {
 
 export default ProfileStatus
 
-
-//пример на классовом компоненте
+// пример на классовом компоненте
 // class ProfileStatus extends React.Component {
 
 // 	state = {
-//     editMode: false,
-//     status: "Everything you can imagine is real"
-//   }
+// 		editMode: false,
+// 		status: this.props.status,
+// 	}
 
-//     activateEditMode() {
-//       this.setState({
-//         editMode: true
-//       })  
-//     }
-    
-//     deactivateEditMode() {
-//       this.setState({
-// 				editMode: false
-// 			})  
-//     }
+// 	activateEditMode = () => {
+// 		// с синтаксисом стрелочной функции "bind(this)" в вызове этого метода не нужен
+// 		// debugger
+// 		this.setState({
+// 			editMode: true,
+// 		})
+// 	}
 
-// 	render () {
-//     return (
+// 	deactivateEditMode = () => {
+// 		this.setState({
+// 			editMode: false,
+// 		})
+// 		this.props.updateStatus(this.state.status)
+// 	}
+
+// 	onStatusChange = event => {
+// 		this.setState({ status: event.currentTarget.value })
+// 	}
+
+// 	componentDidUpdate(prevProps, prevState) {
+// 		if (prevProps.status !== this.props.status) {
+// 			this.setState({
+// 				status: this.props.status,
+// 			})
+// 		}
+// 	}
+
+// 	render() {
+// 		return (
 // 			<div className={cl.status}>
 // 				{!this.state.editMode && (
 // 					<div className={cl.statusText}>
-// 						<p onDoubleClick={this.activateEditMode.bind(this)}>
-// 							{this.state.status}
+// 						<p onDoubleClick={this.activateEditMode}>
+// 							{this.props.status || 'No status'}
 // 						</p>
 // 					</div>
 // 				)}
@@ -83,21 +98,19 @@ export default ProfileStatus
 // 							defaultValue={this.state.status}
 // 							onKeyDown={event => {
 // 								if (event.key === 'Enter') {
-// 									// this.deactivateEditMode.bind(this)// почему то не работает????
-//                   this.setState({ editMode: false })
+// 									// this.deactivateEditMode// почему то не работает????
+// 									this.setState({ editMode: false })
+// 									this.props.updateStatus(this.state.status)
 // 								}
 // 							}}
-// 							onBlur={this.deactivateEditMode.bind(this)}
-// 							onChange={event => {
-// 								this.setState({status: event.currentTarget.value}) 
-// 							}}
+// 							onBlur={this.deactivateEditMode}
+// 							onChange={this.onStatusChange}
 // 						/>
 // 					</div>
 // 				)}
 // 			</div>
 // 		)
-
-//   }
+// 	}
 // }
 
 // export default ProfileStatus
