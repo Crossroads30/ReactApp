@@ -1,0 +1,16 @@
+.loginWrapper {
+	padding: 20px;
+}
+
+.loginTitle {
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+.loginWrapper input {
+	margin-bottom: 10px;
+}
+
+.loginWrapper button {
+  padding: 0 5px;
+}
