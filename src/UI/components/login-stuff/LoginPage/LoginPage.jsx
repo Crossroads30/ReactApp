@@ -1,4 +1,4 @@
-import { LoginReduxForm } from '../LoginForm/LoginForm'
+import { LoginReduxForm } from './LoginForm'
 import cl from './LoginPage.module.css'
 
 const LoginPage = () => {

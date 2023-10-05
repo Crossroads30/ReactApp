@@ -1,4 +1,4 @@
-import cl from './LoginForm.module.css'
+import cl from './LoginPage.module.css'
 import { Field, reduxForm } from 'redux-form'
 
 const LoginForm = (props) => {
