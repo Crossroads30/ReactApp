@@ -1,5 +1,8 @@
+import { maxLengthCreator, required } from '../../../../utils/validators/validators'
 import cl from './Posts.module.css'
 import { Field, reduxForm } from 'redux-form'
+
+const maxLength10 =  maxLengthCreator(10)
 
 const PostsForm = props => {
 	return (
@@ -11,6 +14,7 @@ const PostsForm = props => {
 					component={'textarea'}
 					name='newPostText'
 					placeholder='  enter your news...'
+					validate={[required, maxLength10]}
 				/>
 				<button>send</button>
 			</div>
