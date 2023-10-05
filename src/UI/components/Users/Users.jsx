@@ -1,6 +1,6 @@
 import cl from './Users.module.css'
 import defaultUserPhoto from '../../../assets/images/userDefaultImage.png'
-import Preloader from '../Preloader/Preloader'
+import Preloader from '../common/Preloader/Preloader'
 import { NavLink } from 'react-router-dom'
 
 const Users = props => {
