@@ -1,35 +1,21 @@
 import Post from '../Post/Post'
 import cl from './Posts.module.css'
 import React from 'react'
+import { PostsReduxForm } from './PostsForm'
 
 const Posts = props => {
 	const postsElements = props.posts.map(post => (
 		<Post text={post.message} likes={post.likes} key={post.id} />
 	))
 
-	const newPostElement = React.createRef()
-	
-	const onAddPost = () => {
-		props.addPost()
-	}
-
-	const onPostChange = () => {
-		const newText = newPostElement.current.value
-		props.updateNewPostText(newText)
+	const addNewPost = formData => {
+		const newPostBody = formData.newPostText
+		props.addPost(newPostBody)
 	}
 
 	return (
 		<div className={cl.posts}>
-			<div className={cl.textWrapper}>
-				<textarea
-					ref={newPostElement}
-					onChange={onPostChange}
-					className={cl.newPost}
-					value={props.newPostText}
-					placeholder='  enter your news...'
-				/>
-				<button onClick={onAddPost}>send</button>
-			</div>
+			<PostsReduxForm onSubmit={addNewPost} />
 			{postsElements}
 		</div>
 	)

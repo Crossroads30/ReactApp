@@ -1,5 +1,4 @@
 const ADD_MESSAGE = 'ADD-MESSAGE'
-const UPDATE_NEW_MESSAGE = 'UPDATE-NEW-MESSAGE'
 
 let initialState = {
 	dialogs: [
@@ -18,26 +17,18 @@ let initialState = {
 		{ id: 5, message: 'How are you?' },
 		{ id: 6, message: 'Good night!' },
 	],
-	newMessageText: '',
 }
 
-//улучшены вариант кода
 const messageReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case ADD_MESSAGE:
 			let newMessage = {
 				id: 7,
-				message: state.newMessageText,
+				message: action.newMessageBody,
 			}
 			return {
 				...state,
-				newMessageText: '',
 				messages: [...state.messages, newMessage],
-			}
-		case UPDATE_NEW_MESSAGE:
-			return {
-				...state,
-				newMessageText: action.newMessage,
 			}
 		default:
 			return state
@@ -45,38 +36,6 @@ const messageReducer = (state = initialState, action) => {
 }
 
 //action creators:
-export const addMessage = () => ({ type: ADD_MESSAGE })
-export const updateNewMessage = message => ({
-	type: UPDATE_NEW_MESSAGE,
-	newMessage: message,
-})
+export const addMessage = newMessageBody => ({ type: ADD_MESSAGE, newMessageBody })
 
 export default messageReducer
-
-//старый вариант кода
-// const messageReducer = (state = initialState, action) => {
-// 	switch (action.type) {
-// 		case ADD_MESSAGE: {
-// 			let newMessage = {
-// 				id: 7,
-// 				message: state.newMessageText,
-// 			}
-// 			let stateCopy = {
-// 				...state,
-// 				messages: [...state.messages],
-// 			}
-// 			stateCopy.messages.push(newMessage)
-// 			stateCopy.newMessageText = ''
-// 			return stateCopy
-// 		}
-
-// 		case UPDATE_NEW_MESSAGE: {
-// 			let stateCopy = { ...state }
-
-// 			stateCopy.newMessageText = action.newMessage
-// 			return stateCopy
-// 		}
-// 		default:
-// 			return state
-// 	}
-// }

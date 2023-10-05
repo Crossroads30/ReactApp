@@ -1,7 +1,6 @@
-import { userApi, profileApi } from '../../DAL/api/api'
+import { profileApi } from '../../DAL/api/api'
 
 const ADD_POST = 'ADD-POST'
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
 const SET_USER_STATUS = 'SET-USER-STATUS'
 const UPDATE_USER_STATUS = 'UPDATE-USER-STATUS'
@@ -15,7 +14,6 @@ let initialState = {
 		{ id: 5, message: 'How are you?', likes: 23 },
 		{ id: 6, message: 'Good night!', likes: 18 },
 	],
-	newPostText: '',
 	userProfile: null,
 	status: '',
 }
@@ -25,18 +23,12 @@ const profileReducer = (state = initialState, action) => {
 		case ADD_POST:
 			let newPost = {
 				id: 7,
-				message: state.newPostText,
+				message: action.newPostBody,
 				likes: 0,
 			}
 			return {
 				...state,
 				posts: [...state.posts, newPost],
-				newPostText: '',
-			}
-		case UPDATE_NEW_POST_TEXT:
-			return {
-				...state,
-				newPostText: action.newText,
 			}
 		case SET_USER_PROFILE:
 			return {
@@ -60,10 +52,9 @@ const profileReducer = (state = initialState, action) => {
 
 //-------------------------------------------------------------
 //Action Creators
-export const addPostActionCreator = () => ({ type: ADD_POST })
-export const updateNewPostActionCreator = newText => ({
-	type: UPDATE_NEW_POST_TEXT,
-	newText,
+export const addPost = newPostBody => ({
+	type: ADD_POST,
+	newPostBody,
 })
 export const setUserProfile = userProfile => ({
 	type: SET_USER_PROFILE,

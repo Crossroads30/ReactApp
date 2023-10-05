@@ -1,6 +1,5 @@
 import {
-	addPostActionCreator,
-	updateNewPostActionCreator,
+	addPost,
 } from '../../../../BLL/react-redux/profile-reducer'
 import Posts from './Posts'
 import { connect } from 'react-redux'
@@ -12,17 +11,7 @@ const setStateToProps = state => {
 	}
 }
 
-const setDispatchTpProps = dispatch => {
-	return {
-		addPost: () => {
-			dispatch(addPostActionCreator())
-		},
-		updateNewPostText: newText => {
-			dispatch(updateNewPostActionCreator(newText))
-		},
-	}
-}
 
-const PostsContainer = connect(setStateToProps, setDispatchTpProps)(Posts)
+const PostsContainer = connect(setStateToProps, { addPost })(Posts)
 
 export default PostsContainer
