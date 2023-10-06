@@ -63,4 +63,17 @@ export const authAPI = {
 		//запрос на подтверждения аутентификации
 		return await instance.get(`auth/me`)
 	},
+	async getLogin(email, password, rememberMe = false) {
+		//запрос на 'login' на  сервер через приложение
+		return await instance.post(`auth/login`, {
+			//вторым параметром передаем объект, то что требует документация
+			email,
+			password,
+			rememberMe,
+		})
+	},
+	async getLogout() {
+		//запрос на 'logout' из сервера через приложение
+		return await instance.delete(`auth/login`)
+	},
 }
