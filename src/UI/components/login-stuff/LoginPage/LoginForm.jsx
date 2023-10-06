@@ -10,29 +10,10 @@ import { FormElement } from '../../common/FormsControls/FormElement'
 const maxLength30 = maxLengthCreator(30) //вызов этой функции необходимо вызывать за пределами компоненты иначе будет бесконечный цикл!
 
 const LoginForm = props => {
+	// debugger
 	return (
 		<div>
 			<form onSubmit={props.handleSubmit}>
-				<div className={cl.login}>
-					<Field
-						component={FormElement} //передаем т.н. шаблонный компонент
-						typeofelement='input' //передаем названия элемента этого компонента в кастомный атрибут(не camelCase т.к. реакт ругается на него)
-						placeholder='Login'
-						name='login'
-						// component={Input}
-						validate={[required, maxLength30]}
-					/>
-				</div>
-				<div className={cl.password}>
-					<Field
-						component={FormElement}
-						typeofelement='input'
-						placeholder='Password'
-						name='password'
-						// component={Input}
-						validate={[required, maxLength30]}
-					/>
-				</div>
 				<div className={cl.email}>
 					<Field
 						component={FormElement}
@@ -43,11 +24,22 @@ const LoginForm = props => {
 						validate={[required, maxLength30]}
 					/>
 				</div>
+				<div className={cl.password}>
+					<Field
+						component={FormElement} //передаем т.н. шаблонный компонент
+						typeofelement='input' //передаем названия элемента этого компонента в кастомный атрибут(не camelCase т.к. реакт ругается на него)
+						placeholder='Password'
+						name='password'
+						type='password'
+						// component={Input}
+						validate={[required, maxLength30]}
+					/>
+				</div>
 				<div className={cl.checkbox}>
 					<Field
 						component={FormElement}
 						typeofelement='input'
-						name='remember-me'
+						name='rememberMe'
 						type='checkbox' //тип инпута
 						// component={Input}
 					/>
