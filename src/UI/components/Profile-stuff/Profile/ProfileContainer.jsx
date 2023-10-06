@@ -4,6 +4,8 @@ import { getUserProfile, getStatus, updateStatus } from '../../../../BLL/react-r
 import { connect } from 'react-redux'
 import { withRouter } from './HookWithRoute'
 import { compose } from 'redux'
+import { withAuthRedirect } from '../../../../HOC/withAuthRedirect'
+
 
 class ProfileContainer extends React.Component {
 	componentDidMount() {
@@ -57,8 +59,8 @@ export default compose(
 		getStatus,
 		updateStatus,
 	}), //все что ниже вкладывается в connect
-	withRouter //экспортируем функцию обертку 'withRouter' из ./HookWithRoute в которую вкладывается withAuthRedirect с ProfileContainer внутри
-	// withAuthRedirect // то во что вкладывается сам компонент
+	withRouter, //экспортируем функцию обертку 'withRouter' из ./HookWithRoute в которую вкладывается withAuthRedirect с ProfileContainer внутри
+	withAuthRedirect // то во что вкладывается сам компонент
 )(ProfileContainer) //сам компонент
 
 // export default connect(setStateToProps, { setUserProfile })(ProfileContainer)// без withRouter
