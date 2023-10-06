@@ -49,14 +49,19 @@ export const profileApi = {
 		return await instance.get(`profile/` + profileId)
 	},
 	async getStatus(profileId) {
-		//запрос на получения id из profile
+		//запрос на получения статуса из profile
 		return await instance.get(`profile/status/` + profileId)
 	},
 	async updateStatus(status) {
-		//запрос на получения id из profile
+		//запрос на обновления статуса в profile
 		return await instance.put(`profile/status`, { status }) //вторым параметром передаем объект, то что требует документация: (status: required(string - maxLength: 300))
 	},
+	async sentPhotoToServer() {
+		//запрос на отправку фото в profile
+		return await instance.put(`profile/photo`, { userPhoto })
+	},
 }
+
 
 export const authAPI = {
 	async getAuth() {
