@@ -3,6 +3,11 @@ import cl from './Header.module.css'
 
 const Header = (props) => {
 	// debugger
+
+	const getLogout = () => {
+		props.logout()
+	}
+
 	return (
 		<div className={cl.header}>
 			<img
@@ -12,7 +17,12 @@ const Header = (props) => {
 			<h1>React-Redux Social Net</h1>
 			<div className={cl.loginBlock}>
 				{props.isAuth ? (
-					<p className={cl.login}>{props.login}</p>
+					<>
+						<p className={cl.login}>{props.login}</p>
+						<p onClick={getLogout} className={cl.logout}>
+							logout
+						</p>
+					</>
 				) : (
 					<NavLink to={'/login'}>Login</NavLink>
 				)}

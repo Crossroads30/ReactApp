@@ -27,3 +27,11 @@
 .login {
 	color: aliceblue;
 }
+
+.logout {
+	color: aliceblue;
+	font-size: 12px;
+	float: right;
+	text-decoration: underline;
+	cursor: pointer;
+}
