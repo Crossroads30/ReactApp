@@ -1,3 +1,4 @@
+import { stopSubmit } from 'redux-form'
 import { authAPI } from '../../DAL/api/api'
 
 const SET_USER_DATA = 'SET-USER-DATA'
@@ -29,23 +30,31 @@ export const setAuthUserData = (id, email, login, isAuth) => ({
 })
 
 //thunk Creators:
-export const getAuthUserData = () => dispatch => {// короткая запись в одну строку
+export const getAuthUserData = () => dispatch => {
+	// короткая запись в одну строку
 	authAPI.getAuth().then(response => {
 		// debugger
-			const { id, email, login } = response.data.data
-			response.data.resultCode === 0 && 
+		const { id, email, login } = response.data.data
+		response.data.resultCode === 0 &&
 			dispatch(setAuthUserData(id, email, login, true))
-		})
+	})
 }
 
-export const loginToServer =
-	(email, password, rememberMe) =>
-	dispatch => {
-		authAPI.getLogin(email, password, rememberMe).then(response => {
-			// debugger
-			response.data.resultCode === 0 && dispatch(getAuthUserData())
-		})
-	}
+export const loginToServer = (email, password, rememberMe) => dispatch => {	
+	authAPI.getLogin(email, password, rememberMe).then(response => {
+		// debugger
+		if (response.data.resultCode === 0) {
+			dispatch(getAuthUserData())
+		} else {
+			// stopSubmit - специальный метод из redux-form, который передает обработанную ошибку внутрь определенной формы, первым параметром идет имя формы('login'), вторым параметром идет сама ошибка и сообщение к ней(в данном случае это общая ошибка '_error')
+			const message =
+				response.data.messages.length > 0
+					? response.data.messages[0]
+					: 'some error' //передаем в качестве ошибки сообщение из response.data.messages из api запроса
+			dispatch(stopSubmit('login', { _error: message }))
+		}
+	})
+}
 
 export const logoutFromServer = () => dispatch => {
 	authAPI.getLogout().then(response => {
@@ -55,16 +64,9 @@ export const logoutFromServer = () => dispatch => {
 	})
 }
 
-
-
-
-
-
-
-
 // export const getAuthUserData = (id, email, login) => {// длинная запись с return
 // 	return dispatch => {
-// 		dispatch(setAuthUserData(id, email, login)) 
+// 		dispatch(setAuthUserData(id, email, login))
 // 		authAPI.getAuth().then(response => {
 // 			const { id, email, login } = response.data.data
 // 			response.data.resultCode === 0 && setAuthUserData(id, email, login)
