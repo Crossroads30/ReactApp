@@ -1,4 +1,4 @@
-import { userApi } from '../../DAL/api/api'
+import { userApi } from '../../../DAL/api/api'
 
 const SET_FRIENDS = 'FRIENDS'
 
