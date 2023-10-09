@@ -63,14 +63,5 @@ export const logoutFromServer = () => dispatch => {
 	})
 }
 
-// export const getAuthUserData = (id, email, login) => {// длинная запись с return
-// 	return dispatch => {
-// 		dispatch(setAuthUserData(id, email, login))
-// 		authAPI.getAuth().then(response => {
-// 			const { id, email, login } = response.data.data
-// 			response.data.resultCode === 0 && setAuthUserData(id, email, login)
-// 		})
-// 	}
-// }
 
 export default authReducer

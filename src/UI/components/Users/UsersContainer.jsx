@@ -17,9 +17,7 @@ class UsersContainer extends React.Component {
 		this.props.getUsers(this.props.currentPage, this.props.pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator
 	}
 
-	// onPageChange (pageNumber) { //для обычного синтаксиса метода класса в вызове этого метода необходимо использовать bind!!!!
 	onPageChange = pageNumber => {
-		//!!!!обратить внимание что этот синтаксис этого метода - стрелочная функция!!!!
 		this.props.getUsers(pageNumber, this.props.pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator getUsers
 	}
 
@@ -35,8 +33,7 @@ class UsersContainer extends React.Component {
 					pageSize={this.props.pageSize}
 					currentPage={this.props.currentPage}
 					onPageChange={this.onPageChange}
-					// onPageChange={this.onPageChange.bind(this)} //для обычного синтаксиса метода класса!!!
-					users={this.props.users}// для метода с синтаксисом стрелочной функции!!!
+					users={this.props.users}
 					unfollow={this.props.unfollow}
 					follow={this.props.follow}
 					isLoading={this.props.isLoading}
@@ -60,70 +57,14 @@ const setStateToProps = state => {
 	}
 }
 
-// const setDispatchTpProps = dispatch => {
-// 	return {
-// 		follow: userId => {
-// 			dispatch(followUserAC(userId))
-// 		},
-// 		unfollow: userId => {
-// 			dispatch(unfollowUserAC(userId))
-// 		},
-// 		setUsers: users => {
-// 			dispatch(setUsersAC(users))
-// 		},
-// 		setCurrentPage: pageNumber => {
-// 			dispatch(setCurrentPageAC(pageNumber))
-// 		},
-// 		setIsLoading: isLoading => {
-// 			dispatch(setIsLoadingAC(isLoading))
-// 		}
-// 		// setTotalUsersCount: usersCount => {
-// 		// 	dispatch(setTotalUsersCountAC(usersCount))
-// 		// }
-// 	}
-// }
-
-// сокращенный вариант записи:
-//вместо setDispatchTpProps помещаем объект с ссылками на action creators в 'connect' и возвращаем именно callback не 'creators'(это просто сокращенный синтаксис того что написано выше в 'setDispatchTpProps') 
-
-//------------------------------------------------
-//HOC withAuthRedirect вариант1:
-// let AuthRedirectComponent = withAuthRedirect(UsersContainer)//HOC отвечающий за отправку на страницу логина если пользователь без аутентификации
-
-//вариант1:
-// export default connect(setStateToProps, {
-// 	follow,
-// 	unfollow,
-// 	setCurrentPage,
-// 	setTotalUsersCount,
-// 	getUsers,
-// 	getFriendsTC,
-// })(AuthRedirectComponent)
-
-//HOC withAuthRedirect вариант2:
-//HOC connect внутри HOC withAuthRedirect отвечающего за отправку на страницу логина если пользователь без аутентификации
-// export default withAuthRedirect(
-// 	connect(setStateToProps, {
-// 		follow,
-// 		unfollow,
-// 		setCurrentPage,
-// 		setTotalUsersCount,
-// 		getUsers,
-// 		getFriendsTC,
-// 	})(UsersContainer)
-// )
-//------------------------------------------------
-
-//вместо того что выше:
-// экспортируем по умолчанию функцию “конвейер” в которую передаются другие функции в которые по цепочке вкладываются как бы друг в друга с определенным компонентом в основании:
 export default compose(
-	connect(setStateToProps, {// в connect вкладывается withAuthRedirect c UsersContainer
+	connect(setStateToProps, {
 		follow,
 		unfollow,
 		setCurrentPage,
 		setTotalUsersCount,
 		getUsers,
 		getFriendsTC,
-	})
-	// withAuthRedirect // то во что вкладывается сам компонент
-)(UsersContainer)//сам компонент
+	}),
+	// withAuthRedirect 
+)(UsersContainer)
