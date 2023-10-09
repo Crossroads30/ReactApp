@@ -9,29 +9,89 @@ import DialogsContainer from './UI/components/dialogs-stuff/Dialogs/DialogsConta
 import UsersContainer from './UI/components/Users/UsersContainer'
 import HeaderContainer from './UI/components/Header/HeaderContainer'
 import LoginPageContainer from './UI/components/login-stuff/LoginPage/LoginPageContainer'
+import React from 'react'
+import { connect } from 'react-redux'
+import { getAuthUserData } from './BLL/react-redux/auth-reducer'
+import { initializeApp, initializedSuccess } from './BLL/react-redux/app-reducer'
+import Preloader from './UI/components/common/Preloader/Preloader'
+import { withAuthRedirect } from './HOC/withAuthRedirect'
+import { compose } from 'redux'
+import { withRouter } from './UI/components/Profile-stuff/Profile/HookWithRoute'
 
-const App = () => {
-	return (
-		<BrowserRouter>
-			<div className='app-wrapper'>
-				<HeaderContainer />
-				<Sidebar />
-				<div className='app-content'>
-					<Routes>
-						<Route path='/profile/:userId?' element={<ProfileContainer />} />
-						{/* чтобы отображался 'profile' вне зависимости от URL звездочку добавляем в конец */}
-						<Route path='/dialogs/*' element={<DialogsContainer />} />
-						<Route path='/news' element={<News />} />
-						<Route path='/users' element={<UsersContainer />} />
-						<Route path='/music' element={<Music />} />
-						<Route path='/settings' element={<Settings />} />
-						<Route path='*' element={<ProfileContainer />} />
-						<Route path='/login' element={<LoginPageContainer />} />
-					</Routes>
+class App extends React.Component {
+
+	componentDidMount() {
+		this.props.initializeApp() // берем thunkCreator initializeApp
+	}
+
+	render() {
+		// debugger
+		if (!this.props.initialized) {
+			return <Preloader />
+		}
+		return (
+				<div className='app-wrapper'>
+					<HeaderContainer />
+					<Sidebar />
+					<div className='app-content'>
+						<Routes>
+							<Route path='/profile/:userId?' element={<ProfileContainer />} />
+							{/* чтобы отображался 'profile' вне зависимости от URL звездочку добавляем в конец */}
+							<Route path='/dialogs/*' element={<DialogsContainer />} />
+							<Route path='/news' element={<News />} />
+							<Route path='/users' element={<UsersContainer />} />
+							<Route path='/music' element={<Music />} />
+							<Route path='/settings' element={<Settings />} />
+							<Route path='*' element={<ProfileContainer />} />
+							<Route path='/login' element={<LoginPageContainer />} />
+						</Routes>
+					</div>
 				</div>
-			</div>
-		</BrowserRouter>
-	)
+		)
+	}
 }
 
-export default App
+const setStateToProps = state => {
+	return {
+		initialized: state.app.initialized,
+	}
+}
+
+export default connect(setStateToProps, { initializeApp })(App)
+
+
+// export default compose(
+// 	// withRouter,
+// 	connect(setStateToProps, {
+// 		// то во что вкладывается сам компонент
+// 		initializeApp, // вызываем thunkCreator initializeApp
+// 	})
+// )(App)
+
+
+
+//функциональная компонента App:
+// const App = () => {
+
+// 	return (
+// 			<div className='app-wrapper'>
+// 				<HeaderContainer />
+// 				<Sidebar />
+// 				<div className='app-content'>
+// 					<Routes>
+// 						<Route path='/profile/:userId?' element={<ProfileContainer />} />
+// 						{/* чтобы отображался 'profile' вне зависимости от URL звездочку добавляем в конец */}
+// 						<Route path='/dialogs/*' element={<DialogsContainer />} />
+// 						<Route path='/news' element={<News />} />
+// 						<Route path='/users' element={<UsersContainer />} />
+// 						<Route path='/music' element={<Music />} />
+// 						<Route path='/settings' element={<Settings />} />
+// 						<Route path='*' element={<ProfileContainer />} />
+// 						<Route path='/login' element={<LoginPageContainer />} />
+// 					</Routes>
+// 				</div>
+// 			</div>
+// 	)
+// }
+
+// export default App

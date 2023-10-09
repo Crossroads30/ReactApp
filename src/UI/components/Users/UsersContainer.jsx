@@ -124,6 +124,6 @@ export default compose(
 		setTotalUsersCount,
 		getUsers,
 		getFriendsTC,
-	}),
-	withAuthRedirect // то во что вкладывается сам компонент
+	})
+	// withAuthRedirect // то во что вкладывается сам компонент
 )(UsersContainer)//сам компонент

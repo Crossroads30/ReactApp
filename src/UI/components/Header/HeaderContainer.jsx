@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Header from './Header'
-import { getAuthUserData } from '../../../BLL/react-redux/auth-reducer'
+// import { getAuthUserData } from '../../../BLL/react-redux/auth-reducer'
 import { logoutFromServer } from '../../../BLL/react-redux/auth-reducer'
 
 class HeaderContainer extends React.Component {
-	componentDidMount() {
-		this.props.getAuthUserData()
-	}
+	// componentDidMount() {
+	// 	this.props.getAuthUserData() //получение данных о аутентификации перенесены в App
+	// }
 
 	render() {
 		return <Header {...this.props} logout={this.props.logoutFromServer} />
@@ -21,6 +21,9 @@ const setStateToProps = state => {
 	}
 }
 
-export default connect(setStateToProps, { getAuthUserData, logoutFromServer })(
+export default connect(setStateToProps, { logoutFromServer })(
 	HeaderContainer
 )
+// export default connect(setStateToProps, { getAuthUserData, logoutFromServer })(
+// 	HeaderContainer //получение данных о аутентификации(getAuthUserData) перенесены в App
+// )

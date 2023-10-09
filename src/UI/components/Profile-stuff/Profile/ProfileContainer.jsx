@@ -1,20 +1,25 @@
 import Profile from './Profile'
 import React from 'react'
-import { getUserProfile, getStatus, updateStatus } from '../../../../BLL/react-redux/profile-reducer'
+import {
+	getUserProfile,
+	getStatus,
+	updateStatus,
+} from '../../../../BLL/react-redux/profile-reducer'
 import { connect } from 'react-redux'
 import { withRouter } from './HookWithRoute'
 import { compose } from 'redux'
-import { withAuthRedirect } from '../../../../HOC/withAuthRedirect'
-
+// import { withAuthRedirect } from '../../../../HOC/withAuthRedirect'
 
 class ProfileContainer extends React.Component {
 	componentDidMount() {
 		// debugger
 		let profileId = this.props.match.params.userId
 		if (!profileId) {
-			profileId = 30064
-			// profileId = this.props.authorizedUserId
-			// profileId = 2
+			// profileId = 30064
+			profileId = this.props.authorizedUserId
+			if(!profileId) {
+				window.location.href = 'login'// пока очень корявое решение
+			}
 		}
 		this.props.getUserProfile(profileId)
 		this.props.getStatus(profileId)
@@ -61,7 +66,7 @@ export default compose(
 		updateStatus,
 	}), //все что ниже вкладывается в connect
 	withRouter, //экспортируем функцию обертку 'withRouter' из ./HookWithRoute в которую вкладывается withAuthRedirect с ProfileContainer внутри
-	withAuthRedirect // то во что вкладывается сам компонент
+	// withAuthRedirect, // то во что вкладывается сам компонент(перенаправление на логин)
 )(ProfileContainer) //сам компонент
 
 // export default connect(setStateToProps, { setUserProfile })(ProfileContainer)// без withRouter
