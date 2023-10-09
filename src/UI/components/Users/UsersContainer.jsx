@@ -6,11 +6,12 @@ import {
 	setCurrentPage,
 	setTotalUsersCount,
 	getUsers,
-} from '../../../BLL/react-redux/users-reducer'
-import { getFriendsTC } from '../../../BLL/react-redux/sidebar-reducer'
+} from '../../../BLL/react-redux/reducers/users-reducer'
+import { getFriendsTC } from '../../../BLL/react-redux/reducers/sidebar-reducer'
 import { connect } from 'react-redux'
-import { withAuthRedirect } from '../../../HOC/withAuthRedirect' 
+import { withAuthRedirect } from '../../../HOC/withAuthRedirect'
 import { compose } from 'redux'
+import { getAllUsers, getCurrentPage, getFollowingInProgress, getIsLoading, getPageSize, getTotalUsersCount } from '../../../BLL/react-redux/selectors/users-selectors'
 
 class UsersContainer extends React.Component {
 	componentDidMount() {
@@ -45,15 +46,26 @@ class UsersContainer extends React.Component {
 	}
 }
 
+// const setStateToProps = state => {
+// 	return {
+// 		users: state.usersPage.users,
+// 		pageSize: state.usersPage.pageSize,
+// 		totalUsersCount: state.usersPage.totalUsersCount,
+// 		currentPage: state.usersPage.currentPage,
+// 		isLoading: state.usersPage.isLoading,
+// 		followingInProgress: state.usersPage.followingInProgress,
+// 	}
+// }
 
+//selectors:
 const setStateToProps = state => {
 	return {
-		users: state.usersPage.users,
-		pageSize: state.usersPage.pageSize,
-		totalUsersCount: state.usersPage.totalUsersCount,
-		currentPage: state.usersPage.currentPage,
-		isLoading: state.usersPage.isLoading,
-		followingInProgress: state.usersPage.followingInProgress,
+		users: getAllUsers(state),
+		pageSize: getPageSize(state),
+		totalUsersCount: getTotalUsersCount(state),
+		currentPage: getCurrentPage(state),
+		isLoading: getIsLoading(state),
+		followingInProgress: getFollowingInProgress(state),
 	}
 }
 
@@ -65,6 +77,6 @@ export default compose(
 		setTotalUsersCount,
 		getUsers,
 		getFriendsTC,
-	}),
-	// withAuthRedirect 
+	})
+	// withAuthRedirect
 )(UsersContainer)
