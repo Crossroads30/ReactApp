@@ -1,7 +1,7 @@
 import React from 'react'
 import Friends from './Friends'
 import { connect } from 'react-redux'
-import { getFriendsTC } from '../../../../BLL/react-redux/sidebar-reducer'
+import { getFriendsTC } from '../../../../BLL/react-redux/reducers/sidebar-reducer'
 
 class FriendsContainer extends React.Component {
 	componentDidMount() {

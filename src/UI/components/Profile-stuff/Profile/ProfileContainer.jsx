@@ -4,7 +4,7 @@ import {
 	getUserProfile,
 	getStatus,
 	updateStatus,
-} from '../../../../BLL/react-redux/profile-reducer'
+} from '../../../../BLL/react-redux/reducers/profile-reducer'
 import { connect } from 'react-redux'
 import { withRouter } from './HookWithRoute'
 import { compose } from 'redux'

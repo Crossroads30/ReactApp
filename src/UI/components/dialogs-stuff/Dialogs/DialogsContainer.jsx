@@ -1,4 +1,4 @@
-import { addMessage } from '../../../../BLL/react-redux/message-reducer'
+import { addMessage } from '../../../../BLL/react-redux/reducers/message-reducer'
 import Dialogs from './Dialogs'
 import React from 'react'
 import { connect } from 'react-redux'

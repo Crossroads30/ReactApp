@@ -23,7 +23,7 @@ const ProfileStatus = props => {
 					<input
 						size='30'
 						autoFocus={true}
-						defaultValue={status}
+						value={status}
 						onKeyDown={event => {
 							if (event.key === 'Enter') {
 								setEditMode(false)

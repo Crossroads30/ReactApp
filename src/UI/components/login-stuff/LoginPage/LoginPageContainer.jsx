@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import LoginPage from './LoginPage'
-import {loginToServer} from '../../../../BLL/react-redux/auth-reducer'
+import {loginToServer} from '../../../../BLL/react-redux/reducers/auth-reducer'
 
 class LoginPageContainer extends React.Component {
 	componentDidMount() {}
