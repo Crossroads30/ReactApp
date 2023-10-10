@@ -1,5 +1,5 @@
 import cl from './ProfileStatus.module.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export const ProfileStatusWithHooks = props => {
 	// let stateWithSetState = useState(false) //это массив
@@ -8,6 +8,11 @@ export const ProfileStatusWithHooks = props => {
 
 	let [editMode, setEditMode] = useState(false) //с помощью диструктуризации присваиваем названия значению[0] и функции[1] и объявляем изначальное значения(false)
 	let [status, setStatus] = useState(props.status) // аналогично
+
+	useEffect(() => {
+		setStatus(props.status) // то что надо перерисовать
+	}, [props.status]) // вторым параметром идет массив зависимостей(в данном случае то что приходит из пропсов), т.е. если что то в нем изменилось то только тогда будет перерисовка(setStatus(props.status)), т.е. синхронизация произойдет тогда , когда измениться что-то в массиве зависимостей
+
 	const activeEditMode = () => {
 		//создаем функцию которая вызывает функцию из useState и передаем туда измененное значение(true)
 		setEditMode(true)
@@ -36,7 +41,7 @@ export const ProfileStatusWithHooks = props => {
 						value={status}
 						onKeyDown={event => {
 							if (event.key === 'Enter') {
-								deactivateEditMode()//именно вызываем функцию, т.к. присваивания здесь нет!!!
+								deactivateEditMode() //именно вызываем функцию, т.к. присваивания здесь нет!!!
 							}
 						}}
 						onBlur={deactivateEditMode}
