@@ -1,7 +1,8 @@
 import Preloader from '../../common/Preloader/Preloader'
 import cl from './User.module.css'
 import defaultUserPhoto from '../../../../assets/images/userDefaultImage.png'
-import ProfileStatus from '../ProfileStatus/ProfileStatus'
+import ProfileStatus from '../ProfileStatus/ProfileStatusWithClass'
+import ProfileStatusWithHooks from '../ProfileStatus/profileStatusWithHooks'
 
 const User = props => {
 	if (!props.userProfile) {
@@ -33,7 +34,10 @@ const User = props => {
 						{props.userProfile.fullName.charAt(0).toUpperCase() +
 							props.userProfile.fullName.slice(1)}
 					</p>
-					<ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+					<ProfileStatusWithHooks
+						status={props.status}
+						updateStatus={props.updateStatus}
+					/>
 					<div className={cl.contactsWrapper}>
 						<ul className={cl.contacts}>
 							{Object.entries(props.userProfile.contacts).map(
