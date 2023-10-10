@@ -16,15 +16,3 @@ export const getIsLoading = state => {
 export const getFollowingInProgress = state => {
 	return state.usersPage.followingInProgress
 }
-
-
-// const setStateToProps = state => {
-// 	return {
-// 		users: state.usersPage.users,
-// 		pageSize: state.usersPage.pageSize,
-// 		totalUsersCount: state.usersPage.totalUsersCount,
-// 		currentPage: state.usersPage.currentPage,
-// 		isLoading: state.usersPage.isLoading,
-// 		followingInProgress: state.usersPage.followingInProgress,
-// 	}
-// }
