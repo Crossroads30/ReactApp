@@ -4,6 +4,7 @@ const ADD_POST = 'ADD-POST'
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
 const SET_USER_STATUS = 'SET-USER-STATUS'
 const UPDATE_USER_STATUS = 'UPDATE-USER-STATUS'
+const DELETE_POST = 'DELETE-POST'
 
 let initialState = {
 	posts: [
@@ -30,6 +31,11 @@ const profileReducer = (state = initialState, action) => {
 				...state,
 				posts: [...state.posts, newPost],
 			}
+		case DELETE_POST:
+			return {
+				...state,
+				posts: state.posts.filter(post => post.id != action.postId),
+			}
 		case SET_USER_PROFILE:
 			return {
 				...state,
@@ -55,6 +61,10 @@ const profileReducer = (state = initialState, action) => {
 export const addPost = newPostBody => ({
 	type: ADD_POST,
 	newPostBody,
+})
+export const deletePost = postId => ({
+	type: DELETE_POST,
+	postId,
 })
 export const setUserProfile = userProfile => ({
 	type: SET_USER_PROFILE,
