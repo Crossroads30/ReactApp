@@ -45,7 +45,6 @@ import { PostsReduxForm } from './PostsForm'
 // React.memo — это компонент высшего порядка.React.memo затрагивает только изменения пропсов. Если функциональный компонент обёрнут в React.memo и использует useState, useReducer или useContext, он будет повторно рендериться при изменении состояния или контекста.Этот метод предназначен только для оптимизации производительности. Не полагайтесь на него, чтобы «предотвратить» рендер, так как это может привести к ошибкам.
 
 const Posts = React.memo(props => {
-	console.log('render')
 	const postsElements = props.posts.map(post => (
 		<Post text={post.message} likes={post.likes} key={post.id} />
 	))
