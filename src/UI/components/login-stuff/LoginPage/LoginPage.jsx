@@ -2,14 +2,18 @@ import { Navigate } from 'react-router-dom'
 import { LoginReduxForm } from './LoginForm'
 import cl from './LoginPage.module.css'
 
-const LoginPage = props => {
-	// debugger
+//используем диструктуризацию пропсов
+// const LoginPage = props => {
+const LoginPage = ({login, isAuth}) => {
+	//используем диструктуризацию пропсов(не забываем про фигурные скобки, т.к. props - это объект)
+
 	const addLogin = formData => {
 		console.log(formData)
-		props.login(formData.email, formData.password, formData.rememberMe)
+		// props.login(formData.email, formData.password, formData.rememberMe)
+		login(formData.email, formData.password, formData.rememberMe)
 	}
 
-	if (props.isAuth) {
+	if (isAuth) {
 		return <Navigate to='/profile' />
 	}
 	return (
