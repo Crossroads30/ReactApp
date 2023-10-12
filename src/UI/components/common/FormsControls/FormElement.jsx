@@ -1,3 +1,4 @@
+import { Field } from 'redux-form'
 import cl from './FormElement.module.css'
 
 export const FormElement = ({ input, meta, ...props }) => {
@@ -12,6 +13,30 @@ export const FormElement = ({ input, meta, ...props }) => {
 				{/* передаем в самой форме в 'Field': сам компонент -> (component={FormElement}) и нужный элемент с помощью -> (elementType='<названия элемента>') например: <Field  component={Element} elementType='input'> */}
 			</div>
 			{hasError && <span>{meta.error}</span>}
+		</div>
+	)
+}
+
+export const createField = (
+	className,
+	placeholder,
+	name,
+	validate,
+	typeofelement,
+	props = {},
+	text = ''
+) => {
+	return (
+		<div className={className}>
+			<Field
+				placeholder={placeholder}
+				name={name}
+				validate={validate}
+				component={FormElement}
+				typeofelement={typeofelement}
+				{...props}
+			/>
+			{text}
 		</div>
 	)
 }
