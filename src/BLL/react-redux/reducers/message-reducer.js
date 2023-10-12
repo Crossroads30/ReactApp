@@ -1,4 +1,4 @@
-const ADD_MESSAGE = 'ADD-MESSAGE'
+const ADD_MESSAGE = 'message/ADD-MESSAGE'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
 let initialState = {
 	dialogs: [

@@ -1,6 +1,6 @@
 import { userApi } from '../../../DAL/api/api'
 
-const SET_FRIENDS = 'FRIENDS'
+const SET_FRIENDS = 'sidebar/FRIENDS'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
 let initialState = {
 	friends: [],

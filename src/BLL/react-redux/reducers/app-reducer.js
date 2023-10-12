@@ -1,5 +1,5 @@
 import { getAuthUserData } from './auth-reducer'
-const INITIALIZED_SUCCESS = 'INITIALIZED-SUCCESS'
+const INITIALIZED_SUCCESS = 'app/INITIALIZED-SUCCESS'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
 let initialState = {
 	initialized: false,

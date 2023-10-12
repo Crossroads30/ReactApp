@@ -1,7 +1,7 @@
 import { stopSubmit } from 'redux-form'
 import { authAPI } from '../../../DAL/api/api'
 
-const SET_USER_DATA = 'SET-USER-DATA'
+const SET_USER_DATA = 'auth/SET-USER-DATA'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
 let initialState = {
 	id: null,

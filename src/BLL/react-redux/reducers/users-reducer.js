@@ -1,12 +1,13 @@
 import { userApi } from '../../../DAL/api/api'
 
-const SET_USERS = 'SET-USERS'
-const FOLLOW = 'FOLLOW'
-const UNFOLLOW = 'UNFOLLOW'
-const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE'
-const TOGGLE_IS_LOADING = 'TOGGLE-IS-LOADING'
-const SET_USERS_COUNT = 'SET-USERS-COUNT'
-const DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS = 'DISABLE-FETCHING-BUTTON'
+//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
+const SET_USERS = 'users/SET-USERS'
+const FOLLOW = 'users/FOLLOW'
+const UNFOLLOW = 'users/UNFOLLOW'
+const SET_CURRENT_PAGE = 'users/SET-CURRENT-PAGE'
+const TOGGLE_IS_LOADING = 'users/TOGGLE-IS-LOADING'
+const SET_USERS_COUNT = 'users/SET-USERS-COUNT'
+const DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS = 'users/DISABLE-FETCHING-BUTTON'
 
 let initialState = {
 	users: [],
