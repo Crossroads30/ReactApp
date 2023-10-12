@@ -1,5 +1,5 @@
 import { getAuthUserData } from './auth-reducer'
-const INITIALIZED_SUCCESS = 'app/INITIALIZED-SUCCESS'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
+const INITIALIZED_SUCCESS = 'app/INITIALIZED-SUCCESS' //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
 let initialState = {
 	initialized: false,
@@ -23,17 +23,15 @@ export const initializedSuccess = () => ({
 })
 
 //thunk Creators:
-export const initializeApp = () => dispatch => {
+export const initializeApp = () => async dispatch => {
 	let promise = dispatch(getAuthUserData())
 	//dispatch(somethingElse()) //если будет что нибудь еще
 	//dispatch(somethingElse()) //если будет что нибудь еще
-	Promise.all([promise]) //если надо задиспатчить несколько промисов, то их помещаем в массив и вызываем метод Promise.all([здесь промисы])
-		.then(() => {
-			dispatch(initializedSuccess())
-		})
+	await Promise.all([promise]) //если надо задиспатчить несколько промисов, то их помещаем в массив и вызываем метод Promise.all([здесь промисы])
+	dispatch(initializedSuccess())
 }
 
-// export const initializeApp = () => async dispatch => { //более короткая запись с промисами
+// export const initializeApp = () => async dispatch => { //если промис один
 // 	await dispatch(getAuthUserData())
 // 	dispatch(initializedSuccess())
 // }

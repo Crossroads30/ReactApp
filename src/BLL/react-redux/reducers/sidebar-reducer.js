@@ -23,11 +23,9 @@ const sidebarReducer = (state = initialState, action) => {
 export const addFriends = friends => ({ type: SET_FRIENDS, friends })
 
 //thunkCreators:
-export const getFriendsTC = totalUsersCount => dispatch => {
-	userApi.getFriends(totalUsersCount).then(response => {
-		// console.log(response)
+export const getFriendsTC = totalUsersCount => async dispatch => {
+const response = await userApi.getFriends(totalUsersCount)
 		dispatch(addFriends(response))
-	})
 }
 
 export default sidebarReducer

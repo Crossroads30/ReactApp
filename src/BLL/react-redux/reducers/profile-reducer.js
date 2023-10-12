@@ -82,29 +82,31 @@ export const updateUserStatus = status => ({
 
 //--------------------------------------------------------
 //thunk creators:
-export const getUserProfile = profileId => {
-	return dispatch => {
-		profileApi.getProfile(profileId).then(response => {
-			// debugger
-			dispatch(setUserProfile(response.data))
-		})
+export const getUserProfile = profileId => async dispatch => {
+		const response = await profileApi.getProfile(profileId) // вместо then() используем async await
+		// debugger
+		dispatch(setUserProfile(response.data))
 	}
-}
-export const getStatus = profileId => {
-	return dispatch => {
-		profileApi.getStatus(profileId).then(response => {
-			// debugger
-			dispatch(setUserStatus(response.data))
-		})
+
+
+export const getStatus = profileId => async dispatch => {
+	const response = await profileApi.getStatus(profileId)
+		// debugger
+		dispatch(setUserStatus(response.data))
 	}
-}
-export const updateStatus = status => {
-	return dispatch => {
-		profileApi.updateStatus(status).then(response => {
-			response.data.resultCode === 0 && dispatch(setUserStatus(status))
-		})
+
+	export const updateStatus = status => async dispatch => {
+		const response = await profileApi.updateStatus(status)
+		response.data.resultCode === 0 && dispatch(setUserStatus(status))
 	}
-}
+
+// export const updateStatus = status => { // санка с then()
+// 	return dispatch => {
+// 		profileApi.updateStatus(status).then(response => {
+// 			response.data.resultCode === 0 && dispatch(setUserStatus(status))
+// 		})
+// 	}
+// }
 
 export default profileReducer
 

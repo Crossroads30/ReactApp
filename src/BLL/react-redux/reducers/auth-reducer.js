@@ -1,7 +1,7 @@
 import { stopSubmit } from 'redux-form'
 import { authAPI } from '../../../DAL/api/api'
 
-const SET_USER_DATA = 'auth/SET-USER-DATA'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
+const SET_USER_DATA = 'auth/SET-USER-DATA' //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
 let initialState = {
 	id: null,
@@ -30,16 +30,17 @@ export const setAuthUserData = (id, email, login, isAuth) => ({
 })
 
 //thunk Creators:
-export const getAuthUserData = () => dispatch => {
-	return authAPI.getAuth().then(response => {
-		const { id, email, login } = response.data.data
-		response.data.resultCode === 0 &&
-			dispatch(setAuthUserData(id, email, login, true))
-	})
+export const getAuthUserData = () => async dispatch => { // вместо then() используем async await
+	const response = await authAPI.getAuth()
+
+	const { id, email, login } = response.data.data
+	response.data.resultCode === 0 &&
+		dispatch(setAuthUserData(id, email, login, true))
 }
 
-export const loginToServer = (email, password, rememberMe) => dispatch => {
-	authAPI.getLogin(email, password, rememberMe).then(response => {
+export const loginToServer =
+	(email, password, rememberMe) => async dispatch => {
+		const response = await authAPI.getLogin(email, password, rememberMe)
 		// debugger
 		if (response.data.resultCode === 0) {
 			dispatch(getAuthUserData())
@@ -51,17 +52,24 @@ export const loginToServer = (email, password, rememberMe) => dispatch => {
 					: 'some error' //передаем в качестве ошибки сообщение из response.data.messages из api запроса
 			dispatch(stopSubmit('login', { _error: message }))
 		}
-	})
-}
+	}
 
-export const logoutFromServer = () => dispatch => {
-	authAPI.getLogout().then(response => {
+
+export const logoutFromServer = () => async dispatch => {// вместо then() используем async await
+	const response = await authAPI.getLogout()
 		// debugger
 		response.data.resultCode === 0 &&
 			dispatch(setAuthUserData(null, null, null, false))
 		dispatch((window.location.href = 'login')) // пока очень корявое решение
-	})
 }
 
+// export const logoutFromServer = () => dispatch => { //вариант с then()
+// 	authAPI.getLogout().then(response => {
+// 		// debugger
+// 		response.data.resultCode === 0 &&
+// 			dispatch(setAuthUserData(null, null, null, false))
+// 		dispatch((window.location.href = 'login')) // пока очень корявое решение
+// 	})
+// }
 
 export default authReducer
