@@ -13,8 +13,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { initializeApp } from './BLL/react-redux/reducers/app-reducer'
 import Preloader from './UI/components/common/Preloader/Preloader'
-import { compose } from 'redux'
-import { withRouter } from './UI/components/Profile-stuff/Profile/HookWithRoute'
+// import { compose } from 'redux'
+// import { withRouter } from './UI/components/Profile-stuff/Profile/HookWithRoute'
 
 class App extends React.Component {
 
@@ -57,7 +57,7 @@ const setStateToProps = state => {
 
 export default connect(setStateToProps, { initializeApp })(App)
 
-
+// здесь нет необходимости оборачивать все withRouter
 // export default compose(
 // 	// withRouter,
 // 	connect(setStateToProps, {
