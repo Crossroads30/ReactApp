@@ -3,6 +3,7 @@ import defaultUserPhoto from '../../../assets/images/userDefaultImage.png'
 import Preloader from '../common/Preloader/Preloader'
 import { NavLink } from 'react-router-dom'
 import Paginator from '../common/Paginator/pagePaginator'
+import SeparateUser from './SeperateUser'
 
 // const Users = props => {
 const Users = ({totalUsersCount, pageSize, onPageChange, currentPage, ...props}) => { //диструктуризация для пагинатора(остальные пропсы передаем в конец)(не забываем про фигурные скобки!!!)
@@ -37,7 +38,9 @@ const Users = ({totalUsersCount, pageSize, onPageChange, currentPage, ...props})
 					<Preloader />
 				) : (
 					props.users.map(user => (
-						<div key={user.id} className={cl.user}>
+						<SeparateUser key={user.id} user={user} followingInProgress={props.followingInProgress} follow={props.follow} unfollow={props.unfollow} setFriend={props.setFriend} />
+						/* логика ниже переместилась в SeparateUser */
+						/* <div key={user.id} className={cl.user}>
 							<div className={cl.avatarWrapper}>
 								<NavLink to={'/profile/' + user.id}>
 									<img className={cl.photo} src={user.photos.small !== null ? user.photos.small : defaultUserPhoto} alt='User' />
@@ -82,7 +85,7 @@ const Users = ({totalUsersCount, pageSize, onPageChange, currentPage, ...props})
 									<p>{'user.location.land'}</p>
 								</div>
 							</div>
-						</div>
+						</div> */
 					))
 				)}
 			</div>
