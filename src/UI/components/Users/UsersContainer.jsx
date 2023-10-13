@@ -15,11 +15,13 @@ import { getAllUsers, getCurrentPage, getFollowingInProgress, getIsLoading, getP
 
 class UsersContainer extends React.Component {
 	componentDidMount() {
-		this.props.getUsers(this.props.currentPage, this.props.pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator
+		const { currentPage, pageSize } = this.props //диструктуризация пропсов внутри метода
+		this.props.getUsers(currentPage, pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator
 	}
 
 	onPageChange = pageNumber => {
-		this.props.getUsers(pageNumber, this.props.pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator getUsers
+		const { pageSize } = this.props //диструктуризация пропсов внутри метода
+		this.props.getUsers(pageNumber, pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator getUsers
 	}
 
 	onUserToFriends = () => {

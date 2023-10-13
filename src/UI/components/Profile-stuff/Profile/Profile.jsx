@@ -2,14 +2,10 @@ import PostsContainer from '../Posts/PostsContainer'
 import User from '../User/User'
 import cl from './Profile.module.css'
 
-const Profile = props => {
+const Profile = ({ userProfile, status, updateStatus }) => {
 	return (
 		<main className={cl.content}>
-			<User
-				userProfile={props.userProfile}
-				status={props.status}
-				updateStatus={props.updateStatus}
-			/>
+			<User userProfile={userProfile} status={status} updateStatus={updateStatus} />
 			<PostsContainer />
 		</main>
 	)
@@ -17,7 +13,7 @@ const Profile = props => {
 
 export default Profile
 {
-	/*store={props.store}*/
+	/*store={store}*/
 }
 
-// userProfile={props.setUserProfile}
+// userProfile={setUserProfile}
