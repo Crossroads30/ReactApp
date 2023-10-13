@@ -13,16 +13,17 @@ import { compose } from 'redux'
 class ProfileContainer extends React.Component {
 	componentDidMount() {
 		// debugger
-		let profileId = this.props.match.params.userId
+		const { match, authorizedUserId, getUserProfile, getStatus } = this.props
+		let profileId = match.params.userId
 		if (!profileId) {
 			// profileId = 30064
-			profileId = this.props.authorizedUserId
+			profileId = authorizedUserId
 			if(!profileId) {
 				window.location.href = 'login'// пока очень корявое решение
 			}
 		}
-		this.props.getUserProfile(profileId)
-		this.props.getStatus(profileId)
+		getUserProfile(profileId)
+		getStatus(profileId)
 	}
 
 	render() {
