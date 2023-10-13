@@ -1,16 +1,14 @@
 import cl from './LoginPage.module.css'
 import { Field, reduxForm } from 'redux-form'
-import {
-	maxLengthCreator,
-	required,
-} from '../../../../utils/validators/validators'
+import { maxLengthCreator, required } from '../../../../utils/validators/validators'
 // import Input from '../../common/FormsControls/Input/Input'
 import { FormElement, createField } from '../../common/FormsControls/FormElement'
 
 const maxLength30 = maxLengthCreator(30) //вызов этой функции необходимо вызывать за пределами компоненты иначе будет бесконечный цикл!
 
 // const LoginForm = (props) => {
-const LoginForm = ({handleSubmit, error}) => { //используем диструктуризацию пропсов(не забываем про фигурные скобки, т.к. props - это объект)
+const LoginForm = ({ handleSubmit, error }) => {
+	//используем диструктуризацию пропсов(не забываем про фигурные скобки, т.к. props - это объект)
 	// debugger
 	return (
 		<div>
@@ -18,21 +16,8 @@ const LoginForm = ({handleSubmit, error}) => { //используем дистр
 			<form onSubmit={handleSubmit}>
 				{/* используем диструктуризацию пропсов */}
 				{/* вызываем шаблонизатор полей createField и передаем в него все необходимые параметры */}
-				{createField(
-					cl.email,
-					'Email',
-					'email',
-					[required, maxLength30],
-					'input'
-				)}
-				{createField(
-					cl.password,
-					'Password',
-					'password',
-					[required, maxLength30],
-					'input',
-					{ type: 'password' }
-				)}
+				{createField(cl.email, 'Email', 'email', [required, maxLength30], 'input')}
+				{createField(cl.password, 'Password', 'password', [required, maxLength30], 'input', { type: 'password' })}
 				{createField(
 					cl.checkbox,
 					null,
@@ -66,7 +51,8 @@ export const LoginReduxForm = reduxForm({
 export default LoginForm
 
 // стандартный код без шаблонизатора createField
-{/* <div className={cl.email}>
+{
+	/* <div className={cl.email}>
 					<Field
 						component={FormElement} //передаем т.н. шаблонный компонент
 						typeofelement='input' //передаем названия элемента этого компонента в кастомный атрибут(не camelCase т.к. реакт ругается на него)
@@ -96,4 +82,5 @@ export default LoginForm
 						// component={Input}
 					/>
 					<span>Remember me</span>
-				</div> */}
+				</div> */
+}
