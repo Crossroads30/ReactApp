@@ -2,26 +2,29 @@ import cl from './Users.module.css'
 import defaultUserPhoto from '../../../assets/images/userDefaultImage.png'
 import Preloader from '../common/Preloader/Preloader'
 import { NavLink } from 'react-router-dom'
+import Paginator from '../common/Paginator/pagePaginator'
 
-const Users = props => {
-	let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
-	let pages = []
-	for (let i = 1; i <= pagesCount; i++) {
-		pages.push(i)
-	}
+// const Users = props => {
+const Users = ({totalUsersCount, pageSize, onPageChange, currentPage, ...props}) => { //диструктуризация для пагинатора(остальные пропсы передаем в конец)(не забываем про фигурные скобки!!!)
+	
+	/* логика ниже переместилась в Paginator */
+	// let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
+	// let pages = []
+	// for (let i = 1; i <= pagesCount; i++) {
+	// 	pages.push(i)
+	// }
 
 	return (
 		<>
 			<div className={cl.usersWrapper}>
-				<div className={cl.pagination}>
+				{/* диструктуризация для пагинатора */}
+				<Paginator totalUsersCount={totalUsersCount} pageSize={pageSize} onPageChange={onPageChange} currentPage={currentPage} />
+				{/* логика ниже переместилась в Paginator */}
+				{/* <div className={cl.pagination}>
 					{pages.map(page => (
 						<span
 							key={page}
-							className={
-								props.currentPage === page
-									? cl.selectedPage
-									: cl.pagination + ' ' + 'span'
-							}
+							className={props.currentPage === page ? cl.selectedPage : cl.pagination + ' ' + 'span'}
 							onClick={() => {
 								props.onPageChange(page)
 							}}
@@ -29,7 +32,7 @@ const Users = props => {
 							{page}
 						</span>
 					))}
-				</div>
+				</div> */}
 				{props.isLoading ? (
 					<Preloader />
 				) : (
@@ -37,15 +40,7 @@ const Users = props => {
 						<div key={user.id} className={cl.user}>
 							<div className={cl.avatarWrapper}>
 								<NavLink to={'/profile/' + user.id}>
-									<img
-										className={cl.photo}
-										src={
-											user.photos.small !== null
-												? user.photos.small
-												: defaultUserPhoto
-										}
-										alt='User'
-									/>
+									<img className={cl.photo} src={user.photos.small !== null ? user.photos.small : defaultUserPhoto} alt='User' />
 								</NavLink>
 								{user.followed ? (
 									<button

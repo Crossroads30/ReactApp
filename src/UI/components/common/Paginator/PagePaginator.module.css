@@ -1,0 +1,23 @@
+.pagination {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 30px;
+}
+
+.pagination span {
+	display: block;
+	background-color: rgb(120, 178, 229);
+	width: 20px;
+	height: 20px;
+	border-radius: 20px;
+	text-align: center;
+	margin-right: 5px;
+	margin-bottom: 0;
+	border: 2px solid rgb(37, 124, 167);
+	cursor: pointer;
+}
+
+.pagination span.selectedPage {
+	border: 2px solid gold;	
+}
