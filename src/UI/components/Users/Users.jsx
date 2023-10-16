@@ -3,7 +3,7 @@ import defaultUserPhoto from '../../../assets/images/userDefaultImage.png'
 import Preloader from '../common/Preloader/Preloader'
 import { NavLink } from 'react-router-dom'
 import Paginator from '../common/Paginator/pagePaginator'
-import SeparateUser from './SeperateUser'
+import SeparateUser from './SeparateUser'
 
 // const Users = props => {
 const Users = ({totalUsersCount, pageSize, onPageChange, currentPage, ...props}) => { //диструктуризация для пагинатора(остальные пропсы передаем в конец)(не забываем про фигурные скобки!!!)

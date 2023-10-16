@@ -8,7 +8,7 @@ const Paginator = ({ totalUsersCount, pageSize, currentPage, onPageChange }) => 
 		pages.push(i)
 	}
 
-	return (
+	return ( 
 		<div className={cl.pagination}>
 			{pages.map(page => (
 				<span
