@@ -23,17 +23,17 @@ const Paginator = ({ totalItemsCount, pageSize, currentPage, onPageChange, porti
 						setPortionNumber(portionNumber - 1)
 					}}
 				>
-					Prev...
+					{'<<'}
 				</button>
 			)}
 			{pages
-				.filter(page => page >= leftNumberOfPagePortion && page <= rightNumberOfPagePortion)//отображаем только те страницы которые больше либо равны крайнему левому номеру порции и меньше либо равны крайнему правому номеру данной порции страниц
+				.filter(page => page >= leftNumberOfPagePortion && page <= rightNumberOfPagePortion) //отображаем только те страницы которые больше либо равны крайнему левому номеру порции и меньше либо равны крайнему правому номеру данной порции страниц
 				.map(page => {
 					return (
 						<span
 							key={page}
 							// className={currentPage === page && cl.selectedPage}// этот вариант работает, но с Warning
-							className={currentPage === page ? cl.selectedPage : cl.pagination + ' ' + 'span'}
+							className={currentPage === page ? cl.pagination + ' ' + 'span' + ' ' + cl.selectedPage : cl.pagination + ' ' + 'span'}
 							onClick={() => {
 								onPageChange(page)
 							}}
@@ -48,7 +48,7 @@ const Paginator = ({ totalItemsCount, pageSize, currentPage, onPageChange, porti
 						setPortionNumber(portionNumber + 1)
 					}}
 				>
-					Next...
+					{'>>'}
 				</button>
 			)}
 		</div>

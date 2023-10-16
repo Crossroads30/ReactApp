@@ -6,13 +6,14 @@
 }
 
 .pagination span {
-	display: block;
+	display: flex;
+	align-items: center;
 	background-color: rgb(120, 178, 229);
 	width: 20px;
 	height: 20px;
 	border-radius: 20px;
 	text-align: center;
-	margin:0 2px;
+	margin: 0 2px;
 	border: 2px solid rgb(37, 124, 167);
 	cursor: pointer;
 	font-size: 12px;
@@ -20,7 +21,7 @@
 }
 
 .pagination span.selectedPage {
-	border: 2px solid gold;	
+	border: 2px solid gold;
 }
 
 .pagination button {
@@ -29,4 +30,11 @@
 	font-size: 10px;
 	margin: 0 15px;
 	background-color: #42cfc5;
+	cursor: pointer;
+	border: none;
+	transition: all .2s;
+}
+
+.pagination button:hover {
+	color: white;
 }
