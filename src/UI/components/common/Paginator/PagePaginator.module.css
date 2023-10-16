@@ -12,12 +12,21 @@
 	height: 20px;
 	border-radius: 20px;
 	text-align: center;
-	margin-right: 5px;
-	margin-bottom: 0;
+	margin:0 2px;
 	border: 2px solid rgb(37, 124, 167);
 	cursor: pointer;
+	font-size: 12px;
+	text-align: center;
 }
 
 .pagination span.selectedPage {
 	border: 2px solid gold;	
+}
+
+.pagination button {
+	padding: 0 7px;
+	border-radius: 100px;
+	font-size: 10px;
+	margin: 0 15px;
+	background-color: #42cfc5;
 }

@@ -19,7 +19,7 @@ const Users = ({totalUsersCount, pageSize, onPageChange, currentPage, ...props})
 		<>
 			<div className={cl.usersWrapper}>
 				{/* диструктуризация для пагинатора */}
-				<Paginator totalUsersCount={totalUsersCount} pageSize={pageSize} onPageChange={onPageChange} currentPage={currentPage} />
+				<Paginator totalItemsCount={totalUsersCount} pageSize={pageSize} onPageChange={onPageChange} currentPage={currentPage} />
 				{/* логика ниже переместилась в Paginator */}
 				{/* <div className={cl.pagination}>
 					{pages.map(page => (

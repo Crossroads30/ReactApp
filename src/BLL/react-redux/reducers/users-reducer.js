@@ -14,7 +14,7 @@ const DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS =
 let initialState = {
 	users: [],
 	pageSize: 5,
-	totalUsersCount: 50,
+	totalUsersCount: 500,
 	currentPage: 1,
 	isLoading: true,
 	followingInProgress: [],
