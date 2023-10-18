@@ -6,6 +6,7 @@ const SET_USER_PROFILE = 'profile/SET-USER-PROFILE'
 const SET_USER_STATUS = 'profile/SET-USER-STATUS'
 const UPDATE_USER_STATUS = 'profile/UPDATE-USER-STATUS'
 const DELETE_POST = 'profile/DELETE-POST'
+const SAVE_USER_PHOTO_SUCCESS = 'SET-USER-PHOTO-SUCCESS'
 
 let initialState = {
 	posts: [
@@ -52,6 +53,11 @@ const profileReducer = (state = initialState, action) => {
 				...state,
 				status: action.status,
 			}
+		case SAVE_USER_PHOTO_SUCCESS:
+			return {
+				...state,
+				userProfile: { ...state.userProfile, photos: action.userPhoto },//фотография приходит из api запроса и находится в photos 
+			}
 		default:
 			return state
 	}
@@ -79,6 +85,12 @@ export const updateUserStatus = status => ({
 	type: UPDATE_USER_STATUS,
 	status,
 })
+export const savePhotoSuccess = userPhoto => ({
+	type: SAVE_USER_PHOTO_SUCCESS,
+	userPhoto,
+})
+
+
 
 //--------------------------------------------------------
 //thunk creators:
@@ -98,6 +110,11 @@ export const getStatus = profileId => async dispatch => {
 	export const updateStatus = status => async dispatch => {
 		const response = await profileApi.updateStatus(status)
 		response.data.resultCode === 0 && dispatch(setUserStatus(status))
+	}
+
+	export const savePhoto = file => async dispatch => {
+		const response = await profileApi.savePhoto(file)
+		response.data.resultCode === 0 && dispatch(savePhotoSuccess(response.data.data.photos))
 	}
 
 // export const updateStatus = status => { // санка с then()
