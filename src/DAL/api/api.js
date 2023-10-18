@@ -56,9 +56,17 @@ export const profileApi = {
 		//запрос на обновления статуса в profile
 		return await instance.put(`profile/status`, { status }) //вторым параметром передаем объект, то что требует документация: (status: required(string - maxLength: 300))
 	},
-	async sentPhotoToServer() {
+	async savePhoto(userPhotoFile) {
 		//запрос на отправку фото в profile
-		return await instance.put(`profile/photo`, { userPhoto })
+		const formData = new FormData() // создаем форм дату для отправки на сервер
+		formData.append('image', userPhotoFile) // передаем сюда Properties из документации сервера:	image: required(file), и сам файл(userPhotoFile)
+
+		return await instance.put(`profile/photo`, formData, {
+			//вторым параметром передаем formData, а третьем параметром настраиваем специфические заголовки для этого запроса т.к. отправляем не json, а formData, и мы должны сказать что наш Content-Type является 'multipart/form-data'
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		})
 	},
 }
 
