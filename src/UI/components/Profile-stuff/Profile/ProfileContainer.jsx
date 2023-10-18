@@ -1,6 +1,6 @@
 import Profile from './Profile'
 import React from 'react'
-import { getUserProfile, getStatus, updateStatus } from '../../../../BLL/react-redux/reducers/profile-reducer'
+import { getUserProfile, getStatus, updateStatus, savePhoto } from '../../../../BLL/react-redux/reducers/profile-reducer'
 import { connect } from 'react-redux'
 import { withRouter } from './HookWithRoute'
 import { compose } from 'redux'
@@ -30,7 +30,17 @@ class ProfileContainer extends React.Component {
 	}
 
 	render() {
-		return <Profile {...this.props} userProfile={this.props.userProfile} status={this.props.status} updateStatus={this.props.updateStatus} mainUserId={this.props.mainUserId} />
+		return (
+			<Profile
+				{...this.props}
+				isOwner={!this.props.match.params.userId} // отрицание приводит параметр из псевдо истины в булевое значение т.е. в false(если нет чужого id, значит я этот самый owner)
+				userProfile={this.props.userProfile}
+				status={this.props.status}
+				updateStatus={this.props.updateStatus}
+				mainUserId={this.props.mainUserId}
+				savePhoto={this.props.savePhoto}
+			/>
+		)
 	}
 }
 
@@ -60,6 +70,7 @@ export default compose(
 		getUserProfile,
 		getStatus,
 		updateStatus,
+		savePhoto,
 	}), //все что ниже вкладывается в connect
 	withRouter //экспортируем функцию обертку 'withRouter' из ./HookWithRoute в которую вкладывается withAuthRedirect с ProfileContainer внутри
 	// withAuthRedirect, // то во что вкладывается сам компонент(перенаправление на логин)
