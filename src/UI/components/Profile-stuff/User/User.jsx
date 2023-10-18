@@ -5,7 +5,8 @@ import ProfileStatus from '../ProfileStatus/ProfileStatusWithClass'
 import ProfileStatusWithHooks from '../ProfileStatus/profileStatusWithHooks'
 
 // const User = props => {
-const User = ({ userProfile, status, updateStatus }) => { //диструктуризация пропсов
+const User = ({ isOwner, userProfile, status, updateStatus, savePhoto }) => {
+	//диструктуризация пропсов
 	if (!userProfile) {
 		return (
 			<div className={cl.preloader}>
@@ -13,6 +14,11 @@ const User = ({ userProfile, status, updateStatus }) => { //диструктур
 			</div>
 		)
 	}
+
+	const onMainPhotoSelected = event => {
+		event.target.files.length && savePhoto(event.target.files[0]) //условие - если фото есть(event.target.files.length), то тогда передаем его в props
+	}
+
 	return (
 		<>
 			{/* <img
@@ -21,7 +27,10 @@ const User = ({ userProfile, status, updateStatus }) => { //диструктур
 				alt='some image'
 			/> */}
 			<div className={cl.user}>
-				<img className={cl.userImg} src={userProfile.photos.small !== null ? userProfile.photos.small : defaultUserPhoto} alt='user-profile' />
+				<div className={cl.userPhoto}>
+					<img className={cl.userImg} src={userProfile.photos.small !== null ? userProfile.photos.small : defaultUserPhoto} alt='user-profile' />
+					{isOwner && <input type={'file'} onChange={onMainPhotoSelected} />}
+				</div>
 				<div className={cl.userInfo}>
 					<p className={cl.name}>{userProfile.fullName.charAt(0).toUpperCase() + userProfile.fullName.slice(1)}</p>
 					<ProfileStatusWithHooks status={status} updateStatus={updateStatus} />
