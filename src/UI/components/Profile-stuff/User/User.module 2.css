@@ -1,0 +1,60 @@
+.user {
+	display: flex;
+	width: 400px;
+	margin: 20px 0;
+	padding: 20px;
+}
+
+.userImg {
+	width: 160px;
+	height: 160px;
+	margin-right: 10px;
+	border-radius: 100px;
+	align-self: center;
+}
+
+.name {
+	font-size: 20px;
+	margin-bottom: 10px;
+}
+
+.contentImg {
+	display: block;
+	width: 100%;
+	height: 230px;
+}
+
+.contactsWrapper {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+	
+}
+
+.contacts {
+	list-style-type: none;
+	text-decoration: none;
+	margin-left: 0px;
+	/* border: 1.5px solid rgb(0, 0, 0); */
+	padding: 15px;
+	box-shadow: 6px 4px rgb(8, 70, 60);
+	border-radius: 7px;
+}
+
+.contactWrapper {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+}
+
+.key {
+	margin-right: 10px;
+}
+
+.value {
+	color: rgb(36, 218, 124);
+}
+
+.preloader {
+	margin-top: 50px;
+}
