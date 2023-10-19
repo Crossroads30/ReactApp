@@ -21,11 +21,6 @@ const User = ({ isOwner, userProfile, status, updateStatus, savePhoto }) => {
 
 	return (
 		<>
-			{/* <img
-				className={cl.contentImg}
-				src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNFbPnraZxme2bIxu6D099w5lJ3p86n6fqww&usqp=CAU'
-				alt='some image'
-			/> */}
 			<div className={cl.user}>
 				<div className={cl.userPhoto}>
 					<img className={cl.userImg} src={userProfile.photos.small !== null ? userProfile.photos.small : defaultUserPhoto} alt='user-profile' />
@@ -34,6 +29,17 @@ const User = ({ isOwner, userProfile, status, updateStatus, savePhoto }) => {
 				<div className={cl.userInfo}>
 					<p className={cl.name}>{userProfile.fullName.charAt(0).toUpperCase() + userProfile.fullName.slice(1)}</p>
 					<ProfileStatusWithHooks status={status} updateStatus={updateStatus} />
+					<div className={cl.jobLooking}>
+						<div className={cl.isLooking}>
+							<b>Looking for a job:</b>
+							{userProfile.lookingForAJob ? 'Yes' : 'No'}
+						</div>
+						{userProfile.lookingForAJob && (
+							<div className={cl.skills}>
+								<b>My skills:{userProfile.lookingForAJobDescription}</b>
+							</div>
+						)}
+					</div>
 					<div className={cl.contactsWrapper}>
 						<ul className={cl.contacts}>
 							{Object.entries(userProfile.contacts).map(([key, value]) => {

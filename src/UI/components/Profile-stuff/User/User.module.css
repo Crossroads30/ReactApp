@@ -59,3 +59,15 @@
 .preloader {
 	margin-top: 50px;
 }
+
+.jobLooking {
+margin-bottom: 10px;
+}
+.isLooking {
+display: flex;
+margin-bottom: 2px;
+}
+.isLooking b{
+	text-wrap: nowrap;
+	margin-right: 7px;
+}
