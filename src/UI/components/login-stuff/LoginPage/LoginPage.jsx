@@ -8,7 +8,7 @@ const LoginPage = ({login, isAuth}) => {
 	//используем диструктуризацию пропсов(не забываем про фигурные скобки, т.к. props - это объект)
 
 	const addLogin = formData => {
-		console.log(formData)
+		// console.log(formData)
 		// props.login(formData.email, formData.password, formData.rememberMe)
 		login(formData.email, formData.password, formData.rememberMe)
 	}

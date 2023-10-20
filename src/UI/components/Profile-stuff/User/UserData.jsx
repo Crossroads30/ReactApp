@@ -1,7 +1,7 @@
 import ProfileStatusWithHooks from '../ProfileStatus/profileStatusWithHooks'
 import cl from './User.module.css'
 
-export const UserData = ({ userProfile, status, updateStatus} ) => {
+const UserData = ({ userProfile, status, updateStatus, isOwner, goToEditMode }) => {
 	//диструктуризация пропсов, незабываем фигурные скобки!!!
 	return (
 		<div className={cl.userInfo}>
@@ -35,6 +35,9 @@ export const UserData = ({ userProfile, status, updateStatus} ) => {
 			<p className={cl.jobLooking}>{userProfile.lookingForAJob}</p>
 			<p className={cl.jobLookingDes}>{userProfile.lookingForAJobDescription}</p>
 			<p className={cl.aboutMe}>About Me: {userProfile.aboutMe}</p>
+			{isOwner && <button onClick={goToEditMode}>edit</button>}
 		</div>
 	)
 }
+
+export default UserData

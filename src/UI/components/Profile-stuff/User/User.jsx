@@ -3,11 +3,16 @@ import cl from './User.module.css'
 import defaultUserPhoto from '../../../../assets/images/userDefaultImage.png'
 import ProfileStatus from '../ProfileStatus/ProfileStatusWithClass'
 import ProfileStatusWithHooks from '../ProfileStatus/profileStatusWithHooks'
-import { UserData } from './UserData'
+import UserData from './UserData'
+import UserDataForm, { EditReduxForm } from './UserDataForm'
+import { useState } from 'react'
 
 // const User = props => {
-const User = ({ isOwner, userProfile, status, updateStatus, savePhoto }) => {
+const User = ({ isOwner, userProfile, status, updateStatus, savePhoto, saveUserData }) => {
 	//диструктуризация пропсов, незабываем фигурные скобки!!!
+
+	let [editMode, setEditMode] = useState(false)
+
 	if (!userProfile) {
 		return (
 			<div className={cl.preloader}>
@@ -20,14 +25,46 @@ const User = ({ isOwner, userProfile, status, updateStatus, savePhoto }) => {
 		event.target.files.length && savePhoto(event.target.files[0]) //условие - если фото есть(event.target.files.length), то тогда передаем его в props
 	}
 
+	const onSubmitEditForm = formData => {
+		//передаем formData(то что соберет Redux Form во всех полях своей формы ) в санку saveUserData
+		saveUserData(formData)
+			//если санка завершилась успешно, то тогда выключаем editMode
+			//что бы это работало необходимо в санке saveUserData после диспатча с ошибкой вернуть Promise.reject()
+			.then(() => {
+				setEditMode(false)
+			})
+	}
+
 	return (
 		<>
 			<div className={cl.user}>
 				<div className={cl.userPhoto}>
-					<img className={cl.userImg} src={userProfile.photos.small !== null ? userProfile.photos.small : defaultUserPhoto} alt='user-profile' />
+					<img
+						className={cl.userImg}
+						src={userProfile.photos.small !== null ? userProfile.photos.small : defaultUserPhoto}
+						alt='user-profile'
+					/>
 					{isOwner && <input type={'file'} onChange={onMainPhotoSelected} />}
 				</div>
-				<UserData userProfile={userProfile} status={status} updateStatus={updateStatus} />
+				{editMode ? (
+					/* передаем в initialValues userProfile для того что бы в полях формы значения по умолчанию брались из объекта 'profile' на сервере */
+					<EditReduxForm
+						initialValues={userProfile}
+						onSubmit={onSubmitEditForm}
+						userProfile={userProfile}
+					/>
+				) : (
+					<UserData
+						userProfile={userProfile}
+						status={status}
+						updateStatus={updateStatus}
+						isOwner={isOwner}
+						goToEditMode={() => {
+							setEditMode(true)
+						}}
+					/>
+				)}
+
 				{/* код ниже перенесен в UserData */}
 				{/* <div className={cl.userInfo}>
 					<p className={cl.name}>{userProfile.fullName.charAt(0).toUpperCase() + userProfile.fullName.slice(1)}</p>

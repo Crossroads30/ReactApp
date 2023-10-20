@@ -68,6 +68,9 @@ export const profileApi = {
 			},
 		})
 	},
+	async saveUserData(profile) {
+		return await instance.put(`profile`,  profile )
+	}
 }
 
 

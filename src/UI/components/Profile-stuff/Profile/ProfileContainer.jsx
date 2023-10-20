@@ -1,6 +1,6 @@
 import Profile from './Profile'
 import React from 'react'
-import { getUserProfile, getStatus, updateStatus, savePhoto } from '../../../../BLL/react-redux/reducers/profile-reducer'
+import { getUserProfile, getStatus, updateStatus, savePhoto, saveUserData } from '../../../../BLL/react-redux/reducers/profile-reducer'
 import { connect } from 'react-redux'
 import { withRouter } from './HookWithRoute'
 import { compose } from 'redux'
@@ -39,6 +39,7 @@ class ProfileContainer extends React.Component {
 				updateStatus={this.props.updateStatus}
 				mainUserId={this.props.mainUserId}
 				savePhoto={this.props.savePhoto}
+				saveUserData={this.props.saveUserData}
 			/>
 		)
 	}
@@ -71,6 +72,7 @@ export default compose(
 		getStatus,
 		updateStatus,
 		savePhoto,
+		saveUserData,
 	}), //все что ниже вкладывается в connect
 	withRouter //экспортируем функцию обертку 'withRouter' из ./HookWithRoute в которую вкладывается withAuthRedirect с ProfileContainer внутри
 	// withAuthRedirect, // то во что вкладывается сам компонент(перенаправление на логин)

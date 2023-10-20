@@ -71,3 +71,10 @@ margin-bottom: 2px;
 	text-wrap: nowrap;
 	margin-right: 7px;
 }
+.formSummaryError {
+	color: red;
+	padding: 10px;
+	border: 1px solid red;
+	margin-top: 20px;
+	width: 185px;
+}
