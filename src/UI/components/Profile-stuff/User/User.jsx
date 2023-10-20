@@ -3,10 +3,11 @@ import cl from './User.module.css'
 import defaultUserPhoto from '../../../../assets/images/userDefaultImage.png'
 import ProfileStatus from '../ProfileStatus/ProfileStatusWithClass'
 import ProfileStatusWithHooks from '../ProfileStatus/profileStatusWithHooks'
+import { UserData } from './UserData'
 
 // const User = props => {
 const User = ({ isOwner, userProfile, status, updateStatus, savePhoto }) => {
-	//диструктуризация пропсов
+	//диструктуризация пропсов, незабываем фигурные скобки!!!
 	if (!userProfile) {
 		return (
 			<div className={cl.preloader}>
@@ -26,7 +27,9 @@ const User = ({ isOwner, userProfile, status, updateStatus, savePhoto }) => {
 					<img className={cl.userImg} src={userProfile.photos.small !== null ? userProfile.photos.small : defaultUserPhoto} alt='user-profile' />
 					{isOwner && <input type={'file'} onChange={onMainPhotoSelected} />}
 				</div>
-				<div className={cl.userInfo}>
+				<UserData userProfile={userProfile} status={status} updateStatus={updateStatus} />
+				{/* код ниже перенесен в UserData */}
+				{/* <div className={cl.userInfo}>
 					<p className={cl.name}>{userProfile.fullName.charAt(0).toUpperCase() + userProfile.fullName.slice(1)}</p>
 					<ProfileStatusWithHooks status={status} updateStatus={updateStatus} />
 					<div className={cl.jobLooking}>
@@ -57,7 +60,7 @@ const User = ({ isOwner, userProfile, status, updateStatus, savePhoto }) => {
 					<p className={cl.jobLooking}>{userProfile.lookingForAJob}</p>
 					<p className={cl.jobLookingDes}>{userProfile.lookingForAJobDescription}</p>
 					<p className={cl.aboutMe}>About Me: {userProfile.aboutMe}</p>
-				</div>
+				</div> */}
 			</div>
 		</>
 	)
