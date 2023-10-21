@@ -8,7 +8,7 @@ const SET_USER_STATUS = 'profile/SET-USER-STATUS'
 const UPDATE_USER_STATUS = 'profile/UPDATE-USER-STATUS'
 const DELETE_POST = 'profile/DELETE-POST'
 const SAVE_USER_PHOTO_SUCCESS = 'SET-USER-PHOTO-SUCCESS'
-// const UPDATE_USER_DATA = 'profile/UPDATE-USER-DATA'
+const UPDATE_USER_DATA_SUCCESS = 'profile/UPDATE-USER-DATA-SUCCESS'
 
 let initialState = {
 	posts: [
@@ -21,6 +21,7 @@ let initialState = {
 	],
 	userProfile: null,
 	status: '',
+	userDataStatus: '',
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -60,11 +61,11 @@ const profileReducer = (state = initialState, action) => {
 				...state,
 				userProfile: { ...state.userProfile, photos: action.userPhoto }, //фотография приходит из api запроса и находится в photos
 			}
-		// case UPDATE_USER_DATA:
-		// 	return {
-		// 		...state,
-		// 		userData: action.userData,
-		// 	}
+		case UPDATE_USER_DATA_SUCCESS:
+			return {
+				...state,
+				userDataStatus: action.userDataStatus,
+			}
 		default:
 			return state
 	}
@@ -96,10 +97,11 @@ export const savePhotoSuccess = userPhoto => ({
 	type: SAVE_USER_PHOTO_SUCCESS,
 	userPhoto,
 })
-// export const updateUserData = userData => ({
-// 	type: UPDATE_SAVE_USER_DATA,
-// 	userData,
-// })
+export const updateUserDataSuccess = userDataStatus => ({
+	type: UPDATE_USER_DATA_SUCCESS,
+	userDataStatus,
+})
+
 
 //--------------------------------------------------------
 //thunk creators:
@@ -134,11 +136,49 @@ export const saveUserData = profile => async (dispatch, getState) => {
 		dispatch(getUserProfile(userId))
 	} else {
 		//передаем в качестве ошибки сообщение из response.data.messages из api запроса
-		dispatch(stopSubmit('edit-profile', { _error: response.data.messages[0] })) //для выведения общей ошибки
+		dispatch(stopSubmit('edit-profile', { _error: response.data.messages })) //для выведения общей ошибки
 		// dispatch(stopSubmit('edit-profile', { "contacts":  {"facebook": response.data.messages[0]} }))//для выведения отдельных ошибок по полям но надо распарсить строку из response.data.messages[0]
-		return Promise.reject(response.data.messages[0]) //после диспатча возвращаем Promise.reject с сообщением об этой ошибки внутри
+		return Promise.reject(response.data.messages) //после диспатча возвращаем Promise.reject с сообщением об этой ошибки внутри
 	}
-	
+// }
+// export const saveUserData = profile => async (dispatch, getState) => {
+// 	const userId = getState().auth.id
+// 	const response = await profileApi.saveUserData(profile)
+// 	console.log(response.data.messages)
+// 	if (response.data.resultCode === 0) {
+// 		dispatch(getUserProfile(userId))
+// 		dispatch(updateUserDataSuccess('success'))
+// 	} else {
+// 		const fieldName = response.data.messages[0]
+// 			.replace(/[^a-zA-Z0-9-'-' ]/g, '')
+// 			.split('-')
+// 			.slice(-1)
+// 			.toString()
+// 		const fieldNameLower = fieldName.charAt(0).toLowerCase() + fieldName.slice(1)
+		
+// 		//передаем в качестве ошибки сообщение из response.data.messages из api запроса
+// 		dispatch(
+// 			//что бы переменная была видна внутри {}, помещаем ее внутрь []
+// 			stopSubmit('edit-profile', {
+// 				contacts: { [fieldNameLower]: response.data.messages[0].split('(').slice(0, 1) },
+// 			})
+// 		)
+// 		// dispatch(stopSubmit('edit-profile', { _error: response.data.messages[0] }))
+// 		dispatch(updateUserDataSuccess('error'))
+// 	}
+
+	//второй вариант выведения ошибки:
+	// if (response.data.resultCode === 0){ 
+  //       dispatch(getUserProfile(userId));
+  //   }
+  //   else {
+  //       let result = [];
+  //         for (let i=0; response.data.messages.length > i; i++) {
+  //             result.push(response.data.messages[i])
+  //         }
+  //       dispatch(stopSubmit("edit-profile", {_error: result })); 
+  //       return Promise.reject(result); 
+  //   }
 }
 
 //----------------------------------------------------------------
