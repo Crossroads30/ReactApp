@@ -31,7 +31,11 @@ const UserDataForm = ({ handleSubmit, userProfile, error }) => {
 					})}
 				</ul>
 				{error && (
-					<div className={cl.formSummaryError}>{error}</div>
+					<>
+						{error.map(el => {
+							return <div className={cl.formSummaryError}>{el}</div>
+						})}
+					</>
 				)}
 				<div className={cl.button}>
 					<button>Save</button>
