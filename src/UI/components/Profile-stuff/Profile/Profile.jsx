@@ -2,10 +2,26 @@ import PostsContainer from '../Posts/PostsContainer'
 import User from '../User/User'
 import cl from './Profile.module.css'
 
-const Profile = ({ isOwner, userProfile, status, updateStatus, savePhoto, saveUserData }) => {
+const Profile = ({
+	isOwner,
+	userProfile,
+	status,
+	updateStatus,
+	savePhoto,
+	saveUserData,
+	userDataStatus,
+}) => {
 	return (
 		<main className={cl.content}>
-			<User isOwner={isOwner} userProfile={userProfile} status={status} updateStatus={updateStatus} savePhoto={savePhoto} saveUserData={saveUserData} />
+			<User
+				isOwner={isOwner}
+				userProfile={userProfile}
+				status={status}
+				updateStatus={updateStatus}
+				savePhoto={savePhoto}
+				saveUserData={saveUserData}
+				userDataStatus={userDataStatus}
+			/>
 			<PostsContainer />
 		</main>
 	)

@@ -1,6 +1,12 @@
 import Profile from './Profile'
 import React from 'react'
-import { getUserProfile, getStatus, updateStatus, savePhoto, saveUserData } from '../../../../BLL/react-redux/reducers/profile-reducer'
+import {
+	getUserProfile,
+	getStatus,
+	updateStatus,
+	savePhoto,
+	saveUserData,
+} from '../../../../BLL/react-redux/reducers/profile-reducer'
 import { connect } from 'react-redux'
 import { withRouter } from './HookWithRoute'
 import { compose } from 'redux'
@@ -40,6 +46,7 @@ class ProfileContainer extends React.Component {
 				mainUserId={this.props.mainUserId}
 				savePhoto={this.props.savePhoto}
 				saveUserData={this.props.saveUserData}
+				userDataStatus={this.props.userDataStatus}
 			/>
 		)
 	}
@@ -51,6 +58,7 @@ const setStateToProps = state => {
 		status: state.profilePage.status,
 		authorizedUserId: state.auth.id,
 		isAuth: state.auth.isAuth,
+		userDataStatus: state.profilePage.userDataStatus,
 	}
 }
 

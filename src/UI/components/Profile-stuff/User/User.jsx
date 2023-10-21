@@ -5,13 +5,21 @@ import ProfileStatus from '../ProfileStatus/ProfileStatusWithClass'
 import ProfileStatusWithHooks from '../ProfileStatus/profileStatusWithHooks'
 import UserData from './UserData'
 import UserDataForm, { EditReduxForm } from './UserDataForm'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // const User = props => {
-const User = ({ isOwner, userProfile, status, updateStatus, savePhoto, saveUserData }) => {
+const User = ({
+	isOwner,
+	userProfile,
+	status,
+	updateStatus,
+	savePhoto,
+	saveUserData,
+	userDataStatus,
+}) => {
 	//диструктуризация пропсов, незабываем фигурные скобки!!!
-
-	let [editMode, setEditMode] = useState(false)
+	// debugger
+	let [formEditMode, setFormEditMode] = useState(false)
 
 	if (!userProfile) {
 		return (
@@ -25,13 +33,22 @@ const User = ({ isOwner, userProfile, status, updateStatus, savePhoto, saveUserD
 		event.target.files.length && savePhoto(event.target.files[0]) //условие - если фото есть(event.target.files.length), то тогда передаем его в props
 	}
 
+	// const onSubmitEditForm = formData => {
+	// 	//передаем formData(то что соберет Redux Form во всех полях своей формы ) в санку saveUserData
+	// 	saveUserData(formData)
+	// 	//если санка завершилась успешно, то тогда выключаем editMode
+	// 	if (userDataStatus === 'success') {
+	// 		setFormEditMode(false)
+	// 	}
+	// }
+
 	const onSubmitEditForm = formData => {
 		//передаем formData(то что соберет Redux Form во всех полях своей формы ) в санку saveUserData
 		saveUserData(formData)
 			//если санка завершилась успешно, то тогда выключаем editMode
 			//что бы это работало необходимо в санке saveUserData после диспатча с ошибкой вернуть Promise.reject()
 			.then(() => {
-				setEditMode(false)
+				setFormEditMode(false)
 			})
 	}
 
@@ -46,7 +63,7 @@ const User = ({ isOwner, userProfile, status, updateStatus, savePhoto, saveUserD
 					/>
 					{isOwner && <input type={'file'} onChange={onMainPhotoSelected} />}
 				</div>
-				{editMode ? (
+				{formEditMode ? (
 					/* передаем в initialValues userProfile для того что бы в полях формы значения по умолчанию брались из объекта 'profile' на сервере */
 					<EditReduxForm
 						initialValues={userProfile}
@@ -60,7 +77,7 @@ const User = ({ isOwner, userProfile, status, updateStatus, savePhoto, saveUserD
 						updateStatus={updateStatus}
 						isOwner={isOwner}
 						goToEditMode={() => {
-							setEditMode(true)
+							setFormEditMode(true)
 						}}
 					/>
 				)}
