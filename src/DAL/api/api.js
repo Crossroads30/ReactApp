@@ -79,17 +79,26 @@ export const authAPI = {
 		//запрос на подтверждения аутентификации
 		return await instance.get(`auth/me`)
 	},
-	async getLogin(email, password, rememberMe = false) {
+	async getLogin(email, password, rememberMe = false, captcha = null ) {
 		//запрос на 'login' на  сервер через приложение
 		return await instance.post(`auth/login`, {
 			//вторым параметром передаем объект, то что требует документация
 			email,
 			password,
 			rememberMe,
+			captcha,
 		})
 	},
 	async getLogout() {
 		//запрос на 'logout' из сервера через приложение
 		return await instance.delete(`auth/login`)
 	},
+}
+
+
+export const securityAPI = {
+	async getCaptchaURL() {
+		//запрос на подтверждения аутентификации
+		return await instance.get(`security/get-captcha-url`)
+	}
 }

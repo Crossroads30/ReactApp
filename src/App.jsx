@@ -58,7 +58,7 @@ class App extends React.Component {
 						/> */}
 						{/* с ленивой загрузкой c помощью HOC: */}
 						<Route path='/profile/:userId?' element={<ProfileContainerWithSuspense />} />
-						
+
 						{/* без ленивой загрузки: */}
 						{/* <Route path='/dialogs/*' element={<DialogsContainer />} /> */}
 						{/* с ленивой загрузкой без HOC: */}
@@ -81,7 +81,7 @@ class App extends React.Component {
 							path='*'
 							element={
 								<React.Suspense fallback={<Preloader />}>
-									<ProfileContainer />
+									<ProfileContainerWithSuspense />
 								</React.Suspense>
 							}
 						/>

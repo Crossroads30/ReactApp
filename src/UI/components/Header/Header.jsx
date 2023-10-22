@@ -2,9 +2,9 @@ import { NavLink } from 'react-router-dom'
 import cl from './Header.module.css'
 
 // const Header = (props) => { 
-const Header = ({ login, isAuth }) => { //диструктуризация пропсов
+const Header = ({ login, isAuth, logout }) => { //диструктуризация пропсов
 	const getLogout = () => {
-		props.logout()
+		logout()
 	}
 
 	return (

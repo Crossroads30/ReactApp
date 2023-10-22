@@ -7,7 +7,7 @@ import { FormElement, createField } from '../../common/FormsControls/FormElement
 const maxLength30 = maxLengthCreator(30) //вызов этой функции необходимо вызывать за пределами компоненты иначе будет бесконечный цикл!
 
 // const LoginForm = (props) => {
-const LoginForm = ({ handleSubmit, error }) => {
+const LoginForm = ({ handleSubmit, error, captchaURL }) => {
 	//используем диструктуризацию пропсов(не забываем про фигурные скобки, т.к. props - это объект)
 	// debugger
 	return (
@@ -17,7 +17,9 @@ const LoginForm = ({ handleSubmit, error }) => {
 				{/* используем диструктуризацию пропсов */}
 				{/* вызываем шаблонизатор полей createField и передаем в него все необходимые параметры */}
 				{createField(cl.email, 'Email', 'email', [required, maxLength30], 'input')}
-				{createField(cl.password, 'Password', 'password', [required, maxLength30], 'input', { type: 'password' })}
+				{createField(cl.password, 'Password', 'password', [required, maxLength30], 'input', {
+					type: 'password',
+				})}
 				{createField(
 					cl.checkbox,
 					null,
@@ -29,6 +31,9 @@ const LoginForm = ({ handleSubmit, error }) => {
 					},
 					'Remember me'
 				)}
+				{captchaURL && <img src={captchaURL} />}
+				{/* если капча, то показываем img с этой капчей внутри(то что выше) и вводим эти символы в поле(то что ниже)(имя поля должно соответствовать тому полю что находится на сервере ) */}
+				{captchaURL && createField(null, 'Symbols from image', 'captcha', [required], 'input', {})}
 				<div className={cl.button}>
 					<button>Login</button>
 				</div>

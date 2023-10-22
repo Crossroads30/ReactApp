@@ -4,13 +4,13 @@ import cl from './LoginPage.module.css'
 
 //используем диструктуризацию пропсов
 // const LoginPage = props => {
-const LoginPage = ({login, isAuth}) => {
+const LoginPage = ({ login, isAuth, captchaURL }) => { 
 	//используем диструктуризацию пропсов(не забываем про фигурные скобки, т.к. props - это объект)
 
 	const addLogin = formData => {
 		// console.log(formData)
 		// props.login(formData.email, formData.password, formData.rememberMe)
-		login(formData.email, formData.password, formData.rememberMe)
+		login(formData.email, formData.password, formData.rememberMe, formData.captcha)
 	}
 
 	if (isAuth) {
@@ -19,7 +19,7 @@ const LoginPage = ({login, isAuth}) => {
 	return (
 		<div className={cl.loginWrapper}>
 			<h1 className={cl.loginTitle}>Login Page</h1>
-			<LoginReduxForm onSubmit={addLogin} />
+			<LoginReduxForm onSubmit={addLogin} captchaURL={captchaURL} />
 		</div>
 	)
 }

@@ -7,13 +7,20 @@ class LoginPageContainer extends React.Component {
 	componentDidMount() {}
 
 	render() {
-		return <LoginPage login={this.props.loginToServer} isAuth={this.props.isAuth}/>
+		return (
+			<LoginPage
+				login={this.props.loginToServer}
+				isAuth={this.props.isAuth}
+				captchaURL={this.props.captchaURL}
+			/>
+		)
 	}
 }
 
 const setStateToProps = state => { 
 	return {
-		isAuth: state.auth.isAuth
+		captchaURL: state.auth.captchaURL,
+		isAuth: state.auth.isAuth,
 	} 
 }
 
