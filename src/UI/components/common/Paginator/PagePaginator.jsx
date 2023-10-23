@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import cl from './PagePaginator.module.css'
+import classnames from 'classnames'
 
 const Paginator = ({ totalItemsCount, pageSize, currentPage, onPageChange, portionSize = 10 }) => {
 	let pagesCount = Math.ceil(totalItemsCount / pageSize)
@@ -33,7 +34,12 @@ const Paginator = ({ totalItemsCount, pageSize, currentPage, onPageChange, porti
 						<span
 							key={page}
 							// className={currentPage === page && cl.selectedPage}// этот вариант работает, но с Warning
-							className={currentPage === page ? cl.pagination + ' ' + 'span' + ' ' + cl.selectedPage : cl.pagination + ' ' + 'span'}
+							// className={currentPage === page ? cl.pagination + ' ' + 'span' + ' ' + cl.selectedPage : cl.pagination + ' ' + 'span'}
+							className={
+								currentPage === page
+									? classnames([cl.pagination], 'span', [cl.selectedPage])
+									: classnames([cl.pagination], 'span')
+							} //используем библиотеку classnames вместо кода выше для склеивания разных классов
 							onClick={() => {
 								onPageChange(page)
 							}}
