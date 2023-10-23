@@ -1,7 +1,7 @@
 import './styles/App.css'
 // import ProfileContainer from './UI/components/Profile-stuff/Profile/ProfileContainer'
 import Sidebar from './UI/components/sidebar-stuff/Sidebar/Sidebar'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Settings from './UI/components/settings-stuff/Settings/Settings'
 import News from './UI/components/news-stuff/News/News'
 import Music from './UI/components/music-stuff/Music/Music'
@@ -77,15 +77,18 @@ class App extends React.Component {
 						<Route path='/music' element={<Music />} />
 						<Route path='/settings' element={<Settings />} />
 						{/* <Route path='*' element={<ProfileContainer />} /> */}
-						<Route
+						{/* <Route
 							path='*'
 							element={
 								<React.Suspense fallback={<Preloader />}>
 									<ProfileContainerWithSuspense />
 								</React.Suspense>
 							}
-						/>
+						/> */}
 						<Route path='/login' element={<LoginPageContainer />} />
+
+						<Route exact path='*' element={<h2>404 - Page not found</h2>} />
+						{/* <Route exact path='/' element={<Navigate from='/' to={'/profile/'} />} /> */}
 					</Routes>
 				</div>
 			</div>
