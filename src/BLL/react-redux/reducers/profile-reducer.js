@@ -102,7 +102,6 @@ export const updateUserDataSuccess = userDataStatus => ({
 	userDataStatus,
 })
 
-
 //--------------------------------------------------------
 //thunk creators:
 export const getUserProfile = profileId => async dispatch => {
@@ -118,8 +117,13 @@ export const getStatus = profileId => async dispatch => {
 }
 
 export const updateStatus = status => async dispatch => {
-	const response = await profileApi.updateStatus(status)
-	response.data.resultCode === 0 && dispatch(setUserStatus(status))
+	//используем try catch для перехвата ошибок
+	try {
+		const response = await profileApi.updateStatus(status)
+		response.data.resultCode === 0 && dispatch(setUserStatus(status))
+	} catch (error) {
+		console.log(error)
+	}
 }
 
 export const savePhoto = file => async dispatch => {
@@ -140,45 +144,45 @@ export const saveUserData = profile => async (dispatch, getState) => {
 		// dispatch(stopSubmit('edit-profile', { "contacts":  {"facebook": response.data.messages[0]} }))//для выведения отдельных ошибок по полям но надо распарсить строку из response.data.messages[0]
 		return Promise.reject(response.data.messages) //после диспатча возвращаем Promise.reject с сообщением об этой ошибки внутри
 	}
-// }
-// export const saveUserData = profile => async (dispatch, getState) => {
-// 	const userId = getState().auth.id
-// 	const response = await profileApi.saveUserData(profile)
-// 	console.log(response.data.messages)
-// 	if (response.data.resultCode === 0) {
-// 		dispatch(getUserProfile(userId))
-// 		dispatch(updateUserDataSuccess('success'))
-// 	} else {
-// 		const fieldName = response.data.messages[0]
-// 			.replace(/[^a-zA-Z0-9-'-' ]/g, '')
-// 			.split('-')
-// 			.slice(-1)
-// 			.toString()
-// 		const fieldNameLower = fieldName.charAt(0).toLowerCase() + fieldName.slice(1)
-		
-// 		//передаем в качестве ошибки сообщение из response.data.messages из api запроса
-// 		dispatch(
-// 			//что бы переменная была видна внутри {}, помещаем ее внутрь []
-// 			stopSubmit('edit-profile', {
-// 				contacts: { [fieldNameLower]: response.data.messages[0].split('(').slice(0, 1) },
-// 			})
-// 		)
-// 		// dispatch(stopSubmit('edit-profile', { _error: response.data.messages[0] }))
-// 		dispatch(updateUserDataSuccess('error'))
-// 	}
+	// }
+	// export const saveUserData = profile => async (dispatch, getState) => {
+	// 	const userId = getState().auth.id
+	// 	const response = await profileApi.saveUserData(profile)
+	// 	console.log(response.data.messages)
+	// 	if (response.data.resultCode === 0) {
+	// 		dispatch(getUserProfile(userId))
+	// 		dispatch(updateUserDataSuccess('success'))
+	// 	} else {
+	// 		const fieldName = response.data.messages[0]
+	// 			.replace(/[^a-zA-Z0-9-'-' ]/g, '')
+	// 			.split('-')
+	// 			.slice(-1)
+	// 			.toString()
+	// 		const fieldNameLower = fieldName.charAt(0).toLowerCase() + fieldName.slice(1)
+
+	// 		//передаем в качестве ошибки сообщение из response.data.messages из api запроса
+	// 		dispatch(
+	// 			//что бы переменная была видна внутри {}, помещаем ее внутрь []
+	// 			stopSubmit('edit-profile', {
+	// 				contacts: { [fieldNameLower]: response.data.messages[0].split('(').slice(0, 1) },
+	// 			})
+	// 		)
+	// 		// dispatch(stopSubmit('edit-profile', { _error: response.data.messages[0] }))
+	// 		dispatch(updateUserDataSuccess('error'))
+	// 	}
 
 	//второй вариант выведения ошибки:
-	// if (response.data.resultCode === 0){ 
-  //       dispatch(getUserProfile(userId));
-  //   }
-  //   else {
-  //       let result = [];
-  //         for (let i=0; response.data.messages.length > i; i++) {
-  //             result.push(response.data.messages[i])
-  //         }
-  //       dispatch(stopSubmit("edit-profile", {_error: result })); 
-  //       return Promise.reject(result); 
-  //   }
+	// if (response.data.resultCode === 0){
+	//       dispatch(getUserProfile(userId));
+	//   }
+	//   else {
+	//       let result = [];
+	//         for (let i=0; response.data.messages.length > i; i++) {
+	//             result.push(response.data.messages[i])
+	//         }
+	//       dispatch(stopSubmit("edit-profile", {_error: result }));
+	//       return Promise.reject(result);
+	//   }
 }
 
 //----------------------------------------------------------------

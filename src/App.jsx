@@ -28,8 +28,19 @@ const ProfileContainerWithSuspense = withSuspense(ProfileContainer)
 
 class App extends React.Component {
 
+	catchAllUnhandledErrors = () => {//функция показа необработанных ошибок
+		// alert("Some error occurred")
+		console.log("Some error occurred")
+	}
+
 	componentDidMount() {
 		this.props.initializeApp() // берем thunkCreator initializeApp
+		window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)//перехватываем все необработанные ошибки промисов
+	}
+
+	//обязательно убираем обработчик событий что был вызван раннее и передаем в него теже аргументы
+	componentWillUnmount() {
+		window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
 	}
 
 	render() {
