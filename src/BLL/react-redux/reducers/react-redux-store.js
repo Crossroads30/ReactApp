@@ -2,11 +2,11 @@ import { applyMiddleware, combineReducers, legacy_createStore as createStore } f
 import profileReducer from './profile-reducer'
 import messageReducer from './message-reducer'
 import usersReducer from './users-reducer'
-import sidebarReducer from './sidebar-reducer'
+import sidebarReducer from './sidebar-reducer.ts'
 import authReducer from './auth-reducer'
 import thunkMiddleware  from 'redux-thunk'
 import { reducer as formReducer } from 'redux-form'
-import appReducer from './app-reducer'
+import appReducer from './app-reducer.ts'
  import { compose } from 'redux';
 
 const reducers = combineReducers({
