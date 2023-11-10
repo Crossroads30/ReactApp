@@ -27,13 +27,20 @@ let initialState = {
 	name: null as string | null,
 	age: null as number | null,
 	isUser: null as boolean | null,
-	address: {
-    country: null,
-    city: null,
-  } as AddressType 
+	addresses: [] as Array<AddressType>,
+	counter: 0 as number,
 }
 
-export type InitialState = typeof initialState
+export type InitialState = typeof initialState // typeof в тайпскрипте возвращает тип(type)
+
+//берем типизацию из InitialState
+let state: InitialState = {
+	name: null,
+	age: null,
+	isUser: true,
+	addresses: [{ city: null, country: null }],
+	counter: 0
+}
 
 type UserType = {
 	sayHello: Function
@@ -48,9 +55,9 @@ let user: UserType = {
 	sayHello(message: string) {
 		console.log(message)
 	},
-  sayGoodBye( message = 'goog-bye') {
-    console.log(message)
-  },
+	sayGoodBye(message = 'goog-bye') {
+		console.log(message)
+	},
 	name: 'Alex',
 	age: 28,
 	isUser: true,
@@ -63,9 +70,26 @@ let names: Array<string> = ['Dima', 'Sveta', 'Pavel'] //первый вариа�
 let names2: string[] = ['Dima', 'Sveta', 'Pavel'] //второй вариант для массива
 
 const sum = (a: number, b: number) => {
-  return a + b
+	return a + b
 }
-sum( 10, Number('20'))
+sum(10, Number('20'))
+
+//типизация actionType в reducers:
+//например:
+let GET_TASKS = 'app/GET_TASKS'
+
+type GetTasksActionType = {
+	type: typeof GET_TASKS // чтобы использовать константу в качестве типа перед ней пишем 'typeof'
+	// typeof в тайпскрипте возвращает тип(type)
+	id: number
+}
+
+let action: GetTasksActionType = {
+	type: GET_TASKS,
+	id: 12,
+}
+
+
 
 function App() {
 	const [count, setCount] = useState(0)
