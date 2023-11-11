@@ -1,26 +1,29 @@
+
 import { stopSubmit } from 'redux-form'
 import { authAPI, securityAPI } from '../../../DAL/api/api'
 
 const SET_USER_DATA = 'auth/SET-USER-DATA' //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 const CAPTCHA_URL_SUCCESS = 'auth/CAPTCHA-URL-SUCCESS'
 
-export type InitialStateType = {
-	id: number | null
-	email: string | null
-	login: string | null
-	isLoading: boolean
-	isAuth: boolean
-	captchaURL: string | null
+// export type InitialStateType = {
+// 	id: number | null
+// 	email: string | null
+// 	login: string | null
+// 	isLoading: boolean
+// 	isAuth: boolean
+// 	captchaURL: string | null
+// }
+
+let initialState = {
+	id: null as number | null,
+	email: null as string | null,
+	login: null as string | null,
+	isLoading: true as boolean,
+	isAuth: false as boolean,
+	captchaURL: null as string | null, // if null, then captcha is not required
 }
 
-let initialState: InitialStateType = {
-	id: null,
-	email: null,
-	login: null,
-	isLoading: true,
-	isAuth: false,
-	captchaURL: null, // if null, then captcha is not required
-}
+export type InitialStateType = typeof initialState //типизация по умолчанию
 
 const authReducer = (state = initialState, action: any): InitialStateType => {
 	switch (action.type) {
@@ -29,6 +32,7 @@ const authReducer = (state = initialState, action: any): InitialStateType => {
 			return {
 				...state,
 				...action.data,
+				blablaid: 'name',//??? почему то нет ошибки ???
 			}
 		default:
 			return state
