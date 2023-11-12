@@ -1,4 +1,5 @@
 import { userApi } from '../../../DAL/api/api'
+import { UserType } from '../../../types/types'
 import { updateObjectInArray } from '../../../utils/helpers/object-helpers'
 
 //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
@@ -8,19 +9,20 @@ const UNFOLLOW = 'users/UNFOLLOW'
 const SET_CURRENT_PAGE = 'users/SET-CURRENT-PAGE'
 const TOGGLE_IS_LOADING = 'users/TOGGLE-IS-LOADING'
 const SET_USERS_COUNT = 'users/SET-USERS-COUNT'
-const DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS =
-	'users/DISABLE-FETCHING-BUTTON'
+const DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS = 'users/DISABLE-FETCHING-BUTTON'
 
 let initialState = {
-	users: [],
-	pageSize: 5,
-	totalUsersCount: 500,
-	currentPage: 1,
-	isLoading: true,
-	followingInProgress: [],
+	users: [] as Array<UserType>,
+	pageSize: 5 as number,
+	totalUsersCount: 500 as number,
+	currentPage: 1 as number,
+	isLoading: true as boolean,
+	followingInProgress: [] as Array<number>,// array of users ids
 }
 
-const UsersReducer = (state = initialState, action) => {
+export type InitialStateType = typeof initialState
+
+const UsersReducer = (state = initialState, action: any): InitialStateType => {
 	switch (action.type) {
 		case SET_USERS:
 			return {
@@ -88,23 +90,58 @@ const UsersReducer = (state = initialState, action) => {
 	}
 }
 
-//функции Action Creators:
-export const setUsers = users => ({ type: SET_USERS, users })
-export const followUser = userId => ({ type: FOLLOW, userId })
-export const unfollowUser = userId => ({ type: UNFOLLOW, userId })
-export const setCurrentPage = currentPage => ({
+//функции Action Creators with types:
+type SetUsersType = {
+	type: typeof SET_USERS
+	users: Array<UserType>
+}
+export const setUsers = (users: Array<UserType>): SetUsersType => ({ type: SET_USERS, users })
+
+type FollowUserType = {
+	type: typeof FOLLOW
+	userId: number
+}
+export const followUser = (userId: number): FollowUserType => ({ type: FOLLOW, userId })
+
+type UnfollowUserType = {
+	type: typeof UNFOLLOW
+	userId: number
+}
+export const unfollowUser = (userId: number): UnfollowUserType => ({ type: UNFOLLOW, userId })
+
+type SetCurrentPageType = {
+	type: typeof SET_CURRENT_PAGE
+	currentPage: number
+}
+export const setCurrentPage = (currentPage: number): SetCurrentPageType => ({
 	type: SET_CURRENT_PAGE,
 	currentPage,
 })
-export const setIsLoading = isLoading => ({
+
+type SetIsLoadingType = {
+	type: typeof TOGGLE_IS_LOADING
+	isLoading: boolean
+}
+export const setIsLoading = (isLoading: boolean): SetIsLoadingType => ({
 	type: TOGGLE_IS_LOADING,
 	isLoading,
 })
-export const setTotalUsersCount = totalUsersCount => ({
+
+type SetTotalUsersCountType = {
+	type: typeof SET_USERS_COUNT
+	count: number
+}
+export const setTotalUsersCount = (count: number): SetTotalUsersCountType => ({
 	type: SET_USERS_COUNT,
-	count: totalUsersCount,
+	count,
 })
-export const setDisableFetchingButton = (isLoading, userId) => ({
+
+type SetDisableFetchingButtonType = {
+	type: typeof DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS
+	isLoading: boolean
+	userId: number
+}
+export const setDisableFetchingButton = (isLoading: boolean, userId: number): SetDisableFetchingButtonType => ({
 	type: DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS,
 	isLoading,
 	userId,
@@ -113,7 +150,7 @@ export const setDisableFetchingButton = (isLoading, userId) => ({
 //thunk функции:
 
 //ThunkCreator getUsers:
-export const getUsers = (currentPage, pageSize) => async dispatch => {
+export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: any) => {
 	//берем параметры с помощью замыкания в thunkCreator и возвращаем из нее thunk функцию с диспатчем, в которую приходят эти параметры:
 	dispatch(setIsLoading(true)) //диспатчем actionCreator
 	const data = await userApi.getUsers(currentPage, pageSize)
@@ -126,10 +163,10 @@ export const getUsers = (currentPage, pageSize) => async dispatch => {
 //общая функция для follow/unfollow
 const followUnfollowFlow = async (
 	//код с одной общей функцией для follow/unfollow для избежания дублирования кода
-	dispatch,
-	userId,
-	apiMethod,
-	actionCreator
+	dispatch: any,
+	userId: number,
+	apiMethod: any,
+	actionCreator: any
 ) => {
 	dispatch(setDisableFetchingButton(true, userId))
 	let data = await apiMethod(userId)
@@ -139,7 +176,7 @@ const followUnfollowFlow = async (
 }
 
 //ThunkCreator follow:
-export const follow = userId => async dispatch => {
+export const follow = (userId: number) => async (dispatch: any) => {
 	followUnfollowFlow(
 		//с помощью диструктуризации передаем параметры в followUnfollowFlow
 		dispatch,
@@ -150,7 +187,7 @@ export const follow = userId => async dispatch => {
 }
 
 //ThunkCreator unfollow:
-export const unfollow = userId => async dispatch => {
+export const unfollow = (userId: number)=> async (dispatch: any) => {
 	followUnfollowFlow(
 		//с помощью диструктуризации передаем параметры в followUnfollowFlow
 		dispatch,

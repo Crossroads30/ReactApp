@@ -1,5 +1,6 @@
 import { profileApi } from '../../../DAL/api/api'
 import { stopSubmit } from 'redux-form'
+import { PhotosType, PostsType, ProfileType } from '../../../types/types'
 
 //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 const ADD_POST = 'profile/ADD-POST'
@@ -18,13 +19,14 @@ let initialState = {
 		{ id: 4, message: 'see you tomorrow', likes: 5 },
 		{ id: 5, message: 'How are you?', likes: 23 },
 		{ id: 6, message: 'Good night!', likes: 18 },
-	],
-	userProfile: null,
-	status: '',
-	userDataStatus: '',
+	] as Array<PostsType>,
+	userProfile: null as ProfileType | null,
+	status: '' as string,
+	userDataStatus: '' as string,
 }
+export type InitialStateType = typeof initialState
 
-const profileReducer = (state = initialState, action) => {
+const profileReducer = (state = initialState, action: any): InitialStateType => {
 	switch (action.type) {
 		case ADD_POST:
 			let newPost = {
@@ -59,7 +61,7 @@ const profileReducer = (state = initialState, action) => {
 		case SAVE_USER_PHOTO_SUCCESS:
 			return {
 				...state,
-				userProfile: { ...state.userProfile, photos: action.userPhoto }, //фотография приходит из api запроса и находится в photos
+				userProfile: { ...state.userProfile, photos: action.userPhoto } as ProfileType, //фотография приходит из api запроса и находится в photos
 			}
 		case UPDATE_USER_DATA_SUCCESS:
 			return {
@@ -72,51 +74,86 @@ const profileReducer = (state = initialState, action) => {
 }
 
 //-------------------------------------------------------------
-//Action Creators
-export const addPost = newPostBody => ({
+
+//Action Creators with types:
+type AddPostType = {
+	type: typeof ADD_POST
+	newPostBody: PostsType
+}
+export const addPost = (newPostBody: PostsType): AddPostType => ({
 	type: ADD_POST,
 	newPostBody,
 })
-export const deletePost = postId => ({
+
+type DeletePostType = {
+	type: typeof DELETE_POST
+	postId: number
+}
+export const deletePost = (postId: number): DeletePostType => ({
 	type: DELETE_POST,
 	postId,
 })
-export const setUserProfile = userProfile => ({
+
+type SetUserProfileType = {
+	type: typeof SET_USER_PROFILE
+	userProfile: ProfileType | null
+}
+export const setUserProfile = (userProfile: ProfileType | null): SetUserProfileType => ({
 	type: SET_USER_PROFILE,
 	userProfile,
 })
-export const setUserStatus = status => ({
+
+type SetUserStatusType = {
+	type: typeof SET_USER_STATUS
+	status: string
+}
+export const setUserStatus = (status: string): SetUserStatusType => ({
 	type: SET_USER_STATUS,
 	status,
 })
-export const updateUserStatus = status => ({
+
+type UpdateUserStatusType = {
+	type: typeof UPDATE_USER_STATUS
+	status: string
+}
+export const updateUserStatus = (status: string): UpdateUserStatusType => ({
 	type: UPDATE_USER_STATUS,
 	status,
 })
-export const savePhotoSuccess = userPhoto => ({
+
+type SavePhotoSuccessType = {
+	type: typeof SAVE_USER_PHOTO_SUCCESS
+	userPhoto: PhotosType
+}
+export const savePhotoSuccess = (userPhoto: PhotosType): SavePhotoSuccessType => ({
 	type: SAVE_USER_PHOTO_SUCCESS,
 	userPhoto,
 })
-export const updateUserDataSuccess = userDataStatus => ({
+
+type UpdateUserDataSuccessType = {
+	type: typeof UPDATE_USER_DATA_SUCCESS
+	userDataStatus: string
+}
+export const updateUserDataSuccess = (userDataStatus: string): UpdateUserDataSuccessType => ({
 	type: UPDATE_USER_DATA_SUCCESS,
 	userDataStatus,
 })
 
 //--------------------------------------------------------
 //thunk creators:
-export const getUserProfile = profileId => async dispatch => {
+export const getUserProfile = (profileId: number) => async (dispatch: any) => {
 	const response = await profileApi.getProfile(profileId) // вместо then() используем async await
 	// debugger
 	dispatch(setUserProfile(response.data))
 }
 
-export const getStatus = profileId => async dispatch => {
+export const getStatus = (profileId: number) => async (dispatch: any) => {
 	const response = await profileApi.getStatus(profileId)
 	// debugger
 	dispatch(setUserStatus(response.data))
 }
 
-export const updateStatus = status => async dispatch => {
+export const updateStatus = (status: string) => async (dispatch: any) => {
 	//используем try catch для перехвата ошибок
 	try {
 		const response = await profileApi.updateStatus(status)
@@ -126,14 +163,14 @@ export const updateStatus = status => async dispatch => {
 	}
 }
 
-export const savePhoto = file => async dispatch => {
+export const savePhoto = (file: any) => async (dispatch: any) => {
 	const response = await profileApi.savePhoto(file)
 	response.data.resultCode === 0 && dispatch(savePhotoSuccess(response.data.data.photos))
 }
 
 // чтобы получить обновленную версию profile после редактирования
 // передаем в данный редюсер метод получения глобального стэйта(getState) и обращаемся через него к auth-reducer для получения id залогиненного пользователя, далее обновляем профиль пользователя с помощью  dispatch(getUserProfile(userId)) и передаем в него наш id пользователя
-export const saveUserData = profile => async (dispatch, getState) => {
+export const saveUserData = (profile: ProfileType) => async (dispatch: any, getState: any) => {
 	const userId = getState().auth.id
 	const response = await profileApi.saveUserData(profile)
 	if (response.data.resultCode === 0) {
