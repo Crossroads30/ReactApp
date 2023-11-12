@@ -2,7 +2,7 @@ import cl from './Users.module.css'
 import defaultUserPhoto from '../../../assets/images/userDefaultImage.png'
 import Preloader from '../common/Preloader/Preloader'
 import { NavLink } from 'react-router-dom'
-import Paginator from '../common/Paginator/pagePaginator'
+import Paginator from '../common/Paginator/PagePaginator.tsx'
 import SeparateUser from './SeparateUser'
 
 // const Users = props => {
