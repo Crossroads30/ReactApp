@@ -1,0 +1,48 @@
+.dialogsWrapper {
+	padding: 20px;
+}
+
+.dialogs {
+	display: flex;
+}
+
+.dialogsItems {
+	width: 100px;
+	border-right: 2px solid rgb(40, 38, 38);
+}
+
+.item a {
+	text-decoration: none;
+	color: aliceblue;
+}
+
+.messages {
+	margin-left: 20px;
+}
+
+.link.active {
+	color: gold;
+}
+
+.dialogsWrapper textarea {
+  width: 100%;
+	display: block;
+	margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.dialogsWrapper button {
+padding: 0 10px;
+}
+
+.avatar {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.image {
+	width: 30px;
+	height: 30px;
+	background-color: gold;
+	border-radius: 30px;
+}

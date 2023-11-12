@@ -1,0 +1,40 @@
+.pagination {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 30px;
+}
+
+.pagination span {
+	display: flex;
+	align-items: center;
+	background-color: rgb(120, 178, 229);
+	width: 20px;
+	height: 20px;
+	border-radius: 20px;
+	text-align: center;
+	margin: 0 2px;
+	border: 2px solid rgb(37, 124, 167);
+	cursor: pointer;
+	font-size: 12px;
+	text-align: center;
+}
+
+.pagination span.selectedPage {
+	border: 2px solid gold;
+}
+
+.pagination button {
+	padding: 0 7px;
+	border-radius: 100px;
+	font-size: 10px;
+	margin: 0 15px;
+	background-color: #42cfc5;
+	cursor: pointer;
+	border: none;
+	transition: all .2s;
+}
+
+.pagination button:hover {
+	color: white;
+}

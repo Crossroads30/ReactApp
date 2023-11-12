@@ -1,0 +1,33 @@
+.loginWrapper {
+	padding: 20px;
+}
+
+.loginTitle {
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+.loginWrapper input {
+	margin-bottom: 10px;
+}
+
+.loginWrapper button {
+  padding: 0 5px;
+}
+
+.formSummaryError {
+	color: red;
+	padding: 10px;
+	border: 1px solid red;
+	margin-top: 20px;
+	width: 185px;
+}
+
+.checkbox {
+	display: flex;
+}
+
+.checkbox span {
+	margin-left: 5px;
+}
+
