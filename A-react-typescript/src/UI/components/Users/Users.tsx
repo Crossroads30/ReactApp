@@ -2,7 +2,7 @@ import cl from './Users.module.css'
 import Preloader from '../common/Preloader/Preloader.jsx'
 import { NavLink } from 'react-router-dom'
 import Paginator from '../common/Paginator/PagePaginator.tsx'
-import SeparateUser from './SeparateUser.jsx'
+import SeparateUser from './SeparateUser.tsx'
 import React, { FC } from 'react'
 import { UserType } from '../../../types/types.ts'
 
@@ -16,7 +16,7 @@ type PropsType = {
 	followingInProgress: Array<number>
 	follow: (userId: number) => void
 	unfollow: (userId: number) => void
-	setFriend: (userId: number) => void
+	setFriend: () => void
 }
 
 const Users: FC<PropsType> = ({totalUsersCount, pageSize, onPageChange, currentPage, ...props}) => { 
