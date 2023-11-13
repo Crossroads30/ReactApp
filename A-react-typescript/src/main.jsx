@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import store from './BLL/react-redux/reducers/react-redux-store.js' //store из react-redux
+import store from './BLL/react-redux/reducers/react-redux-store.ts' //store из react-redux
 import { Provider } from 'react-redux'
 import { BrowserRouter, HashRouter } from 'react-router-dom'
 
