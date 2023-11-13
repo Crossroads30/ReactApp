@@ -1,4 +1,4 @@
-import ProfileStatusWithHooks from '../ProfileStatus/profileStatusWithHooks'
+import ProfileStatusWithHooks from '../ProfileStatus/profileStatusWithHooks.tsx'
 import cl from './User.module.css'
 
 const UserData = ({ userProfile, status, updateStatus, isOwner, goToEditMode }) => {

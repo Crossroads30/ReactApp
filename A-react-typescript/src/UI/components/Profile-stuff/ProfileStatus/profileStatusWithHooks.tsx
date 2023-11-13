@@ -1,7 +1,12 @@
 import cl from './ProfileStatus.module.css'
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 
-export const ProfileStatusWithHooks = props => {
+type PropsType = {
+	status: string
+	updateStatus: (status: string) => void
+}
+
+export const ProfileStatusWithHooks: FC<PropsType> = (props: PropsType) => {
 	// let stateWithSetState = useState(false) //это массив
 	// let editMode = stateWithSetState[0] //первый элемент этого массива(значение false)
 	// let setEditMode = stateWithSetState[1] //второй элемент этого массива - функция(которая будет изменять этот state со значением false)
@@ -22,7 +27,7 @@ export const ProfileStatusWithHooks = props => {
 		setEditMode(false)
 		props.updateStatus(status)
 	}
-	const onStatusChange = event => {
+	const onStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
 		//создаем функцию которая вызывает функцию из useState и передаем туда измененное значение для status
 		setStatus(event.currentTarget.value)
 	}
