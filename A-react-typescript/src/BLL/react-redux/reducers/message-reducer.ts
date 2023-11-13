@@ -1,14 +1,16 @@
+import { DialogsType, MessagesType } from "../../../types/types"
+
 const ADD_MESSAGE = 'message/ADD-MESSAGE'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
-type DialogsType = {
-	id: number
-	name: string
-}
+// type DialogsType = {
+// 	id: number
+// 	name: string
+// }
 
-type MessagesType = {
-	id: number
-	message: string
-}
+// type MessagesType = {
+// 	id: number
+// 	message: string
+// }
 
 let initialState = {
 	dialogs: [
@@ -18,7 +20,7 @@ let initialState = {
 		{ id: 4, name: 'John' },
 		{ id: 5, name: 'Paul' },
 		{ id: 6, name: 'Ken' },
-	] as Array<DialogsType>,
+	] as Array<DialogsType>, // import from types.ts
 	messages: [
 		{ id: 1, message: 'Hi!' },
 		{ id: 2, message: 'Nice to see you))' },
@@ -26,7 +28,7 @@ let initialState = {
 		{ id: 4, message: 'see you tomorrow' },
 		{ id: 5, message: 'How are you?' },
 		{ id: 6, message: 'Good night!' },
-	] as Array<MessagesType>,
+	] as Array<MessagesType>, // import from types.ts
 }
 
 export type InitialStateType = typeof initialState
