@@ -11,7 +11,7 @@ import { getFriendsTC } from '../../../BLL/react-redux/reducers/sidebar-reducer.
 import { connect } from 'react-redux'
 import { withAuthRedirect } from '../../../HOC/withAuthRedirect.jsx'
 import { compose } from 'redux'
-import { getAllUsers, getCurrentPage, getFollowingInProgress, getIsLoading, getPageSize, getTotalUsersCount } from '../../../BLL/react-redux/selectors/users-selectors.js'
+import { getAllUsers, getCurrentPage, getFollowingInProgress, getIsLoading, getPageSize, getTotalUsersCount } from '../../../BLL/react-redux/selectors/users-selectors.ts'
 import { UserType } from '../../../types/types.ts'
 import { AppStateType } from '../../../BLL/react-redux/reducers/react-redux-store.ts'
 

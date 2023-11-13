@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect'
+import { AppStateType } from '../reducers/react-redux-store'
 
-export const getAllUsers = state => {
+export const getAllUsers = (state: AppStateType) => {
+	// передаем AppStateType из react-redux-store
 	//простой селектор без библиотеки reselect
 	return state.usersPage.users
 }
@@ -23,18 +25,18 @@ export const getAllUsers = state => {
 // 	}
 // )
 //------------------------------------------------------------------------------
-export const getPageSize = state => {
+export const getPageSize = (state: AppStateType) => {
 	return state.usersPage.pageSize
 }
-export const getTotalUsersCount = state => {
+export const getTotalUsersCount = (state: AppStateType) => {
 	return state.usersPage.totalUsersCount
 }
-export const getCurrentPage = state => {
+export const getCurrentPage = (state: AppStateType) => {
 	return state.usersPage.currentPage
 }
-export const getIsLoading = state => {
+export const getIsLoading = (state: AppStateType) => {
 	return state.usersPage.isLoading
 }
-export const getFollowingInProgress = state => {
+export const getFollowingInProgress = (state: AppStateType) => {
 	return state.usersPage.followingInProgress
 }
