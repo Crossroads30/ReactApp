@@ -14,9 +14,9 @@ type PropsType = {
 	users: Array<UserType>
 	isLoading: boolean
 	followingInProgress: Array<number>
-	follow: () => void
-	unfollow: () => void
-	setFriend: () => void
+	follow: (userId: number) => void
+	unfollow: (userId: number) => void
+	setFriend: (userId: number) => void
 }
 
 const Users: FC<PropsType> = ({totalUsersCount, pageSize, onPageChange, currentPage, ...props}) => { 
@@ -28,7 +28,14 @@ const Users: FC<PropsType> = ({totalUsersCount, pageSize, onPageChange, currentP
 					<Preloader />
 				) : (
 					props.users.map(user => (
-						<SeparateUser key={user.id} user={user} followingInProgress={props.followingInProgress} follow={props.follow} unfollow={props.unfollow} setFriend={props.setFriend} />
+						<SeparateUser
+							key={user.id}
+							user={user}
+							followingInProgress={props.followingInProgress}
+							follow={props.follow}
+							unfollow={props.unfollow}
+							setFriend={props.setFriend}
+						/>
 					))
 				)}
 			</div>
