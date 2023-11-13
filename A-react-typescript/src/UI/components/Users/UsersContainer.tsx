@@ -6,20 +6,36 @@ import {
 	setCurrentPage,
 	setTotalUsersCount,
 	getUsers,
-} from '../../../BLL/react-redux/reducers/users-reducer'
-import { getFriendsTC } from '../../../BLL/react-redux/reducers/sidebar-reducer'
+} from '../../../BLL/react-redux/reducers/users-reducer.ts'
+import { getFriendsTC } from '../../../BLL/react-redux/reducers/sidebar-reducer.ts'
 import { connect } from 'react-redux'
-import { withAuthRedirect } from '../../../HOC/withAuthRedirect'
+import { withAuthRedirect } from '../../../HOC/withAuthRedirect.jsx'
 import { compose } from 'redux'
-import { getAllUsers, getCurrentPage, getFollowingInProgress, getIsLoading, getPageSize, getTotalUsersCount } from '../../../BLL/react-redux/selectors/users-selectors'
+import { getAllUsers, getCurrentPage, getFollowingInProgress, getIsLoading, getPageSize, getTotalUsersCount } from '../../../BLL/react-redux/selectors/users-selectors.js'
+import { UserType } from '../../../types/types.ts'
+import { AppStateType } from '../../../BLL/react-redux/reducers/react-redux-store.ts'
 
-class UsersContainer extends React.Component {
+type PropsType = {
+	currentPage: number
+	pageSize: number
+	getUsers: (currentPage: number, pageSize: number) => void
+	users: Array<UserType>
+	totalUsersCount: number
+	isLoading: boolean
+	followingInProgress: Array<number>
+
+	getFriendsTC: () => void
+	follow: () => void
+	unfollow: () => void
+}
+
+class UsersContainer extends React.Component<PropsType> {
 	componentDidMount() {
 		const { currentPage, pageSize } = this.props //диструктуризация пропсов внутри метода
 		this.props.getUsers(currentPage, pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator
 	}
 
-	onPageChange = pageNumber => {
+	onPageChange = (pageNumber: number) => {
 		const { pageSize } = this.props //диструктуризация пропсов внутри метода
 		this.props.getUsers(pageNumber, pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator getUsers
 	}
@@ -60,7 +76,7 @@ class UsersContainer extends React.Component {
 // }
 
 //selectors:
-const setStateToProps = state => {
+const setStateToProps = (state: AppStateType) => {
 	return {
 		users: getAllUsers(state),
 		pageSize: getPageSize(state),
@@ -71,7 +87,7 @@ const setStateToProps = state => {
 	}
 }
 
-export default compose(
+export default compose<PropsType>( // передаем типы в compose
 	connect(setStateToProps, {
 		follow,
 		unfollow,
