@@ -21,6 +21,9 @@ const Paginator: React.FC<PropsType> = ({ totalItemsCount, pageSize, currentPage
 	//(p(текущий номер страницы) - 1) * portionSize(количество элементов в порции) + 1(т.к. нумерация идет с нуля )т.е. нам надо получить номера крайних страниц в одной порции - с левой стороны и с правой стороны(например вывод страниц в одной порции с 20 по 30 страницу: (20,21,22,23,24,25,26,27,28,29,30)- крайнее значение слева это №20, а справа это №30, вот их и надо получить
 	let portionCount = Math.ceil(pagesCount / portionSize)
 	let [portionNumber, setPortionNumber] = useState(1) //локальный стэйт для переключения страниц по умолчанию отображается 1я порция страниц
+	// let [portionNumber, setPortionNumber] = useState<number>(1)//т.к. 1 - это number, то типизацию можно не писать, типизация будет взята из значения(1)
+	// let [portionNumber, setPortionNumber] = useState<number | null>(null) // локальный стэйт нет значения, то делаем проверку на null
+	// if ( portionNumber === null) portionNumber = 1
 	let leftNumberOfPagePortion = (portionNumber - 1) * portionSize + 1 //формула для получения значения слева
 	let rightNumberOfPagePortion = portionNumber * portionSize //формула для для получения значения справа
 
@@ -43,11 +46,7 @@ const Paginator: React.FC<PropsType> = ({ totalItemsCount, pageSize, currentPage
 							key={page}
 							// className={currentPage === page && cl.selectedPage}// этот вариант работает, но с Warning
 							// className={currentPage === page ? cl.pagination + ' ' + 'span' + ' ' + cl.selectedPage : cl.pagination + ' ' + 'span'}
-							className={
-								currentPage === page
-									? classnames([cl.pagination], 'span', [cl.selectedPage])
-									: classnames([cl.pagination], 'span')
-							} //используем библиотеку classnames вместо кода выше для склеивания разных классов
+							className={currentPage === page ? classnames([cl.pagination], 'span', [cl.selectedPage]) : classnames([cl.pagination], 'span')} //используем библиотеку classnames вместо кода выше для склеивания разных классов
 							onClick={() => {
 								onPageChange(page)
 							}}
