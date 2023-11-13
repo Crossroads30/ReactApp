@@ -84,7 +84,7 @@ class App extends React.Component {
 						{/* с ленивой загрузкой c помощью HOC: */}
 						<Route path='/dialogs/*' element={<DialogsContainerWithSuspense />} />
 						<Route path='/news' element={<News />} />
-						<Route path='/users' element={<UsersContainer />} />
+						<Route path='/users' element={<UsersContainer pageTitle={'Users Page'} />} />
 						<Route path='/music' element={<Music />} />
 						<Route path='/settings' element={<Settings />} />
 						{/* <Route path='*' element={<ProfileContainer />} /> */}
