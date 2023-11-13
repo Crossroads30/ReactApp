@@ -15,19 +15,47 @@ import { getAllUsers, getCurrentPage, getFollowingInProgress, getIsLoading, getP
 import { UserType } from '../../../types/types.ts'
 import { AppStateType } from '../../../BLL/react-redux/reducers/react-redux-store.ts'
 
-type PropsType = {
+
+type MapStatePropsType = { //пропсы которые приходят из MapStateToProps(данные)
 	currentPage: number
 	pageSize: number
-	getUsers: (currentPage: number, pageSize: number) => void
 	users: Array<UserType>
 	totalUsersCount: number
 	isLoading: boolean
 	followingInProgress: Array<number>
-
-	getFriendsTC: () => void
-	follow: () => void
-	unfollow: () => void
 }
+
+type MapDispatchPropsType = {
+	//пропсы которые приходят из MapDispatchToProps(колбэки)
+	getUsers: (currentPage: number, pageSize: number) => void
+	follow: (userId: number) => void
+	unfollow: (userId: number) => void
+	setCurrentPage: (currentPage: number) => void
+	setTotalUsersCount: (count: number) => void
+	getFriendsTC: (totalUsersCount: number) => void
+}
+
+type OwnPropsType = { //пропсы которые приходят напрямую, заданные в компонентах
+	pageTitle: string
+}
+
+type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType //присваиваем PropsType через & все три вида типов
+
+// вместо кода ниже, код выше, что разделил типы на типы из SetStateToProps, типы из MapDispatchToProps и типы из OwnPropsType
+// type PropsType = {
+// 	pageTitle: string
+// 	currentPage: number
+// 	pageSize: number
+// 	getUsers: (currentPage: number, pageSize: number) => void
+// 	users: Array<UserType>
+// 	totalUsersCount: number
+// 	isLoading: boolean
+// 	followingInProgress: Array<number>
+
+// 	getFriendsTC: () => void
+// 	follow: () => void
+// 	unfollow: () => void
+// }
 
 class UsersContainer extends React.Component<PropsType> {
 	componentDidMount() {
@@ -40,13 +68,14 @@ class UsersContainer extends React.Component<PropsType> {
 		this.props.getUsers(pageNumber, pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator getUsers
 	}
 
-	onUserToFriends = () => {
-		this.props.getFriendsTC()
+	onUserToFriends = (totalUsersCount: number) => {
+		this.props.getFriendsTC(totalUsersCount)
 	}
 
 	render() {
 		return (
 			<>
+				<h2>{this.props.pageTitle}</h2>
 				<Users
 					totalUsersCount={this.props.totalUsersCount}
 					pageSize={this.props.pageSize}
@@ -64,7 +93,7 @@ class UsersContainer extends React.Component<PropsType> {
 	}
 }
 
-// const setStateToProps = state => {
+// const mapStateToProps = (state: AppStateType): MapStatePropsType => {
 // 	return {
 // 		users: state.usersPage.users,
 // 		pageSize: state.usersPage.pageSize,
@@ -76,7 +105,7 @@ class UsersContainer extends React.Component<PropsType> {
 // }
 
 //selectors:
-const setStateToProps = (state: AppStateType) => {
+const mapStateToProps = (state: AppStateType): MapStatePropsType => {
 	return {
 		users: getAllUsers(state),
 		pageSize: getPageSize(state),
@@ -87,8 +116,10 @@ const setStateToProps = (state: AppStateType) => {
 	}
 }
 
-export default compose<PropsType>( // передаем типы в compose
-	connect(setStateToProps, {
+export default compose(
+	// передаем типы в compose
+	//TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultRootState - они должны соответствовать такому порядку!!!
+	connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
 		follow,
 		unfollow,
 		setCurrentPage,
