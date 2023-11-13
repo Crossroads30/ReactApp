@@ -1,5 +1,5 @@
 import React from 'react'
-import Users from './Users'
+import Users from './Users.tsx'
 import {
 	follow,
 	unfollow,
