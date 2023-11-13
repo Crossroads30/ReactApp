@@ -35,8 +35,8 @@ type SetFriendsActionType = {
 export const addFriends = (friends: object[]): SetFriendsActionType => ({ type: SET_FRIENDS, friends })
 
 //thunkCreators:
-export const getFriendsTC = (totalUsersCount: number) => async (dispatch: any) => {
-const response = await userApi.getFriends(totalUsersCount)
+export const getFriendsTC = () => async (dispatch: any) => {
+const response = await userApi.getFriends()
 		dispatch(addFriends(response))
 }
 
