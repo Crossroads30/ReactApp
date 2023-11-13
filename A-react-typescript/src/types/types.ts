@@ -36,3 +36,14 @@ export type UserType = {
 	photos: PhotosType
 	followed: boolean
 }
+
+export type DialogsType = {
+	id: number
+	name: string
+	newMessageText: string
+}
+
+ export type MessagesType = {
+	id: number
+	message: string
+}
