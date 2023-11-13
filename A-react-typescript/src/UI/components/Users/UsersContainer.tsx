@@ -32,7 +32,7 @@ type MapDispatchPropsType = {
 	unfollow: (userId: number) => void
 	setCurrentPage: (currentPage: number) => void
 	setTotalUsersCount: (count: number) => void
-	getFriendsTC: (totalUsersCount: number) => void
+	getFriendsTC: () => void
 }
 
 type OwnPropsType = { //пропсы которые приходят напрямую, заданные в компонентах
@@ -68,8 +68,8 @@ class UsersContainer extends React.Component<PropsType> {
 		this.props.getUsers(pageNumber, pageSize) //этот колбэк(getUsers) передает эти параметры в thunkCreator getUsers
 	}
 
-	onUserToFriends = (totalUsersCount: number) => {
-		this.props.getFriendsTC(totalUsersCount)
+	onUserToFriends = () => {
+		this.props.getFriendsTC()
 	}
 
 	render() {
