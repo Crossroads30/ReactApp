@@ -1,6 +1,9 @@
+import { Dispatch } from 'redux'
 import { userApi } from '../../../DAL/api/api'
 import { UserType } from '../../../types/types'
 import { updateObjectInArray } from '../../../utils/helpers/object-helpers'
+import { AppStateType } from './react-redux-store'
+import { ThunkAction } from 'redux-thunk'
 
 //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 const SET_USERS = 'users/SET-USERS'
@@ -17,12 +20,12 @@ let initialState = {
 	totalUsersCount: 500 as number,
 	currentPage: 1 as number,
 	isLoading: true as boolean,
-	followingInProgress: [] as Array<number>,// array of users ids
+	followingInProgress: [] as Array<number> | any, // array of users ids
 }
 
 export type InitialStateType = typeof initialState
 
-const UsersReducer = (state = initialState, action: any): InitialStateType => {
+const UsersReducer = (state = initialState, action: ActionTypes): InitialStateType => {
 	switch (action.type) {
 		case SET_USERS:
 			return {
@@ -83,12 +86,21 @@ const UsersReducer = (state = initialState, action: any): InitialStateType => {
 				...state,
 				followingInProgress: action.isLoading
 					? [...state.followingInProgress, action.userId]
-					: [state.followingInProgress.filter(id => id != action.userId)],
+					: [state.followingInProgress.filter((id: number) => id != action.userId)],
 			}
 		default:
 			return state
 	}
 }
+
+type ActionTypes =
+	| SetUsersType
+	| FollowUserType
+	| UnfollowUserType
+	| SetCurrentPageType
+	| SetIsLoadingType
+	| SetTotalUsersCountType
+	| SetDisableFetchingButtonType
 
 //функции Action Creators with types:
 type SetUsersType = {
@@ -96,19 +108,16 @@ type SetUsersType = {
 	users: Array<UserType>
 }
 export const setUsers = (users: Array<UserType>): SetUsersType => ({ type: SET_USERS, users })
-
 type FollowUserType = {
 	type: typeof FOLLOW
 	userId: number
 }
 export const followUser = (userId: number): FollowUserType => ({ type: FOLLOW, userId })
-
 type UnfollowUserType = {
 	type: typeof UNFOLLOW
 	userId: number
 }
 export const unfollowUser = (userId: number): UnfollowUserType => ({ type: UNFOLLOW, userId })
-
 type SetCurrentPageType = {
 	type: typeof SET_CURRENT_PAGE
 	currentPage: number
@@ -117,7 +126,6 @@ export const setCurrentPage = (currentPage: number): SetCurrentPageType => ({
 	type: SET_CURRENT_PAGE,
 	currentPage,
 })
-
 type SetIsLoadingType = {
 	type: typeof TOGGLE_IS_LOADING
 	isLoading: boolean
@@ -126,7 +134,6 @@ export const setIsLoading = (isLoading: boolean): SetIsLoadingType => ({
 	type: TOGGLE_IS_LOADING,
 	isLoading,
 })
-
 type SetTotalUsersCountType = {
 	type: typeof SET_USERS_COUNT
 	count: number
@@ -135,13 +142,12 @@ export const setTotalUsersCount = (count: number): SetTotalUsersCountType => ({
 	type: SET_USERS_COUNT,
 	count,
 })
-
 type SetDisableFetchingButtonType = {
 	type: typeof DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS
 	isLoading: boolean
 	userId: number
 }
-export const setDisableFetchingButton = (isLoading: boolean, userId: number): SetDisableFetchingButtonType => ({
+export const setDisableFetchingButton = (isLoading: boolean, userId: number, ): SetDisableFetchingButtonType => ({
 	type: DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS,
 	isLoading,
 	userId,
@@ -149,16 +155,31 @@ export const setDisableFetchingButton = (isLoading: boolean, userId: number): Se
 
 //thunk функции:
 
+
 //ThunkCreator getUsers:
-export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: any) => {
-	//берем параметры с помощью замыкания в thunkCreator и возвращаем из нее thunk функцию с диспатчем, в которую приходят эти параметры:
-	dispatch(setIsLoading(true)) //диспатчем actionCreator
-	const data = await userApi.getUsers(currentPage, pageSize)
-	// data - то что пришло из ajax-запроса в DAL/api/api.js
-	dispatch(setCurrentPage(currentPage)) //диспатчем actionCreator
-	dispatch(setIsLoading(false)) //диспатчем actionCreator
-	dispatch(setUsers(data)) //диспатчем actionCreator
-}
+// export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: Dispatch<ActionTypes>, getState: AppStateType) => { // первый вариант типизации thunk
+
+// второй вариант типизации thunk
+// type GetStateType = () => AppStateType
+// type DispatchType = Dispatch<ActionTypes>
+
+// export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: DispatchType, getState: GetStateType) => { // второй вариант типизации thunk
+
+// третий вариант типизации thunk
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes>
+
+export const getUsers =
+	(currentPage: number, pageSize: number): ThunkType =>
+	async (dispatch, getState) => {
+		// третий вариант типизации thunk
+		//берем параметры с помощью замыкания в thunkCreator и возвращаем из нее thunk функцию с диспатчем, в которую приходят эти параметры:
+		dispatch(setIsLoading(true)) //диспатчем actionCreator
+		const data = await userApi.getUsers(currentPage, pageSize)
+		// data - то что пришло из ajax-запроса в DAL/api/api.js
+		dispatch(setCurrentPage(currentPage)) //диспатчем actionCreator
+		dispatch(setIsLoading(false)) //диспатчем actionCreator
+		dispatch(setUsers(data)) //диспатчем actionCreator
+	}
 
 //общая функция для follow/unfollow
 const followUnfollowFlow = async (
