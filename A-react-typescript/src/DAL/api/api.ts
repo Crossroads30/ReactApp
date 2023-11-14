@@ -61,6 +61,21 @@ type ProfileResponseType = {
 		small: string
 		large: string
 	}
+}
+
+type UpdateStatusResponseType = {
+	resultCode: ResultCodesEnum
+	messages: Array<string>
+	data: Object
+}
+
+type UpdatePhotoResponseType = {
+	data: {
+		photos: {
+			small: string
+			large: string
+		}
+	}
 	resultCode: ResultCodesEnum
 	messages: Array<string>
 }
@@ -72,24 +87,25 @@ export const profileApi = {
 	},
 	async getStatus(profileId: number) {
 		//запрос на получения статуса из profile
-		return await instance.get(`profile/status/` + profileId)
+		return await instance.get<string>(`profile/status/` + profileId).then(res => res.data)
 	},
 	async updateStatus(status: string) {
 		//запрос на обновления статуса в profile
-		return await instance.put(`profile/status`, { status }) //вторым параметром передаем объект, то что требует документация: (status: required(string - maxLength: 300))
+		return await instance.put<UpdateStatusResponseType>(`profile/status`, { status }).then(res => res.data) //вторым параметром передаем объект, то что требует документация: (status: required(string - maxLength: 300))
 	},
-	async savePhoto(userPhotoFile: any) {
+	async savePhoto(userPhotoFile: File) {
 		//запрос на отправку фото в profile
 		const formData = new FormData() // создаем форм дату для отправки на сервер
 		formData.append('image', userPhotoFile) // передаем сюда Properties из документации сервера:	image: required(file), и сам файл(userPhotoFile)
 
-		return await instance.put(`profile/photo`, formData, {
+		return await instance.put<UpdatePhotoResponseType>(`profile/photo`, formData, {
 			//вторым параметром передаем formData, а третьем параметром настраиваем специфические заголовки для этого запроса т.к. отправляем не json, а formData, и мы должны сказать что наш Content-Type является 'multipart/form-data'
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
-		})
+		}).then(res => res.data)
 	},
+
 	async saveUserData(profile: ProfileType) {
 		return await instance.put(`profile`, profile)
 	},
@@ -100,7 +116,6 @@ export const profileApi = {
 export enum ResultCodesEnum {
 	Success = 0,
 	Error = 1,
-	CaptchaIsRequired = 10,
 }
 
 export enum ResultCodesWithCaptcha {
