@@ -106,17 +106,17 @@ export const loginToServer =
 	}
 
 export const getCaptchaURL = (): ThunkType => async (dispatch) => {
-	const response = await securityAPI.getCaptchaURL()
+	const captchaUrlData = await securityAPI.getCaptchaURL()
 	// debugger
-	const captchaURL = response.data.url
-	dispatch(getCaptchaUrlSuccess(captchaURL))
+	// const captchaURL = captchaUrlData.url
+	dispatch(getCaptchaUrlSuccess(captchaUrlData.url))
 }
 
 export const logoutFromServer = (): ThunkType => async (dispatch) => {
 	// вместо then() используем async await
-	const response = await authAPI.getLogout()
+	const logoutData = await authAPI.getLogout()
 	// debugger
-	response.data.resultCode === 0 && dispatch(setAuthUserData(null, null, null, false))
+	logoutData.resultCode === ResultCodesEnum.Success && dispatch(setAuthUserData(null, null, null, false))
 	// dispatch((window.location.href = 'login')) // пока очень корявое решение
 }
 
