@@ -1,6 +1,6 @@
 
 import { stopSubmit } from 'redux-form'
-import { authAPI, securityAPI } from '../../../DAL/api/api'
+import { ResultCodesEnum, ResultCodesWithCaptcha, authAPI, securityAPI } from '../../../DAL/api/api.ts'
 import { ThunkAction } from 'redux-thunk'
 import { AppStateType } from './react-redux-store'
 
@@ -79,28 +79,28 @@ type ThunkType = ThunkAction<Promise<void>,AppStateType, unknown, ActionTypes>
 
 export const getAuthUserData = (): ThunkType => async (dispatch) => {
 	// вместо then() используем async await
-	const response = await authAPI.getAuth()
+	const getAuthData = await authAPI.getAuth() // забираем data из then() из authAPI.getAuth() в api.ts
 
-	const { id, email, login } = response.data.data
-	response.data.resultCode === 0 && dispatch(setAuthUserData(id, email, login, true))
+	const { id, email, login } = getAuthData.data
+	getAuthData.resultCode === ResultCodesEnum.Success && dispatch(setAuthUserData(id, email, login, true)) // берем номер кода из enum (ResultCodesEnum.Success = 0)
 }
 
 //так же надо передать и символы из капчи
 export const loginToServer =
 	(email: string, password: string, rememberMe: boolean, captcha: null): ThunkType =>
 	async (dispatch) => {
-		const response = await authAPI.getLogin(email, password, rememberMe, captcha)
+		const loginData= await authAPI.getLogin(email, password, rememberMe, captcha)
 		// debugger
-		if (response.data.resultCode === 0) {
+		if (loginData.resultCode === ResultCodesEnum.Success) {
 			dispatch(getAuthUserData())
 		} else {
-			if (response.data.resultCode === 10) {
+			if (loginData.resultCode === ResultCodesWithCaptcha.CaptchaIsRequired) {
 				//условие если слишком много попыток логина и надо показать капчу, то мы диспачем санку  getCaptchaURL
 				dispatch(getCaptchaURL())
 			}
 
 			// stopSubmit - специальный метод из redux-form, который передает обработанную ошибку внутрь определенной формы, первым параметром идет имя формы('login'), вторым параметром идет сама ошибка и сообщение к ней(в данном случае это общая ошибка '_error')
-			const message = response.data.messages.length > 0 ? response.data.messages[0] : 'some error' //передаем в качестве ошибки сообщение из response.data.messages из api запроса
+			const message = loginData.messages.length > 0 ? loginData.messages[0] : 'some error' //передаем в качестве ошибки сообщение из response.data.messages из api запроса
 			dispatch(stopSubmit('login', { _error: message }))
 		}
 	}
