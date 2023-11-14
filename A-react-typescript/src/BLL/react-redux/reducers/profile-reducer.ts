@@ -1,4 +1,4 @@
-import { profileApi } from '../../../DAL/api/api'
+import { profileApi } from '../../../DAL/api/api.ts'
 import { stopSubmit } from 'redux-form'
 import { PhotosType, PostsType, ProfileType } from '../../../types/types'
 import { ThunkAction } from 'redux-thunk'
@@ -151,9 +151,9 @@ type ThunkType = ThunkAction<Promise<void>,AppStateType, unknown, ActionTypes>
 export const getUserProfile =
 	(profileId: number | null): ThunkType =>
 	async (dispatch) => {
-		const response = await profileApi.getProfile(profileId) // вместо then() используем async await
+		const userProfileData = await profileApi.getProfile(profileId) // вместо then() используем async await
 		// debugger
-		dispatch(setUserProfile(response.data))
+		dispatch(setUserProfile(userProfileData))
 	}
 
 export const getStatus =
