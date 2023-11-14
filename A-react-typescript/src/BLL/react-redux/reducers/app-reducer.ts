@@ -1,4 +1,6 @@
+import { ThunkAction } from 'redux-thunk'
 import { getAuthUserData } from './auth-reducer'
+import { AppStateType } from './react-redux-store'
 const INITIALIZED_SUCCESS = 'app/INITIALIZED-SUCCESS' //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
 export type InitialStateType = {
@@ -9,7 +11,7 @@ let initialState: InitialStateType = {
 	initialized: false,
 }
 
-const appReducer = (state = initialState, action: any): InitialStateType => {
+const appReducer = (state = initialState, action: InitializedSuccessActionType): InitialStateType => {
 	switch (action.type) {
 		case INITIALIZED_SUCCESS:
 			return {
@@ -22,16 +24,19 @@ const appReducer = (state = initialState, action: any): InitialStateType => {
 }
 //типизация Action Creators:
 type InitializedSuccessActionType = {
-	type: typeof INITIALIZED_SUCCESS,
+	type: typeof INITIALIZED_SUCCESS
 }
-
 //функции Action Creators:
 export const initializedSuccess = (): InitializedSuccessActionType => ({
 	type: INITIALIZED_SUCCESS,
 })
 
+
 //thunk Creators:
-export const initializeApp = () => async (dispatch: any) => {
+
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, InitializedSuccessActionType>
+
+export const initializeApp = (): ThunkType => async (dispatch) => {
 	let promise = dispatch(getAuthUserData())
 	//dispatch(somethingElse()) //если будет что нибудь еще
 	//dispatch(somethingElse()) //если будет что нибудь еще

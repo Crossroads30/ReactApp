@@ -1,4 +1,6 @@
+import { ThunkAction } from 'redux-thunk'
 import { userApi } from '../../../DAL/api/api'
+import { AppStateType } from './react-redux-store'
 
 const SET_FRIENDS = 'sidebar/FRIENDS'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
@@ -34,10 +36,12 @@ type SetFriendsActionType = {
 //actionCreators:
 export const addFriends = (friends: object[]): SetFriendsActionType => ({ type: SET_FRIENDS, friends })
 
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, SetFriendsActionType>
+
 //thunkCreators:
-export const getFriendsTC = () => async (dispatch: any) => {
-const response = await userApi.getFriends()
-		dispatch(addFriends(response))
+export const getFriendsTC = (): ThunkType => async (dispatch) => {
+	const response = await userApi.getFriends()
+	dispatch(addFriends(response))
 }
 
 export default sidebarReducer

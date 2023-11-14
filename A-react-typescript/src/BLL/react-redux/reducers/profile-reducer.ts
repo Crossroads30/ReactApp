@@ -1,6 +1,8 @@
 import { profileApi } from '../../../DAL/api/api'
 import { stopSubmit } from 'redux-form'
 import { PhotosType, PostsType, ProfileType } from '../../../types/types'
+import { ThunkAction } from 'redux-thunk'
+import { AppStateType } from './react-redux-store'
 
 //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 const ADD_POST = 'profile/ADD-POST'
@@ -26,7 +28,7 @@ let initialState = {
 }
 export type InitialStateType = typeof initialState
 
-const profileReducer = (state = initialState, action: any): InitialStateType => {
+const profileReducer = (state = initialState, action: ActionTypes): InitialStateType => {
 	switch (action.type) {
 		case ADD_POST:
 			let newPost = {
@@ -75,12 +77,14 @@ const profileReducer = (state = initialState, action: any): InitialStateType => 
 
 //-------------------------------------------------------------
 
+type ActionTypes = AddPostType | DeletePostType | SetUserProfileType | SetUserStatusType | UpdateUserStatusType |SavePhotoSuccessType | UpdateUserDataSuccessType
+
 //Action Creators with types:
 type AddPostType = {
 	type: typeof ADD_POST
-	newPostBody: PostsType
+	newPostBody: string 
 }
-export const addPost = (newPostBody: PostsType): AddPostType => ({
+export const addPost = (newPostBody: string ): AddPostType => ({
 	type: ADD_POST,
 	newPostBody,
 })
@@ -140,121 +144,60 @@ export const updateUserDataSuccess = (userDataStatus: string): UpdateUserDataSuc
 })
 
 //--------------------------------------------------------
+
+type ThunkType = ThunkAction<Promise<void>,AppStateType, unknown, ActionTypes>
+
 //thunk creators:
-export const getUserProfile = (profileId: number) => async (dispatch: any) => {
-	const response = await profileApi.getProfile(profileId) // вместо then() используем async await
-	// debugger
-	dispatch(setUserProfile(response.data))
-}
-
-export const getStatus = (profileId: number) => async (dispatch: any) => {
-	const response = await profileApi.getStatus(profileId)
-	// debugger
-	dispatch(setUserStatus(response.data))
-}
-
-export const updateStatus = (status: string) => async (dispatch: any) => {
-	//используем try catch для перехвата ошибок
-	try {
-		const response = await profileApi.updateStatus(status)
-		response.data.resultCode === 0 && dispatch(setUserStatus(status))
-	} catch (error) {
-		console.log(error)
+export const getUserProfile =
+	(profileId: number | null): ThunkType =>
+	async (dispatch) => {
+		const response = await profileApi.getProfile(profileId) // вместо then() используем async await
+		// debugger
+		dispatch(setUserProfile(response.data))
 	}
-}
 
-export const savePhoto = (file: any) => async (dispatch: any) => {
-	const response = await profileApi.savePhoto(file)
-	response.data.resultCode === 0 && dispatch(savePhotoSuccess(response.data.data.photos))
-}
+export const getStatus =
+	(profileId: number): ThunkType =>
+	async (dispatch) => {
+		const response = await profileApi.getStatus(profileId)
+		// debugger
+		dispatch(setUserStatus(response.data))
+	}
+
+export const updateStatus =
+	(status: string): ThunkType =>
+	async (dispatch) => {
+		//используем try catch для перехвата ошибок
+		try {
+			const response = await profileApi.updateStatus(status)
+			response.data.resultCode === 0 && dispatch(setUserStatus(status))
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+export const savePhoto =
+	(file: any): ThunkType =>
+	async (dispatch) => {
+		const response = await profileApi.savePhoto(file)
+		response.data.resultCode === 0 && dispatch(savePhotoSuccess(response.data.data.photos))
+	}
 
 // чтобы получить обновленную версию profile после редактирования
 // передаем в данный редюсер метод получения глобального стэйта(getState) и обращаемся через него к auth-reducer для получения id залогиненного пользователя, далее обновляем профиль пользователя с помощью  dispatch(getUserProfile(userId)) и передаем в него наш id пользователя
-export const saveUserData = (profile: ProfileType) => async (dispatch: any, getState: any) => {
-	const userId = getState().auth.id
-	const response = await profileApi.saveUserData(profile)
-	if (response.data.resultCode === 0) {
-		dispatch(getUserProfile(userId))
-	} else {
-		//передаем в качестве ошибки сообщение из response.data.messages из api запроса
-		dispatch(stopSubmit('edit-profile', { _error: response.data.messages })) //для выведения общей ошибки
-		// dispatch(stopSubmit('edit-profile', { "contacts":  {"facebook": response.data.messages[0]} }))//для выведения отдельных ошибок по полям но надо распарсить строку из response.data.messages[0]
-		return Promise.reject(response.data.messages) //после диспатча возвращаем Promise.reject с сообщением об этой ошибки внутри
+export const saveUserData =
+	(profile: ProfileType): ThunkType =>
+	async (dispatch, getState) => {
+		const userId = getState().auth.id
+		const response = await profileApi.saveUserData(profile)
+		if (response.data.resultCode === 0) {
+			dispatch(getUserProfile(userId))
+		} else {
+			//передаем в качестве ошибки сообщение из response.data.messages из api запроса
+			dispatch(stopSubmit('edit-profile', { _error: response.data.messages })) //для выведения общей ошибки
+			// dispatch(stopSubmit('edit-profile', { "contacts":  {"facebook": response.data.messages[0]} }))//для выведения отдельных ошибок по полям но надо распарсить строку из response.data.messages[0]
+			return Promise.reject(response.data.messages) //после диспатча возвращаем Promise.reject с сообщением об этой ошибки внутри
+		}
 	}
-	// }
-	// export const saveUserData = profile => async (dispatch, getState) => {
-	// 	const userId = getState().auth.id
-	// 	const response = await profileApi.saveUserData(profile)
-	// 	console.log(response.data.messages)
-	// 	if (response.data.resultCode === 0) {
-	// 		dispatch(getUserProfile(userId))
-	// 		dispatch(updateUserDataSuccess('success'))
-	// 	} else {
-	// 		const fieldName = response.data.messages[0]
-	// 			.replace(/[^a-zA-Z0-9-'-' ]/g, '')
-	// 			.split('-')
-	// 			.slice(-1)
-	// 			.toString()
-	// 		const fieldNameLower = fieldName.charAt(0).toLowerCase() + fieldName.slice(1)
-
-	// 		//передаем в качестве ошибки сообщение из response.data.messages из api запроса
-	// 		dispatch(
-	// 			//что бы переменная была видна внутри {}, помещаем ее внутрь []
-	// 			stopSubmit('edit-profile', {
-	// 				contacts: { [fieldNameLower]: response.data.messages[0].split('(').slice(0, 1) },
-	// 			})
-	// 		)
-	// 		// dispatch(stopSubmit('edit-profile', { _error: response.data.messages[0] }))
-	// 		dispatch(updateUserDataSuccess('error'))
-	// 	}
-
-	//второй вариант выведения ошибки:
-	// if (response.data.resultCode === 0){
-	//       dispatch(getUserProfile(userId));
-	//   }
-	//   else {
-	//       let result = [];
-	//         for (let i=0; response.data.messages.length > i; i++) {
-	//             result.push(response.data.messages[i])
-	//         }
-	//       dispatch(stopSubmit("edit-profile", {_error: result }));
-	//       return Promise.reject(result);
-	//   }
-}
-
-//----------------------------------------------------------------
-// export const updateStatus = status => { // санка с then()
-// 	return dispatch => {
-// 		profileApi.updateStatus(status).then(response => {
-// 			response.data.resultCode === 0 && dispatch(setUserStatus(status))
-// 		})
-// 	}
-// }
 
 export default profileReducer
-
-//старая версия кода
-// const profileReducer = (state = initialState, action) => {
-// 	switch (action.type) {
-// 		case ADD_POST: {
-// 			let newPost = {
-// 				id: 7,
-// 				message: state.newPostText,
-// 				likes: 0,
-// 			}
-// 			let stateCopy = { ...state }
-// 			stateCopy.posts = [...state.posts]
-// 			stateCopy.posts.push(newPost)
-// 			stateCopy.newPostText = ''
-// 			return stateCopy
-// 		}
-// 		case UPDATE_NEW_POST_TEXT: {
-// 			let stateCopy = { ...state }
-
-// 			stateCopy.newPostText = action.newText
-// 			return stateCopy
-// 		}
-// 		default:
-// 			return state
-// 	}
-// }

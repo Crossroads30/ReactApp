@@ -1,6 +1,8 @@
 
 import { stopSubmit } from 'redux-form'
 import { authAPI, securityAPI } from '../../../DAL/api/api'
+import { ThunkAction } from 'redux-thunk'
+import { AppStateType } from './react-redux-store'
 
 const SET_USER_DATA = 'auth/SET-USER-DATA' //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 const CAPTCHA_URL_SUCCESS = 'auth/CAPTCHA-URL-SUCCESS'
@@ -25,19 +27,20 @@ let initialState = {
 
 export type InitialStateType = typeof initialState //типизация по умолчанию
 
-const authReducer = (state = initialState, action: any): InitialStateType => {
+const authReducer = (state = initialState, action: ActionTypes): InitialStateType => {
 	switch (action.type) {
 		case SET_USER_DATA:
 		case CAPTCHA_URL_SUCCESS:
 			return {
 				...state,
 				...action.data,
-				blablaid: 'name',//??? почему то нет ошибки ???
 			}
 		default:
 			return state
 	}
 }
+
+type ActionTypes = SetAuthUserDataActionType | GetCaptchaUrlSuccessActionType
 
 //типизация Action Creators:
 type SetAuthUserDataActionDataType = {
@@ -71,7 +74,10 @@ export const getCaptchaUrlSuccess = (captchaURL: string | null): GetCaptchaUrlSu
 })
 
 //thunk Creators:
-export const getAuthUserData = () => async (dispatch: any) => {
+
+type ThunkType = ThunkAction<Promise<void>,AppStateType, unknown, ActionTypes>
+
+export const getAuthUserData = (): ThunkType => async (dispatch) => {
 	// вместо then() используем async await
 	const response = await authAPI.getAuth()
 
@@ -80,46 +86,38 @@ export const getAuthUserData = () => async (dispatch: any) => {
 }
 
 //так же надо передать и символы из капчи
-export const loginToServer = (email: string, password: string, rememberMe: boolean, captcha: null ) => async (dispatch: any) => {
-	const response = await authAPI.getLogin(email, password, rememberMe, captcha)
-	// debugger
-	if (response.data.resultCode === 0) {
-		dispatch(getAuthUserData())
-	} else {
+export const loginToServer =
+	(email: string, password: string, rememberMe: boolean, captcha: null): ThunkType =>
+	async (dispatch) => {
+		const response = await authAPI.getLogin(email, password, rememberMe, captcha)
+		// debugger
+		if (response.data.resultCode === 0) {
+			dispatch(getAuthUserData())
+		} else {
+			if (response.data.resultCode === 10) {
+				//условие если слишком много попыток логина и надо показать капчу, то мы диспачем санку  getCaptchaURL
+				dispatch(getCaptchaURL())
+			}
 
-		if (response.data.resultCode === 10) {
-			//условие если слишком много попыток логина и надо показать капчу, то мы диспачем санку  getCaptchaURL
-			dispatch(getCaptchaURL())
+			// stopSubmit - специальный метод из redux-form, который передает обработанную ошибку внутрь определенной формы, первым параметром идет имя формы('login'), вторым параметром идет сама ошибка и сообщение к ней(в данном случае это общая ошибка '_error')
+			const message = response.data.messages.length > 0 ? response.data.messages[0] : 'some error' //передаем в качестве ошибки сообщение из response.data.messages из api запроса
+			dispatch(stopSubmit('login', { _error: message }))
 		}
-
-		// stopSubmit - специальный метод из redux-form, который передает обработанную ошибку внутрь определенной формы, первым параметром идет имя формы('login'), вторым параметром идет сама ошибка и сообщение к ней(в данном случае это общая ошибка '_error')
-		const message = response.data.messages.length > 0 ? response.data.messages[0] : 'some error' //передаем в качестве ошибки сообщение из response.data.messages из api запроса
-		dispatch(stopSubmit('login', { _error: message }))
 	}
-}
 
-export const getCaptchaURL = () => async (dispatch: any) => {
+export const getCaptchaURL = (): ThunkType => async (dispatch) => {
 	const response = await securityAPI.getCaptchaURL()
 	// debugger
 	const captchaURL = response.data.url
 	dispatch(getCaptchaUrlSuccess(captchaURL))
 }
 
-export const logoutFromServer = () => async (dispatch: any) => {
+export const logoutFromServer = (): ThunkType => async (dispatch) => {
 	// вместо then() используем async await
 	const response = await authAPI.getLogout()
 	// debugger
 	response.data.resultCode === 0 && dispatch(setAuthUserData(null, null, null, false))
 	// dispatch((window.location.href = 'login')) // пока очень корявое решение
 }
-
-// export const logoutFromServer = () => dispatch => { //вариант с then()
-// 	authAPI.getLogout().then(response => {
-// 		// debugger
-// 		response.data.resultCode === 0 &&
-// 			dispatch(setAuthUserData(null, null, null, false))
-// 		dispatch((window.location.href = 'login')) // пока очень корявое решение
-// 	})
-// }
 
 export default authReducer

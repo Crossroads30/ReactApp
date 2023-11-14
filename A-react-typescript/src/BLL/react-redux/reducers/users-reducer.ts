@@ -155,7 +155,6 @@ export const setDisableFetchingButton = (isLoading: boolean, userId: number, ): 
 
 //thunk функции:
 
-
 //ThunkCreator getUsers:
 // export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: Dispatch<ActionTypes>, getState: AppStateType) => { // первый вариант типизации thunk
 
@@ -182,12 +181,12 @@ export const getUsers =
 	}
 
 //общая функция для follow/unfollow
-const followUnfollowFlow = async (
+const _followUnfollowFlow = async (
 	//код с одной общей функцией для follow/unfollow для избежания дублирования кода
 	dispatch: any,
 	userId: number,
 	apiMethod: any,
-	actionCreator: any
+	actionCreator: (userId: number) => FollowUserType | UnfollowUserType
 ) => {
 	dispatch(setDisableFetchingButton(true, userId))
 	let data = await apiMethod(userId)
@@ -197,9 +196,9 @@ const followUnfollowFlow = async (
 }
 
 //ThunkCreator follow:
-export const follow = (userId: number) => async (dispatch: any) => {
-	followUnfollowFlow(
-		//с помощью диструктуризации передаем параметры в followUnfollowFlow
+export const follow = (userId: number): ThunkType => async (dispatch) => {
+	_followUnfollowFlow(
+		//с помощью диструктуризации передаем параметры в _followUnfollowFlow
 		dispatch,
 		userId,
 		userApi.getFollow.bind(userId),
@@ -208,15 +207,17 @@ export const follow = (userId: number) => async (dispatch: any) => {
 }
 
 //ThunkCreator unfollow:
-export const unfollow = (userId: number)=> async (dispatch: any) => {
-	followUnfollowFlow(
-		//с помощью диструктуризации передаем параметры в followUnfollowFlow
-		dispatch,
-		userId,
-		userApi.getUnFollow.bind(userId),
-		unfollowUser
-	)
-}
+export const unfollow =
+	(userId: number): ThunkType =>
+	async (dispatch) => {
+		_followUnfollowFlow(
+			//с помощью диструктуризации передаем параметры в _followUnfollowFlow
+			dispatch,
+			userId,
+			userApi.getUnFollow.bind(userId),
+			unfollowUser
+		)
+	}
 
 //код для follow/unfollow без общей функции
 // //ThunkCreator follow:

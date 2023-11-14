@@ -33,7 +33,7 @@ let initialState = {
 
 export type InitialStateType = typeof initialState
 
-const messageReducer = (state = initialState, action: any): InitialStateType => {
+const messageReducer = (state = initialState, action: AddMessageType): InitialStateType => {
 	switch (action.type) {
 		case ADD_MESSAGE:
 			let newMessage = {
