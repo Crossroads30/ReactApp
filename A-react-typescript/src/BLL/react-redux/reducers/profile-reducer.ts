@@ -1,4 +1,4 @@
-import { profileApi } from '../../../DAL/api/api.ts'
+import { ResultCodesEnum, profileApi } from '../../../DAL/api/api.ts'
 import { stopSubmit } from 'redux-form'
 import { PhotosType, PostsType, ProfileType } from '../../../types/types'
 import { ThunkAction } from 'redux-thunk'
@@ -159,9 +159,9 @@ export const getUserProfile =
 export const getStatus =
 	(profileId: number): ThunkType =>
 	async (dispatch) => {
-		const response = await profileApi.getStatus(profileId)
+		const status = await profileApi.getStatus(profileId)
 		// debugger
-		dispatch(setUserStatus(response.data))
+		dispatch(setUserStatus(status))
 	}
 
 export const updateStatus =
@@ -169,8 +169,8 @@ export const updateStatus =
 	async (dispatch) => {
 		//используем try catch для перехвата ошибок
 		try {
-			const response = await profileApi.updateStatus(status)
-			response.data.resultCode === 0 && dispatch(setUserStatus(status))
+			const updateStatusData = await profileApi.updateStatus(status)
+			updateStatusData.resultCode === ResultCodesEnum.Success && dispatch(setUserStatus(status))
 		} catch (error) {
 			console.log(error)
 		}
@@ -179,8 +179,8 @@ export const updateStatus =
 export const savePhoto =
 	(file: any): ThunkType =>
 	async (dispatch) => {
-		const response = await profileApi.savePhoto(file)
-		response.data.resultCode === 0 && dispatch(savePhotoSuccess(response.data.data.photos))
+		const savePhotoData = await profileApi.savePhoto(file)
+		savePhotoData.resultCode === ResultCodesEnum.Success && dispatch(savePhotoSuccess(savePhotoData.data.photos))
 	}
 
 // чтобы получить обновленную версию profile после редактирования
