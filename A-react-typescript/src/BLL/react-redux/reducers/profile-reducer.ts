@@ -177,7 +177,7 @@ export const updateStatus =
 	}
 
 export const savePhoto =
-	(file: any): ThunkType =>
+	(file: File): ThunkType =>
 	async (dispatch) => {
 		const savePhotoData = await profileApi.savePhoto(file)
 		savePhotoData.resultCode === ResultCodesEnum.Success && dispatch(savePhotoSuccess(savePhotoData.data.photos))
@@ -188,15 +188,17 @@ export const savePhoto =
 export const saveUserData =
 	(profile: ProfileType): ThunkType =>
 	async (dispatch, getState) => {
+
 		const userId = getState().auth.id
-		const response = await profileApi.saveUserData(profile)
-		if (response.data.resultCode === 0) {
+		const userData = await profileApi.saveUserData(profile)
+
+		if (userData.resultCode === ResultCodesEnum.Success) {
 			dispatch(getUserProfile(userId))
 		} else {
 			//передаем в качестве ошибки сообщение из response.data.messages из api запроса
-			dispatch(stopSubmit('edit-profile', { _error: response.data.messages })) //для выведения общей ошибки
+			dispatch(stopSubmit('edit-profile', { _error: userData.messages })) //для выведения общей ошибки
 			// dispatch(stopSubmit('edit-profile', { "contacts":  {"facebook": response.data.messages[0]} }))//для выведения отдельных ошибок по полям но надо распарсить строку из response.data.messages[0]
-			return Promise.reject(response.data.messages) //после диспатча возвращаем Promise.reject с сообщением об этой ошибки внутри
+			return Promise.reject(userData.messages) //после диспатча возвращаем Promise.reject с сообщением об этой ошибки внутри
 		}
 	}
 
