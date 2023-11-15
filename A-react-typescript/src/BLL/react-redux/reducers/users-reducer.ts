@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { userApi } from '../../../DAL/api/api'
+import { ResultCodesEnum, userApi } from '../../../DAL/api/api.ts'
 import { UserType } from '../../../types/types'
 import { updateObjectInArray } from '../../../utils/helpers/object-helpers'
 import { AppStateType } from './react-redux-store'
@@ -191,7 +191,7 @@ const _followUnfollowFlow = async (
 	dispatch(setDisableFetchingButton(true, userId))
 	let data = await apiMethod(userId)
 
-	data.resultCode === 0 && dispatch(actionCreator(userId))
+	data.resultCode === ResultCodesEnum.Success && dispatch(actionCreator(userId))
 	dispatch(setDisableFetchingButton(false, userId))
 }
 
