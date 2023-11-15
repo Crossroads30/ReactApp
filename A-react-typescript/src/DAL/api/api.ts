@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ProfileType } from '../../types/types'
+import { ProfileType, UserType } from '../../types/types'
 
 const instance = axios.create({
 	withCredentials: true,
@@ -9,34 +9,43 @@ const instance = axios.create({
 	},
 })
 
+//------------------------ userApi ---------------------------------------------
+
+type UserApiType = {
+	items: Array<UserType>
+	totalCount: number
+	error: null | string
+}
+
+
 export const userApi = {
 	async getUsers(currentPage: number = 1, pageSize: number = 5) {
-		return await instance.get(`users?page=${currentPage}&count=${pageSize}`).then(response => response.data.items)
+		return await instance.get<UserApiType>(`users?page=${currentPage}&count=${pageSize}`).then(response => response.data.items)
 	},
 
-	async getProfile(profileId: number) {
-		console.warn('Deprecated method. Please use profileApi object!')
-		//запрос на получения id из profile
-		return await profileApi.getProfile(profileId) //делегировали вызов этого метода из profileApi
-	},
+	// async getProfile(profileId: number) {
+	// 	console.warn('Deprecated method. Please use profileApi object!')
+	// 	//запрос на получения id из profile
+	// 	return await profileApi.getProfile(profileId) //делегировали вызов этого метода из profileApi
+	// },
 
 	async getFollow(userId: number) {
 		//запрос на follow users
 		return await instance
-			.post(`follow/${userId}`) // в post объект настройки { withCredentials: true } идет третьем параметром
+			.post<ResultMessagesDataType>(`follow/${userId}`) // в post объект настройки { withCredentials: true } идет третьем параметром
 			.then(response => response.data)
 	},
 
 	async getUnFollow(userId: number) {
 		//запрос на follow users
 		return await instance
-			.delete(`follow/${userId}`) // в delete объект настройки { withCredentials: true } идет вторым параметром
+			.delete<ResultMessagesDataType>(`follow/${userId}`) // в delete объект настройки { withCredentials: true } идет вторым параметром
 			.then(response => response.data)
 	},
 
 	async getFriends(totalUsersCount: number = 30) {
 		// debugger
-		return await instance.get(`users?friend=true&count=${totalUsersCount}`).then(response => response.data.items)
+		return await instance.get<UserApiType>(`users?friend=true&count=${totalUsersCount}`).then(response => response.data.items)
 	},
 }
 
@@ -63,7 +72,7 @@ type ProfileResponseType = {
 	}
 }
 
-type UpdateStatusResponseType = {
+type ResultMessagesDataType = {
 	resultCode: ResultCodesEnum
 	messages: Array<string>
 	data: Object
@@ -91,7 +100,7 @@ export const profileApi = {
 	},
 	async updateStatus(status: string) {
 		//запрос на обновления статуса в profile
-		return await instance.put<UpdateStatusResponseType>(`profile/status`, { status }).then(res => res.data) //вторым параметром передаем объект, то что требует документация: (status: required(string - maxLength: 300))
+		return await instance.put<ResultMessagesDataType>(`profile/status`, { status }).then(res => res.data) //вторым параметром передаем объект, то что требует документация: (status: required(string - maxLength: 300))
 	},
 	async savePhoto(userPhotoFile: File) {
 		//запрос на отправку фото в profile
@@ -107,7 +116,7 @@ export const profileApi = {
 	},
 
 	async saveUserData(profile: ProfileType) {
-		return await instance.put(`profile`, profile)
+		return await instance.put<ResultMessagesDataType>(`profile`, profile).then(res => res.data)
 	},
 }
 
@@ -140,12 +149,6 @@ type GetLoginResponseType = {
 	messages: Array<string>
 }
 
-type GetLogoutResponseType = {
-	data: Object
-	resultCode: ResultCodesEnum
-	messages: Array<string>
-}
-
 export const authAPI = {
 	async getAuth() {
 		//запрос на подтверждения аутентификации
@@ -165,17 +168,19 @@ export const authAPI = {
 	},
 	async getLogout() {
 		//запрос на 'logout' из сервера через приложение
-		return await instance.delete<GetLogoutResponseType>(`auth/login`).then(res => res.data)
+		return await instance.delete<ResultMessagesDataType>(`auth/login`).then(res => res.data)
 	},
 }
 
-type getCaptchaURLType = {
+//------------------------- securityAPI -------------------------------------
+
+type GetCaptchaURLType = {
 	url: string
 }
 
 export const securityAPI = {
 	async getCaptchaURL() {
 		//запрос на подтверждения аутентификации
-		return await instance.get<getCaptchaURLType>(`security/get-captcha-url`).then(res => res.data)
+		return await instance.get<GetCaptchaURLType>(`security/get-captcha-url`).then(res => res.data)
 	},
 }
