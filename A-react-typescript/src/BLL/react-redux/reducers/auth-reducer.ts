@@ -2,7 +2,7 @@
 import { stopSubmit } from 'redux-form'
 import { ResultCodesEnum, ResultCodesWithCaptcha, authAPI, securityAPI } from '../../../DAL/api/api.ts'
 import { ThunkAction } from 'redux-thunk'
-import { AppStateType } from './react-redux-store'
+import { AppStateType } from './react-redux-store.ts'
 
 const SET_USER_DATA = 'auth/SET-USER-DATA' //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 const CAPTCHA_URL_SUCCESS = 'auth/CAPTCHA-URL-SUCCESS'
@@ -87,7 +87,7 @@ export const getAuthUserData = (): ThunkType => async (dispatch) => {
 
 //так же надо передать и символы из капчи
 export const loginToServer =
-	(email: string, password: string, rememberMe: boolean, captcha: null): ThunkType =>
+	(email: string, password: string, rememberMe: boolean, captcha: string | null): ThunkType =>
 	async (dispatch) => {
 		const loginData= await authAPI.getLogin(email, password, rememberMe, captcha)
 		// debugger
@@ -101,7 +101,7 @@ export const loginToServer =
 
 			// stopSubmit - специальный метод из redux-form, который передает обработанную ошибку внутрь определенной формы, первым параметром идет имя формы('login'), вторым параметром идет сама ошибка и сообщение к ней(в данном случае это общая ошибка '_error')
 			const message = loginData.messages.length > 0 ? loginData.messages[0] : 'some error' //передаем в качестве ошибки сообщение из response.data.messages из api запроса
-			dispatch(stopSubmit('login', { _error: message }))
+			// dispatch(stopSubmit('login', { _error: message })) //??? no type !!! ???
 		}
 	}
 
