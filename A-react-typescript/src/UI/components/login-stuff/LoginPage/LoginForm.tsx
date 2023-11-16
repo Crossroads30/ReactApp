@@ -3,14 +3,17 @@ import cl from './LoginPage.module.css'
 import { Field, reduxForm, InjectedFormProps } from 'redux-form'
 import { maxLengthCreator, required } from '../../../../utils/validators/validators.ts'
 // import Input from '../../common/FormsControls/Input/Input'
-import { FormElement, createField } from '../../common/FormsControls/FormElement.tsx'
-import { FormDataValuesType } from './LoginPage'
+import { createField } from '../../common/FormsControls/FormElement.tsx'
+import { FormDataValuesType } from './LoginPage.tsx'
 
 const maxLength30 = maxLengthCreator(30) //вызов этой функции необходимо вызывать за пределами компоненты иначе будет бесконечный цикл!
 
 type LoginFormOwnProps = {
 	captchaURL: string | null
 }
+
+type FormDataValuesTypeKeys = Extract<keyof FormDataValuesType, string> // из ключей может быть только строка
+
 // внутри React.FC<InjectedFormProps<FormDataValuesType -!!! LoginFormOwnProps !!!- указываем для библиотеки redux-form и после & указываем тот же !!! LoginFormOwnProps !!! для самой компоненты!!!
 const LoginForm: React.FC<InjectedFormProps<FormDataValuesType, LoginFormOwnProps> & LoginFormOwnProps> = ({ handleSubmit, error, captchaURL }) => {
 	//используем диструктуризацию пропсов(не забываем про фигурные скобки, т.к. props - это объект)
@@ -21,11 +24,12 @@ const LoginForm: React.FC<InjectedFormProps<FormDataValuesType, LoginFormOwnProp
 			<form onSubmit={handleSubmit}>
 				{/* используем диструктуризацию пропсов */}
 				{/* вызываем шаблонизатор полей createField и передаем в него все необходимые параметры */}
-				{createField(cl.email, 'Email', 'email', [required, maxLength30], 'input')}
-				{createField(cl.password, 'Password', 'password', [required, maxLength30], 'input', {
+				{/*  Generic <FormKeysType> который приходит из FormElement и в который подставляется данный тип FormDataValuesTypeKeys что берет ключи из FormDataValuesType */}
+				{createField<FormDataValuesTypeKeys>(cl.email, 'Email', 'email', [required, maxLength30], 'input')}
+				{createField<FormDataValuesTypeKeys>(cl.password, 'Password', 'password', [required, maxLength30], 'input', {
 					type: 'password',
 				})}
-				{createField(
+				{createField<FormDataValuesTypeKeys>(
 					cl.checkbox,
 					undefined,
 					'rememberMe',
@@ -38,7 +42,7 @@ const LoginForm: React.FC<InjectedFormProps<FormDataValuesType, LoginFormOwnProp
 				)}
 				{captchaURL && <img src={captchaURL} />}
 				{/* если капча, то показываем img с этой капчей внутри(то что выше) и вводим эти символы в поле(то что ниже)(имя поля должно соответствовать тому полю что находится на сервере ) */}
-				{captchaURL && createField(undefined, 'Symbols from image', 'captcha', [required], 'input', {})}
+				{captchaURL && createField<FormDataValuesTypeKeys>(undefined, 'Symbols from image', 'captcha', [required], 'input', {})}
 				<div className={cl.button}>
 					<button>Login</button>
 				</div>

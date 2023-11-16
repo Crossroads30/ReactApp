@@ -3,17 +3,17 @@ import { Navigate } from 'react-router-dom'
 import { LoginReduxForm } from './LoginForm.tsx'
 import cl from './LoginPage.module.css'
 
+export type LoginPageType = {
+	login: (email: string, password: string, rememberMe: boolean, captcha: string | null) => void
+	isAuth: boolean
+	captchaURL: string | null
+}
+
 export type FormDataValuesType = {
 	email: string
 	password: string
 	rememberMe: boolean
 	captcha: string | null
-}
-
-export type LoginPageType = {
-	login: (email: string, password: string, rememberMe: boolean, captcha: string | null) => void
-	isAuth: boolean
-	captchaURL: string | null
 }
 
 const LoginPage: React.FC<LoginPageType> = ({ login, isAuth, captchaURL }) => {

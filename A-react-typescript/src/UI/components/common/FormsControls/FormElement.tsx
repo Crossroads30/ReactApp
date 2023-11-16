@@ -9,13 +9,11 @@ type FormControlParamsType = {
 		touched: boolean
 		error: string
 	}
-	typeofelement: any
+	typeofelement: React.JSXElementConstructor<object> // ?????????
 }
 
-type FormControlType = (params:FormControlParamsType) => React.ReactNode
-
 // export const FormElement = ({ input, meta, ...props }) => {
-export const FormElement: FormControlType = ({ input, meta: { touched, error }, ...props }) => {
+export const FormElement: React.FC<FormControlParamsType> = ({ input, meta: { touched, error }, ...props }) => {
 	//используем диструктуризацию для meta.touched и meta.error
 	//шаблонный вариант передачи нужного элемента что бы избежать дублирования кода для различных элементов формы
 	// const hasError = meta.touched && meta.error
@@ -35,7 +33,45 @@ export const FormElement: FormControlType = ({ input, meta: { touched, error }, 
 	)
 }
 
-export const createField = (className: string | undefined, placeholder: string | undefined, name: string | undefined, validate: Array<FieldValidatorType> | null, typeofelement: string, props = {}, text = '') => {
+// вместо описанных типов ниже, создан Generic 
+// версия без Generic:
+
+// export type FormDataValuesType = {
+// 	email: string
+// 	password: string
+// 	rememberMe: boolean
+// 	captcha: string | null
+// }
+
+// type FormDataValuesTypeKeys = keyof FormDataValuesType // определяет тип пропса(name) по ключам из FormDataValuesType
+
+// Generic не работает с синтаксисом стрелочной функции !!!!
+// export const createField = (
+// 	className: string | undefined,
+// 	placeholder: string | undefined,
+// 	name: FormDataValuesTypeKeys, // определяет тип пропса(name) по ключам из FormDataValuesType
+// 	validate: Array<FieldValidatorType> | null,
+// 	typeofelement: string,
+// 	props = {},
+// 	text = ''
+// ) => (
+// 		<div className={className}>
+// 			<Field placeholder={placeholder} name={name} validate={validate} component={FormElement} typeofelement={typeofelement} {...props} />
+// 			{text}
+// 		</div>
+// 	)
+
+// версия с Generic:
+// Generic не работает с синтаксисом стрелочной функции, поэтому переписываем стрелочную ф-ю в обычную:
+export function createField<FormKeysType extends string>( // Generic <FormKeysType> который передается в LoginForm (extends string - это ограничения того что этот ключ должен быть строкой)
+	className: string | undefined,
+	placeholder: string | undefined,
+	name: FormKeysType, // определяет тип пропса(name) по ключам из FormDataValuesType
+	validate: Array<FieldValidatorType> | null,
+	typeofelement: string,
+	props = {},
+	text = ''
+) {
 	return (
 		<div className={className}>
 			<Field placeholder={placeholder} name={name} validate={validate} component={FormElement} typeofelement={typeofelement} {...props} />
