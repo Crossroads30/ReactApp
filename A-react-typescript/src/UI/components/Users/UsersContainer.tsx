@@ -3,8 +3,6 @@ import Users from './Users.tsx'
 import {
 	follow,
 	unfollow,
-	setCurrentPage,
-	setTotalUsersCount,
 	getUsers,
 } from '../../../BLL/react-redux/reducers/users-reducer.ts'
 import { getFriendsTC } from '../../../BLL/react-redux/reducers/sidebar-reducer.ts'
@@ -30,8 +28,8 @@ type MapDispatchPropsType = {
 	getUsers: (currentPage: number, pageSize: number) => void
 	follow: (userId: number) => void
 	unfollow: (userId: number) => void
-	setCurrentPage: (currentPage: number) => void
-	setTotalUsersCount: (count: number) => void
+	// setCurrentPage: (currentPage: number) => void
+	// setTotalUsersCount: (count: number) => void
 	getFriendsTC: () => void
 }
 
@@ -122,8 +120,6 @@ export default compose(
 	connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
 		follow,
 		unfollow,
-		setCurrentPage,
-		setTotalUsersCount,
 		getUsers,
 		getFriendsTC,
 	})
