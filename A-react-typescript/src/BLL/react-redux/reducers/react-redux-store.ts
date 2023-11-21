@@ -22,6 +22,15 @@ const rootReducer = combineReducers({
 type RootReducerType = typeof rootReducer //внутри происходит что то вроде этого: (globalState: AppStateType) => AppStateType
 export type AppStateType = ReturnType<RootReducerType> //возвращает типы из RootReducer
 
+//--------------------
+//условие для определения типов для ActionCreators:
+
+type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U: never
+
+//передаем в generic ActionsTypes ограничения (extends {[key: string]: ( ...args: any[])=> any}) то передаваемый тип должен быть объектом который возвращает функцию!!!
+//и экспортируем его
+export type InferActionsTypes<T extends {[key: string]: ( ...args: any[])=> any}> = ReturnType<PropertiesTypes<T>>
+
 // let state: AppStateType // теперь можно явно видеть что именно находится внутри этого глобального стэйта
 // state. // по обращению к этому стэйту будет всегда подсказка что внутри  
  
