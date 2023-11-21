@@ -2,17 +2,18 @@ import { Dispatch } from 'redux'
 import { ResultCodesEnum, userApi } from '../../../DAL/api/api.ts'
 import { UserType } from '../../../types/types'
 import { updateObjectInArray } from '../../../utils/helpers/object-helpers'
-import { AppStateType } from './react-redux-store'
+import { AppStateType, InferActionsTypes } from './react-redux-store'
 import { ThunkAction } from 'redux-thunk'
 
 //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
-const SET_USERS = 'users/SET-USERS'
-const FOLLOW = 'users/FOLLOW'
-const UNFOLLOW = 'users/UNFOLLOW'
-const SET_CURRENT_PAGE = 'users/SET-CURRENT-PAGE'
-const TOGGLE_IS_LOADING = 'users/TOGGLE-IS-LOADING'
-const SET_USERS_COUNT = 'users/SET-USERS-COUNT'
-const DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS = 'users/DISABLE-FETCHING-BUTTON'
+//!!! так как типизация(ActionTypes) не позволит записать в типы ничего другого кроме тех типов которые указаны в AC, то эти константы с названиями типов можно убрать !!! 
+// const SET_USERS = 'users/SET-USERS'
+// const FOLLOW = 'users/FOLLOW'
+// const UNFOLLOW = 'users/UNFOLLOW'
+// const SET_CURRENT_PAGE = 'users/SET-CURRENT-PAGE'
+// const TOGGLE_IS_LOADING = 'users/TOGGLE-IS-LOADING'
+// const SET_USERS_COUNT = 'users/SET-USERS-COUNT'
+// const DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS = 'users/DISABLE-FETCHING-BUTTON'
 
 let initialState = {
 	users: [] as Array<UserType>,
@@ -25,14 +26,14 @@ let initialState = {
 
 export type InitialStateType = typeof initialState
 
-const UsersReducer = (state = initialState, action: ActionTypes): InitialStateType => {
+const UsersReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 	switch (action.type) {
-		case SET_USERS:
+		case 'users/SET-USERS':
 			return {
 				...state,
 				users: action.users,
 			}
-		case FOLLOW:
+		case 'users/FOLLOW':
 			return {
 				...state,
 				//если внутри массива не надо что либо менять:
@@ -49,7 +50,7 @@ const UsersReducer = (state = initialState, action: ActionTypes): InitialStateTy
 				// 	return user
 				// }),
 			}
-		case UNFOLLOW:
+		case 'users/UNFOLLOW':
 			return {
 				...state,
 				//если внутри массива не надо что либо менять:
@@ -66,22 +67,22 @@ const UsersReducer = (state = initialState, action: ActionTypes): InitialStateTy
 				// 	return user
 				// }),
 			}
-		case SET_CURRENT_PAGE:
+		case 'users/SET_CURRENT_PAGE':
 			return {
 				...state,
 				currentPage: action.currentPage,
 			}
-		case TOGGLE_IS_LOADING:
+		case 'users/TOGGLE_IS_LOADING':
 			return {
 				...state,
 				isLoading: action.isLoading,
 			}
-		case SET_USERS_COUNT:
+		case 'users/SET_USERS_COUNT':
 			return {
 				...state,
 				totalUsersCount: action.count,
 			}
-		case DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS:
+		case 'users/DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS':
 			return {
 				...state,
 				followingInProgress: action.isLoading
@@ -93,91 +94,49 @@ const UsersReducer = (state = initialState, action: ActionTypes): InitialStateTy
 	}
 }
 
-type ActionTypes =
-	| SetUsersType
-	| FollowUserType
-	| UnfollowUserType
-	| SetCurrentPageType
-	| SetIsLoadingType
-	| SetTotalUsersCountType
-	| SetDisableFetchingButtonType
+
 
 //функции Action Creators with types:
-type SetUsersType = {
-	type: typeof SET_USERS
-	users: Array<UserType>
+
+type ActionsTypes = InferActionsTypes<typeof actions>
+
+export const actions = {
+	setUsers: (users: Array<UserType>) => ({ type: 'users/SET-USERS', users } as const),
+	followUser: (userId: number) => ({ type: 'users/FOLLOW', userId } as const),
+	unfollowUser: (userId: number) => ({ type: 'users/UNFOLLOW', userId } as const),
+	setCurrentPage: (currentPage: number) => ({ type: 'users/SET_CURRENT_PAGE', currentPage } as const),
+	setIsLoading: (isLoading: boolean) => ({ type: 'users/TOGGLE_IS_LOADING', isLoading } as const),
+	setTotalUsersCount: (count: number) => ({ type: 'users/SET_USERS_COUNT', count } as const),
+	setDisableFetchingButton: (isLoading: boolean, userId: number) =>
+		({ type: 'users/DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS', isLoading, userId } as const),
 }
-export const setUsers = (users: Array<UserType>): SetUsersType => ({ type: SET_USERS, users })
-type FollowUserType = {
-	type: typeof FOLLOW
-	userId: number
-}
-export const followUser = (userId: number): FollowUserType => ({ type: FOLLOW, userId })
-type UnfollowUserType = {
-	type: typeof UNFOLLOW
-	userId: number
-}
-export const unfollowUser = (userId: number): UnfollowUserType => ({ type: UNFOLLOW, userId })
-type SetCurrentPageType = {
-	type: typeof SET_CURRENT_PAGE
-	currentPage: number
-}
-export const setCurrentPage = (currentPage: number): SetCurrentPageType => ({
-	type: SET_CURRENT_PAGE,
-	currentPage,
-})
-type SetIsLoadingType = {
-	type: typeof TOGGLE_IS_LOADING
-	isLoading: boolean
-}
-export const setIsLoading = (isLoading: boolean): SetIsLoadingType => ({
-	type: TOGGLE_IS_LOADING,
-	isLoading,
-})
-type SetTotalUsersCountType = {
-	type: typeof SET_USERS_COUNT
-	count: number
-}
-export const setTotalUsersCount = (count: number): SetTotalUsersCountType => ({
-	type: SET_USERS_COUNT,
-	count,
-})
-type SetDisableFetchingButtonType = {
-	type: typeof DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS
-	isLoading: boolean
-	userId: number
-}
-export const setDisableFetchingButton = (isLoading: boolean, userId: number, ): SetDisableFetchingButtonType => ({
-	type: DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS,
-	isLoading,
-	userId,
-})
+
 
 //thunk функции:
 
 //ThunkCreator getUsers:
-// export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: Dispatch<ActionTypes>, getState: AppStateType) => { // первый вариант типизации thunk
+// export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: Dispatch<ActionTypes>, getState: AppStateType) => { // первый вариант типизации thunk!!!!
 
 // второй вариант типизации thunk
 // type GetStateType = () => AppStateType
 // type DispatchType = Dispatch<ActionTypes>
 
-// export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: DispatchType, getState: GetStateType) => { // второй вариант типизации thunk
+// export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: DispatchType, getState: GetStateType) => { // второй вариант типизации thunk!!!!
 
-// третий вариант типизации thunk
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes>
+// третий вариант типизации thunk!!!!
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const getUsers =
 	(currentPage: number, pageSize: number): ThunkType =>
 	async (dispatch, getState) => {
 		// третий вариант типизации thunk
 		//берем параметры с помощью замыкания в thunkCreator и возвращаем из нее thunk функцию с диспатчем, в которую приходят эти параметры:
-		dispatch(setIsLoading(true)) //диспатчем actionCreator
+		dispatch(actions.setIsLoading(true)) //диспатчем actionCreator
 		const data = await userApi.getUsers(currentPage, pageSize)
 		// data - то что пришло из ajax-запроса в DAL/api/api.js
-		dispatch(setCurrentPage(currentPage)) //диспатчем actionCreator
-		dispatch(setIsLoading(false)) //диспатчем actionCreator
-		dispatch(setUsers(data)) //диспатчем actionCreator
+		dispatch(actions.setCurrentPage(currentPage)) //диспатчем actionCreator
+		dispatch(actions.setIsLoading(false)) //диспатчем actionCreator
+		dispatch(actions.setUsers(data)) //диспатчем actionCreator
 	}
 
 //общая функция для follow/unfollow
@@ -186,13 +145,13 @@ const _followUnfollowFlow = async (
 	dispatch: any,
 	userId: number,
 	apiMethod: any,
-	actionCreator: (userId: number) => FollowUserType | UnfollowUserType
+	actionCreator: (userId: number) => ActionsTypes
 ) => {
-	dispatch(setDisableFetchingButton(true, userId))
+	dispatch(actions.setDisableFetchingButton(true, userId))
 	let data = await apiMethod(userId)
 
 	data.resultCode === ResultCodesEnum.Success && dispatch(actionCreator(userId))
-	dispatch(setDisableFetchingButton(false, userId))
+	dispatch(actions.setDisableFetchingButton(false, userId))
 }
 
 //ThunkCreator follow:
@@ -202,7 +161,7 @@ export const follow = (userId: number): ThunkType => async (dispatch) => {
 		dispatch,
 		userId,
 		userApi.getFollow.bind(userId),
-		followUser
+		actions.followUser
 	)
 }
 
@@ -215,9 +174,13 @@ export const unfollow =
 			dispatch,
 			userId,
 			userApi.getUnFollow.bind(userId),
-			unfollowUser
+			actions.unfollowUser
 		)
 	}
+
+	export default UsersReducer
+
+//-----------------------------------
 
 //код для follow/unfollow без общей функции
 // //ThunkCreator follow:
@@ -236,4 +199,65 @@ export const unfollow =
 // 	dispatch(setDisableFetchingButton(false, userId)) // // передаем id пользователя кнопку которого надо вернуть в активное состояние после того как запрос на отписку закончится
 // }
 
-export default UsersReducer
+//старая версия типизации action creators:
+
+// type ActionTypes =
+// 	| SetUsersType
+// 	| FollowUserType
+// 	| UnfollowUserType
+// 	| SetCurrentPageType
+// 	| SetIsLoadingType
+// 	| SetTotalUsersCountType
+// 	| SetDisableFetchingButtonType
+
+// type SetUsersType = {
+// 	type: typeof SET_USERS
+// 	users: Array<UserType>
+// }
+// export const setUsers = (users: Array<UserType>): SetUsersType => ({ type: SET_USERS, users })
+// type FollowUserType = {
+// 	type: typeof FOLLOW
+// 	userId: number
+// }
+// export const followUser = (userId: number): FollowUserType => ({ type: FOLLOW, userId })
+// type UnfollowUserType = {
+// 	type: typeof UNFOLLOW
+// 	userId: number
+// }
+// export const unfollowUser = (userId: number): UnfollowUserType => ({ type: UNFOLLOW, userId })
+// type SetCurrentPageType = {
+// 	type: typeof SET_CURRENT_PAGE
+// 	currentPage: number
+// }
+// export const setCurrentPage = (currentPage: number): SetCurrentPageType => ({
+// 	type: SET_CURRENT_PAGE,
+// 	currentPage,
+// })
+// type SetIsLoadingType = {
+// 	type: typeof TOGGLE_IS_LOADING
+// 	isLoading: boolean
+// }
+// export const setIsLoading = (isLoading: boolean): SetIsLoadingType => ({
+// 	type: TOGGLE_IS_LOADING,
+// 	isLoading,
+// })
+// type SetTotalUsersCountType = {
+// 	type: typeof SET_USERS_COUNT
+// 	count: number
+// }
+// export const setTotalUsersCount = (count: number): SetTotalUsersCountType => ({
+// 	type: SET_USERS_COUNT,
+// 	count,
+// })
+// type SetDisableFetchingButtonType = {
+// 	type: typeof DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS
+// 	isLoading: boolean
+// 	userId: number
+// }
+// export const setDisableFetchingButton = (isLoading: boolean, userId: number, ): SetDisableFetchingButtonType => ({
+// 	type: DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS,
+// 	isLoading,
+// 	userId,
+// })
+
+
