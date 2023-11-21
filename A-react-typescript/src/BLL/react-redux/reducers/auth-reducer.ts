@@ -2,10 +2,11 @@
 import { stopSubmit } from 'redux-form'
 import { ResultCodesEnum, ResultCodesWithCaptcha, authAPI, securityAPI } from '../../../DAL/api/api.ts'
 import { ThunkAction } from 'redux-thunk'
-import { AppStateType } from './react-redux-store.ts'
+import { AppStateType, InferActionsTypes } from './react-redux-store.ts'
 
-const SET_USER_DATA = 'auth/SET-USER-DATA' //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
-const CAPTCHA_URL_SUCCESS = 'auth/CAPTCHA-URL-SUCCESS'
+//!!! так как типизация(ActionTypes) не позволит записать в типы ничего другого кроме тех типов которые указаны в AC, то эти константы с названиями типов можно убрать !!! 
+// const SET_USER_DATA = 'auth/SET-USER-DATA' //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
+// const CAPTCHA_URL_SUCCESS = 'auth/CAPTCHA-URL-SUCCESS'
 
 // export type InitialStateType = {
 // 	id: number | null
@@ -27,10 +28,10 @@ let initialState = {
 
 export type InitialStateType = typeof initialState //типизация по умолчанию
 
-const authReducer = (state = initialState, action: ActionTypes): InitialStateType => {
+const authReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 	switch (action.type) {
-		case SET_USER_DATA:
-		case CAPTCHA_URL_SUCCESS:
+		case 'auth/SET_USER_DATA':
+		case 'auth/CAPTCHA_URL_SUCCESS':
 			return {
 				...state,
 				...action.data,
@@ -40,49 +41,35 @@ const authReducer = (state = initialState, action: ActionTypes): InitialStateTyp
 	}
 }
 
-type ActionTypes = SetAuthUserDataActionType | GetCaptchaUrlSuccessActionType
+
 
 //типизация Action Creators:
-type SetAuthUserDataActionDataType = {
-	id: number | null
-	email: string | null
-	login: string | null
-	isAuth: boolean
+// 
+
+type ActionsTypes = InferActionsTypes<typeof actions>
+
+export const actions = {
+	setAuthUserData: (id: number | null, email: string | null, login: string | null, isAuth: boolean) => ({
+		type: 'auth/SET_USER_DATA',
+		data: { id, email, login, isAuth },
+	}),
+
+	getCaptchaUrlSuccess: (captchaURL: string | null) => ({
+		type: 'auth/CAPTCHA_URL_SUCCESS',
+		data: { captchaURL },
+	}),
 }
-
-
-type SetAuthUserDataActionType = {
-	type: typeof SET_USER_DATA
-	data: SetAuthUserDataActionDataType
-}
-
-//функции Action Creators:
-export const setAuthUserData = (id: number | null, email: string | null, login: string | null, isAuth: boolean): SetAuthUserDataActionType => ({
-	type: SET_USER_DATA,
-	data: { id, email, login, isAuth },
-})
-
-//типизация Action Creators:
-type GetCaptchaUrlSuccessActionType = {
-	type: typeof CAPTCHA_URL_SUCCESS
-	data: { captchaURL: string | null }//задали тип для data 
-}
-
-export const getCaptchaUrlSuccess = (captchaURL: string | null): GetCaptchaUrlSuccessActionType => ({
-	type: CAPTCHA_URL_SUCCESS,
-	data: { captchaURL },
-})
 
 //thunk Creators:
 
-type ThunkType = ThunkAction<Promise<void>,AppStateType, unknown, ActionTypes>
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const getAuthUserData = (): ThunkType => async (dispatch) => {
 	// вместо then() используем async await
 	const getAuthData = await authAPI.getAuth() // забираем data из then() из authAPI.getAuth() в api.ts
 
 	const { id, email, login } = getAuthData.data
-	getAuthData.resultCode === ResultCodesEnum.Success && dispatch(setAuthUserData(id, email, login, true)) // берем номер кода из enum (ResultCodesEnum.Success = 0)
+	getAuthData.resultCode === ResultCodesEnum.Success && dispatch(actions.setAuthUserData(id, email, login, true)) // берем номер кода из enum (ResultCodesEnum.Success = 0)
 }
 
 //так же надо передать и символы из капчи
@@ -109,15 +96,48 @@ export const getCaptchaURL = (): ThunkType => async (dispatch) => {
 	const captchaUrlData = await securityAPI.getCaptchaURL()
 	// debugger
 	// const captchaURL = captchaUrlData.url
-	dispatch(getCaptchaUrlSuccess(captchaUrlData.url))
+	dispatch(actions.getCaptchaUrlSuccess(captchaUrlData.url))
 }
 
 export const logoutFromServer = (): ThunkType => async (dispatch) => {
 	// вместо then() используем async await
 	const logoutData = await authAPI.getLogout()
 	// debugger
-	logoutData.resultCode === ResultCodesEnum.Success && dispatch(setAuthUserData(null, null, null, false))
+	logoutData.resultCode === ResultCodesEnum.Success && dispatch(actions.setAuthUserData(null, null, null, false))
 	// dispatch((window.location.href = 'login')) // пока очень корявое решение
 }
 
 export default authReducer
+
+//------------------------------------------
+//старая версия типизация Action Creators:
+
+// type ActionTypes = SetAuthUserDataActionType | GetCaptchaUrlSuccessActionType
+
+// type SetAuthUserDataActionDataType = {
+// 	id: number | null
+// 	email: string | null
+// 	login: string | null
+// 	isAuth: boolean
+// }
+
+// type SetAuthUserDataActionType = {
+// 	type: typeof SET_USER_DATA
+// 	data: SetAuthUserDataActionDataType
+// }
+
+// type GetCaptchaUrlSuccessActionType = {
+// 	type: typeof CAPTCHA_URL_SUCCESS
+// 	data: { captchaURL: string | null } //задали тип для data
+// }
+
+//функции Action Creators:
+// export const setAuthUserData = (id: number | null, email: string | null, login: string | null, isAuth: boolean): SetAuthUserDataActionType => ({
+// 	type: SET_USER_DATA,
+// 	data: { id, email, login, isAuth },
+// })
+
+// export const getCaptchaUrlSuccess = (captchaURL: string | null): GetCaptchaUrlSuccessActionType => ({
+// 	type: CAPTCHA_URL_SUCCESS,
+// 	data: { captchaURL },
+// })
