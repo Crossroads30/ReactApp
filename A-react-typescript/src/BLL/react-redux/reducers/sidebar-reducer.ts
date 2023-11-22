@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk'
 import { userApi } from '../../../DAL/api/userApi'
-import { AppStateType } from './react-redux-store'
+import { AppStateType, BaseThunkType } from './react-redux-store'
 
 const SET_FRIENDS = 'sidebar/FRIENDS'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
@@ -36,7 +36,10 @@ type SetFriendsActionType = {
 //actionCreators:
 export const addFriends = (friends: object[]): SetFriendsActionType => ({ type: SET_FRIENDS, friends })
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, SetFriendsActionType>
+// вместо явной типизации ниже, используем generic BaseThunkType из react-redux-store.ts и передаем в него в качестве параметра - ActionsTypes, остальное приходит по умолчанию
+type ThunkType = BaseThunkType<SetFriendsActionType>
+
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, SetFriendsActionType>
 
 //thunkCreators:
 export const getFriendsTC = (): ThunkType => async (dispatch) => {

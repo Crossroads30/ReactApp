@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk'
 import { getAuthUserData } from './auth-reducer'
-import { AppStateType, InferActionsTypes } from './react-redux-store'
+import { AppStateType, BaseThunkType, InferActionsTypes } from './react-redux-store'
 // const INITIALIZED_SUCCESS = 'app/INITIALIZED-SUCCESS' //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 //!!! так как типизация(ActionTypes) не позволит записать в типы ничего другого кроме тех типов которые указаны в AC, то эти константы с названиями типов можно убрать !!! 
 
@@ -32,9 +32,10 @@ const appReducer = (state = initialState, action: ActionsTypes): InitialStateTyp
 }
 
 export const actions = {
-	initializedSuccess: () => ({
-		type: 'app/INITIALIZED-SUCCESS',
-	} as const),
+	initializedSuccess: () =>
+		({
+			type: 'app/INITIALIZED-SUCCESS',
+		} as const), // as const говорит что кроме тех значений которые записаны а AC ничего другого приходить не должно!!!
 }
 
 type ActionsTypes = InferActionsTypes<typeof actions>
@@ -51,8 +52,10 @@ type ActionsTypes = InferActionsTypes<typeof actions>
 // })
 
 //thunk Creators:
+// вместо явной типизации ниже, используем generic BaseThunkType из react-redux-store.ts и передаем в него в качестве параметра - ActionsTypes, остальное приходит по умолчанию
+type ThunkType = BaseThunkType<ActionsTypes>
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const initializeApp = (): ThunkType => async dispatch => {
 	let promise = dispatch(getAuthUserData())

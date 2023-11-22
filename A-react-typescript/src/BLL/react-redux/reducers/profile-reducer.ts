@@ -3,7 +3,7 @@ import { profileApi } from '../../../DAL/api/profileApi.ts'
 import { stopSubmit } from 'redux-form'
 import { PhotosType, PostsType, ProfileType } from '../../../types/types'
 import { ThunkAction } from 'redux-thunk'
-import { AppStateType } from './react-redux-store'
+import { AppStateType, BaseThunkType } from './react-redux-store'
 
 //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 const ADD_POST = 'profile/ADD-POST'
@@ -145,8 +145,10 @@ export const updateUserDataSuccess = (userDataStatus: string): UpdateUserDataSuc
 })
 
 //--------------------------------------------------------
+// вместо явной типизации ниже, используем generic BaseThunkType из react-redux-store.ts и передаем в него в качестве параметра - ActionsTypes, остальное приходит по умолчанию
+type ThunkType = BaseThunkType<ActionTypes>
 
-type ThunkType = ThunkAction<Promise<void>,AppStateType, unknown, ActionTypes>
+// type ThunkType = ThunkAction<Promise<void>,AppStateType, unknown, ActionTypes>
 
 //thunk creators:
 export const getUserProfile =

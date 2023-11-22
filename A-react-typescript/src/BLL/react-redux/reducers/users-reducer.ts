@@ -3,7 +3,7 @@ import {  userApi } from '../../../DAL/api/userApi.ts'
 import { ResultCodesEnum } from '../../../DAL/api/api.ts'
 import { UserType } from '../../../types/types'
 import { updateObjectInArray } from '../../../utils/helpers/object-helpers'
-import { AppStateType, InferActionsTypes } from './react-redux-store'
+import { AppStateType, BaseThunkType, InferActionsTypes } from './react-redux-store'
 import { ThunkAction } from 'redux-thunk'
 
 //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
@@ -109,7 +109,7 @@ export const actions = {
 	setIsLoading: (isLoading: boolean) => ({ type: 'users/TOGGLE_IS_LOADING', isLoading } as const),
 	setTotalUsersCount: (count: number) => ({ type: 'users/SET_USERS_COUNT', count } as const),
 	setDisableFetchingButton: (isLoading: boolean, userId: number) =>
-		({ type: 'users/DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS', isLoading, userId } as const),
+		({ type: 'users/DISABLE_BUTTON_WHILE_FOLLOWING_IN_PROGRESS', isLoading, userId } as const), // as const говорит что кроме тех значений которые записаны а AC ничего другого приходить не должно!!!
 }
 
 
@@ -125,11 +125,15 @@ export const actions = {
 // export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: DispatchType, getState: GetStateType) => { // второй вариант типизации thunk!!!!
 
 // третий вариант типизации thunk!!!!
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+// вместо явной типизации ниже, используем generic BaseThunkType из react-redux-store.ts и передаем в него в качестве параметра - ActionsTypes, остальное приходит по умолчанию
+type ThunkType = BaseThunkType<ActionsTypes>
+
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const getUsers =
 	(currentPage: number, pageSize: number): ThunkType =>
 	async (dispatch, getState) => {
+		// если нужно, так же можно вызывать и getState
 		// третий вариант типизации thunk
 		//берем параметры с помощью замыкания в thunkCreator и возвращаем из нее thunk функцию с диспатчем, в которую приходят эти параметры:
 		dispatch(actions.setIsLoading(true)) //диспатчем actionCreator

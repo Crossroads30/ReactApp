@@ -1,10 +1,10 @@
-import { applyMiddleware, combineReducers, legacy_createStore as createStore } from 'redux'
+import { Action, applyMiddleware, combineReducers, legacy_createStore as createStore } from 'redux'
 import profileReducer from './profile-reducer.ts'
 import messageReducer from './message-reducer.ts'
 import usersReducer from './users-reducer.ts'
 import sidebarReducer from './sidebar-reducer.ts'
 import authReducer from './auth-reducer.ts'
-import thunkMiddleware  from 'redux-thunk'
+import thunkMiddleware, { ThunkAction }  from 'redux-thunk'
 import { reducer as formReducer } from 'redux-form' 
 import appReducer from './app-reducer.ts'
  import { compose } from 'redux'
@@ -30,6 +30,10 @@ type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U: never
 //передаем в generic ActionsTypes ограничения (extends {[key: string]: ( ...args: any[])=> any}) то передаваемый тип должен быть объектом который возвращает функцию!!!
 //и экспортируем его
 export type InferActionsTypes<T extends {[key: string]: ( ...args: any[])=> any}> = ReturnType<PropertiesTypes<T>>
+
+export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A> // generic для ThunkCreators
+// A - это передаваемый тип ActionCreators
+// R - это промис(асинхронный запрос) который по умолчанию ничего не возвращает 
 
 // let state: AppStateType // теперь можно явно видеть что именно находится внутри этого глобального стэйта
 // state. // по обращению к этому стэйту будет всегда подсказка что внутри  
