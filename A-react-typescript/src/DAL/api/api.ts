@@ -18,7 +18,7 @@ export enum ResultCodesEnum {
 	Success = 0,
 	Error = 1,
 }
-export type ResponseType<D = {}, RC = ResultCodesEnum> = {
+export type BaseResponseType<D = {}, RC = ResultCodesEnum> = {
 	// D = {} - значит не пустой объект, а неопределенный тип( пустой тип )
 	data: D
 	resultCode: RC
