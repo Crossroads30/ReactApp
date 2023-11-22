@@ -1,4 +1,4 @@
-import { instance, ResultMessagesDataType } from './api.ts'
+import { instance, BaseResponseType, ResultMessagesDataType } from './api.ts'
 import { UserType } from '../../types/types'
 
  type UserApiType = {
@@ -20,15 +20,15 @@ export const userApi = {
 	async getFollow(userId: number) {
 		//запрос на follow users
 		return await instance
-			.post<ResultMessagesDataType>(`follow/${userId}`) // в post объект настройки { withCredentials: true } идет третьем параметром
+			.post<BaseResponseType>(`follow/${userId}`) // в post объект настройки { withCredentials: true } идет третьем параметром
 			.then(response => response.data)
 	},
 
 	async getUnFollow(userId: number) {
 		//запрос на follow users
-		return await instance
-			.delete<ResultMessagesDataType>(`follow/${userId}`) // в delete объект настройки { withCredentials: true } идет вторым параметром
-			.then(response => response.data)
+		return (await instance
+			.delete(`follow/${userId}`) // в delete объект настройки { withCredentials: true } идет вторым параметром
+			.then(response => response.data)) as Promise<BaseResponseType>
 	},
 
 	async getFriends(totalUsersCount: number = 30) {

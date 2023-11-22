@@ -1,4 +1,4 @@
-import { ResponseType } from './api.ts'
+import { BaseResponseType } from './api.ts'
 import { instance, ResultMessagesDataType, ResultCodesEnum } from './api.ts'
 
 export enum ResultCodesWithCaptcha {
@@ -37,12 +37,12 @@ type GetAuthResponseType = {
 export const authAPI = {
 	async getAuth() {
 		//запрос на подтверждения аутентификации
-		return await instance.get<ResponseType<GetAuthResponseType>>(`auth/me`).then(res => res.data) //возвращаем из getAuth() не Промис, а data через then(res => res.data)
+		return await instance.get<BaseResponseType<GetAuthResponseType>>(`auth/me`).then(res => res.data) //возвращаем из getAuth() не Промис, а data через then(res => res.data)
 	},
 	async getLogin(email: string, password: string, rememberMe: boolean = false, captcha: string | null = null) {
 		//запрос на 'login' на  сервер через приложение
 		return await instance
-			.post<ResponseType<GetLoginResponseType, ResultCodesEnum | ResultCodesWithCaptcha>>(`auth/login`, {
+			.post<BaseResponseType<GetLoginResponseType, ResultCodesEnum | ResultCodesWithCaptcha>>(`auth/login`, {
 				//вторым параметром передаем объект, то что требует документация
 				email,
 				password,
