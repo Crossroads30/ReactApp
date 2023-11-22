@@ -1,4 +1,5 @@
-import { ResultCodesEnum, profileApi } from '../../../DAL/api/api.ts'
+import { ResultCodesEnum } from '../../../DAL/api/api.ts'
+import { profileApi } from '../../../DAL/api/profileApi.ts'
 import { stopSubmit } from 'redux-form'
 import { PhotosType, PostsType, ProfileType } from '../../../types/types'
 import { ThunkAction } from 'redux-thunk'
@@ -196,7 +197,7 @@ export const saveUserData =
 			dispatch(getUserProfile(userId))
 		} else {
 			//передаем в качестве ошибки сообщение из response.data.messages из api запроса
-			dispatch(stopSubmit('edit-profile', { _error: userData.messages })) //для выведения общей ошибки
+			// dispatch(stopSubmit('edit-profile', { _error: userData.messages }))//для выведения общей ошибки ??? types ????
 			// dispatch(stopSubmit('edit-profile', { "contacts":  {"facebook": response.data.messages[0]} }))//для выведения отдельных ошибок по полям но надо распарсить строку из response.data.messages[0]
 			return Promise.reject(userData.messages) //после диспатча возвращаем Promise.reject с сообщением об этой ошибки внутри
 		}

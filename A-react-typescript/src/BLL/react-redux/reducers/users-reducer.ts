@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux'
-import { ResultCodesEnum, userApi } from '../../../DAL/api/api.ts'
+import {  userApi } from '../../../DAL/api/userApi.ts'
+import { ResultCodesEnum } from '../../../DAL/api/api.ts'
 import { UserType } from '../../../types/types'
 import { updateObjectInArray } from '../../../utils/helpers/object-helpers'
 import { AppStateType, InferActionsTypes } from './react-redux-store'

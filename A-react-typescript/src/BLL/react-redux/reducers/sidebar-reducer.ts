@@ -1,5 +1,5 @@
 import { ThunkAction } from 'redux-thunk'
-import { userApi } from '../../../DAL/api/api.ts'
+import { userApi } from '../../../DAL/api/userApi'
 import { AppStateType } from './react-redux-store'
 
 const SET_FRIENDS = 'sidebar/FRIENDS'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера

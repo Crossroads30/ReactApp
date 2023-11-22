@@ -1,6 +1,8 @@
 
 import { stopSubmit } from 'redux-form'
-import { ResultCodesEnum, ResultCodesWithCaptcha, authAPI, securityAPI } from '../../../DAL/api/api.ts'
+import { ResultCodesEnum } from '../../../DAL/api/api.ts'
+import { authAPI, ResultCodesWithCaptcha } from '../../../DAL/api/authAPI.ts'
+import { securityAPI } from '../../../DAL/api/securityAPI.ts'
 import { ThunkAction } from 'redux-thunk'
 import { AppStateType, InferActionsTypes } from './react-redux-store.ts'
 
