@@ -4,7 +4,8 @@ import { ResultCodesEnum } from '../../../DAL/api/api.ts'
 import { authAPI, ResultCodesWithCaptcha } from '../../../DAL/api/authAPI.ts'
 import { securityAPI } from '../../../DAL/api/securityAPI.ts'
 import { ThunkAction } from 'redux-thunk'
-import { AppStateType, InferActionsTypes } from './react-redux-store.ts'
+import { AppStateType, BaseThunkType, InferActionsTypes } from './react-redux-store.ts'
+import { Action } from 'redux'
 
 //!!! так как типизация(ActionTypes) не позволит записать в типы ничего другого кроме тех типов которые указаны в AC, то эти константы с названиями типов можно убрать !!! 
 // const SET_USER_DATA = 'auth/SET-USER-DATA' //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
@@ -28,7 +29,7 @@ let initialState = {
 	captchaURL: null as string | null, // if null, then captcha is not required
 }
 
-export type InitialStateType = typeof initialState //типизация по умолчанию
+export type InitialStateType = typeof initialState //типизация по умолчанию для initialState
 
 const authReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 	switch (action.type) {
@@ -51,20 +52,26 @@ const authReducer = (state = initialState, action: ActionsTypes): InitialStateTy
 type ActionsTypes = InferActionsTypes<typeof actions>
 
 export const actions = {
-	setAuthUserData: (id: number | null, email: string | null, login: string | null, isAuth: boolean) => ({
-		type: 'auth/SET_USER_DATA',
-		data: { id, email, login, isAuth },
-	}),
+	setAuthUserData: (id: number | null, email: string | null, login: string | null, isAuth: boolean) =>
+		({
+			type: 'auth/SET_USER_DATA',
+			data: { id, email, login, isAuth },
+		} as const), // as const говорит что кроме тех значений которые записаны а AC ничего другого приходить не должно!!!
 
-	getCaptchaUrlSuccess: (captchaURL: string | null) => ({
-		type: 'auth/CAPTCHA_URL_SUCCESS',
-		data: { captchaURL },
-	}),
+	getCaptchaUrlSuccess: (captchaURL: string | null) =>
+		({
+			type: 'auth/CAPTCHA_URL_SUCCESS',
+			data: { captchaURL },
+		} as const), // as const говорит что кроме тех значений которые записаны а AC ничего другого приходить не должно!!!
 }
 
 //thunk Creators:
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+// вместо явной типизации ниже, используем generic BaseThunkType из react-redux-store.ts и передаем в него в качестве параметра - ActionsTypes, остальное приходит по умолчанию
+type ThunkType = BaseThunkType<ActionsTypes | ReturnType<typeof stopSubmit>> // передаем так же доп action для stopSubmit и возвращаем типы по (ReturnType<typeof stopSubmit>)
+// или другой вариант: BaseThunkType<ActionsTypes | FormAction> т.е. stopSubmit в типизациях redux-form является 'FormAction'
+
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const getAuthUserData = (): ThunkType => async (dispatch) => {
 	// вместо then() используем async await
@@ -90,7 +97,7 @@ export const loginToServer =
 
 			// stopSubmit - специальный метод из redux-form, который передает обработанную ошибку внутрь определенной формы, первым параметром идет имя формы('login'), вторым параметром идет сама ошибка и сообщение к ней(в данном случае это общая ошибка '_error')
 			const message = loginData.messages.length > 0 ? loginData.messages[0] : 'some error' //передаем в качестве ошибки сообщение из response.data.messages из api запроса
-			// dispatch(stopSubmit('login', { _error: message })) //??? no type !!! ???
+			dispatch(stopSubmit('login', { _error: message })) //возвращаем типы по (ReturnType<typeof stopSubmit>) в BaseThunkType<ActionsTypes | ReturnType<typeof stopSubmit>> !!!!
 		}
 	}
 
