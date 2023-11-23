@@ -147,7 +147,7 @@ export const getUsers =
 //общая функция для follow/unfollow
 const _followUnfollowFlow = async (
 	//код с одной общей функцией для follow/unfollow для избежания дублирования кода
-	dispatch: any,
+	dispatch: Dispatch<ActionsTypes>, // типизация для общей функции _followUnfollowFlow
 	userId: number,
 	apiMethod: any,
 	actionCreator: (userId: number) => ActionsTypes
