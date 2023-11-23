@@ -25,11 +25,13 @@ export type AppStateType = ReturnType<RootReducerType> //возвращает т
 //--------------------
 //условие для определения типов для ActionCreators:
 
-type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U: never
-
+// type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U: never
 //передаем в generic ActionsTypes ограничения (extends {[key: string]: ( ...args: any[])=> any}) то передаваемый тип должен быть объектом который возвращает функцию!!!
 //и экспортируем его
-export type InferActionsTypes<T extends {[key: string]: ( ...args: any[])=> any}> = ReturnType<PropertiesTypes<T>>
+// export type InferActionsTypes<T extends {[key: string]: ( ...args: any[])=> any}> = ReturnType<PropertiesTypes<T>>
+
+//короткая запись того что выше
+export type InferActionsTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never
 
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A> // generic для ThunkCreators
 // A - это передаваемый тип ActionCreators
