@@ -3,8 +3,8 @@ import {  userApi } from '../../../DAL/api/userApi.ts'
 import { ResultCodesEnum } from '../../../DAL/api/api.ts'
 import { UserType } from '../../../types/types'
 import { updateObjectInArray } from '../../../utils/helpers/object-helpers'
-import { AppStateType, BaseThunkType, InferActionsTypes } from './react-redux-store'
-import { ThunkAction } from 'redux-thunk'
+import { BaseThunkType, InferActionsTypes } from './react-redux-store'
+
 
 //названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 //!!! так как типизация(ActionTypes) не позволит записать в типы ничего другого кроме тех типов которые указаны в AC, то эти константы с названиями типов можно убрать !!! 
