@@ -62,7 +62,7 @@ const profileReducer = (state = initialState, action: ActionTypes): InitialState
 				...state,
 				status: action.status,
 			}
-		case'profile/SAVE_USER_PHOTO_SUCCESS':
+		case 'profile/SAVE_USER_PHOTO_SUCCESS':
 			return {
 				...state,
 				userProfile: { ...state.userProfile, photos: action.userPhoto } as ProfileType, //фотография приходит из api запроса и находится в photos
@@ -81,7 +81,7 @@ const profileReducer = (state = initialState, action: ActionTypes): InitialState
 
 type ActionTypes = InferActionsTypes<typeof actions>
 
-const actions = {
+export const actions = {
 	addPost: (newPostBody: string) =>
 		({
 			type: 'profile/ADD_POST',
@@ -173,10 +173,14 @@ export const saveUserData =
 		const userData = await profileApi.saveUserData(profile)
 
 		if (userData.resultCode === ResultCodesEnum.Success) {
-			dispatch(getUserProfile(userId))
+			if (userId != null) {
+				dispatch(getUserProfile(userId))
+			} else {
+				throw new Error('user id can`t be null!!!')
+			}
 		} else {
 			//передаем в качестве ошибки сообщение из response.data.messages из api запроса
-			dispatch(stopSubmit('edit-profile', { _error: userData.messages }))//для выведения общей ошибки ??? types ????
+			dispatch(stopSubmit('edit-profile', { _error: userData.messages })) //для выведения общей ошибки ??? types ????
 			// dispatch(stopSubmit('edit-profile', { "contacts":  {"facebook": response.data.messages[0]} }))//для выведения отдельных ошибок по полям но надо распарсить строку из response.data.messages[0]
 			return Promise.reject(userData.messages) //после диспатча возвращаем Promise.reject с сообщением об этой ошибки внутри
 		}
