@@ -1,17 +1,18 @@
-import { addMessage } from '../../../../BLL/react-redux/reducers/message-reducer'
+import { actions } from '../../../../BLL/react-redux/reducers/message-reducer'
 import Dialogs from './Dialogs'
 import React from 'react'
 import { connect } from 'react-redux'
 import { withAuthRedirect } from '../../../../HOC/withAuthRedirect'
 import { compose } from 'redux'
 
+const addMessage = actions.addMessage
 class DialogsContainer extends React.Component {
 	componentDidMount() {
 		// debugger
 	}
 
 	render() {
-		return <Dialogs {...this.props} />
+		return <Dialogs {...this.props} actions = {this.props.actions}/>
 	}
 }
 
@@ -27,7 +28,7 @@ const setStateToProps = state => {
 export default compose(
 	connect(setStateToProps, {
 		// то во что вкладывается другая функция(withAuthRedirect) с самим компонентом
-		addMessage,
+		addMessage
 	}),
 	withAuthRedirect // то во что вкладывается сам компонент
 )(DialogsContainer) //сам компонент
