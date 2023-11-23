@@ -1,23 +1,16 @@
-import { ThunkAction } from 'redux-thunk'
 import { userApi } from '../../../DAL/api/userApi'
-import { AppStateType, BaseThunkType } from './react-redux-store'
+import { BaseThunkType, InferActionsTypes } from './react-redux-store'
 
-const SET_FRIENDS = 'sidebar/FRIENDS'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
-
-
-export type InitialStateType = {
-	friends: Array<object> | null,
-	totalUsersCount: number,
+let initialState = {
+	friends: [] as Array<object>,
+	totalUsersCount: 50 as number,
 }
 
-let initialState: InitialStateType = {
-	friends: [],
-	totalUsersCount: 50,
-}
+export type InitialStateType = typeof initialState
 
-const sidebarReducer = (state = initialState, action: any): InitialStateType => {
+const sidebarReducer = (state = initialState, action: ActionTypes): InitialStateType => {
 	switch (action.type) {
-		case SET_FRIENDS:
+		case 'sidebar/FRIENDS':
 			return {
 				...state,
 				friends: action.friends,
@@ -28,23 +21,24 @@ const sidebarReducer = (state = initialState, action: any): InitialStateType => 
 }
 
 //типизация Action Creators:
-type SetFriendsActionType = {
-	type: typeof SET_FRIENDS
-	friends: Array<object> | null
-}
+type ActionTypes = InferActionsTypes<typeof actions>
 
 //actionCreators:
-export const addFriends = (friends: object[]): SetFriendsActionType => ({ type: SET_FRIENDS, friends })
+
+const actions = {
+	addFriends: (friends:Array<object>) => ({ type: 'sidebar/FRIENDS', friends } as const),
+}
+
 
 // вместо явной типизации ниже, используем generic BaseThunkType из react-redux-store.ts и передаем в него в качестве параметра - ActionsTypes, остальное приходит по умолчанию
-type ThunkType = BaseThunkType<SetFriendsActionType>
+type ThunkType = BaseThunkType<ActionTypes>
 
 // type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, SetFriendsActionType>
 
 //thunkCreators:
 export const getFriendsTC = (): ThunkType => async (dispatch) => {
 	const friendsData = await userApi.getFriends()
-	dispatch(addFriends(friendsData))
+	dispatch(actions.addFriends(friendsData))
 }
 
 export default sidebarReducer
