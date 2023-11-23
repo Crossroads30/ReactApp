@@ -1,6 +1,8 @@
 import { DialogsType, MessagesType } from "../../../types/types"
+import { InferActionsTypes } from "./react-redux-store"
 
-const ADD_MESSAGE = 'message/ADD-MESSAGE'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
+//!!! так как типизация(ActionTypes) не позволит записать в типы ничего другого кроме тех типов которые указаны в AC, то эти константы с названиями типов можно убрать !!! 
+// const ADD_MESSAGE = 'message/ADD-MESSAGE'//названия для action creators должны быть уникальными, поэтому можно добавить впереди названия самого редьюсера
 
 // type DialogsType = {
 // 	id: number
@@ -33,9 +35,9 @@ let initialState = {
 
 export type InitialStateType = typeof initialState
 
-const messageReducer = (state = initialState, action: AddMessageType): InitialStateType => {
+const messageReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 	switch (action.type) {
-		case ADD_MESSAGE:
+		case 'message/ADD-MESSAGE':
 			let newMessage = {
 				id: 7,
 				message: action.newMessageBody,
@@ -49,12 +51,17 @@ const messageReducer = (state = initialState, action: AddMessageType): InitialSt
 	}
 }
 
-type AddMessageType = {
-	type: typeof ADD_MESSAGE
-	newMessageBody: string
-}
+// type AddMessageType = {
+// 	type: typeof ADD_MESSAGE
+// 	newMessageBody: string
+// }
+
+type ActionsTypes = InferActionsTypes<typeof actions>
 
 //action creators:
-export const addMessage = (newMessageBody: string): AddMessageType => ({ type: ADD_MESSAGE, newMessageBody })
+export const actions = {
+	addMessage: (newMessageBody: string) => ({ type: 'message/ADD-MESSAGE', newMessageBody } as const),
+}
+
 
 export default messageReducer
