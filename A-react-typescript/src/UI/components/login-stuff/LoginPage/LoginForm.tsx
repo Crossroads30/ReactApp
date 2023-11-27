@@ -3,7 +3,7 @@ import cl from './LoginPage.module.css'
 import { Field, reduxForm, InjectedFormProps } from 'redux-form'
 import { maxLengthCreator, required } from '../../../../utils/validators/validators.ts'
 // import Input from '../../common/FormsControls/Input/Input'
-import { createField } from '../../common/FormsControls/FormElement.tsx'
+import { GetStringKeys, createField } from '../../common/FormsControls/FormElement.tsx'
 import { FormDataValuesType } from './LoginPage.tsx'
 
 const maxLength30 = maxLengthCreator(30) //вызов этой функции необходимо вызывать за пределами компоненты иначе будет бесконечный цикл!
@@ -12,7 +12,8 @@ type LoginFormOwnProps = {
 	captchaURL: string | null
 }
 
-type FormDataValuesTypeKeys = Extract<keyof FormDataValuesType, string> // из ключей может быть только строка
+// вызываем generic GetStringKeys из FormElement.ts и передаем туда FormDataValuesType
+type FormDataValuesTypeKeys = GetStringKeys<FormDataValuesType> // из ключей может быть только строка
 
 // внутри React.FC<InjectedFormProps<FormDataValuesType -!!! LoginFormOwnProps !!!- указываем для библиотеки redux-form и после & указываем тот же !!! LoginFormOwnProps !!! для самой компоненты!!!
 const LoginForm: React.FC<InjectedFormProps<FormDataValuesType, LoginFormOwnProps> & LoginFormOwnProps> = ({ handleSubmit, error, captchaURL }) => {
