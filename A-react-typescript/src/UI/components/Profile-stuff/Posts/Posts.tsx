@@ -4,15 +4,18 @@ import React, { FC } from 'react'
 import { AddPostFormValuesType, PostsReduxForm } from './PostsForm.tsx'
 import { PostsType } from '../../../../types/types'
 
-export type PropsType = {
+export type MapPropsType = {
 	posts: Array<PostsType>
+}
+
+export type DispatchPropsType = {
 	addPost: (newPostText: string | undefined) => void
 }
 
 
 // React.memo — это компонент высшего порядка.React.memo затрагивает только изменения пропсов. Если функциональный компонент обёрнут в React.memo и использует useState, useReducer или useContext, он будет повторно рендериться при изменении состояния или контекста.Этот метод предназначен только для оптимизации производительности. Не полагайтесь на него, чтобы «предотвратить» рендер, так как это может привести к ошибкам.
 
-const Posts: FC<PropsType> = props => {
+const Posts: FC<MapPropsType & DispatchPropsType> = props => {
 	const postsElements = props.posts.map(post => <Post text={post.message} likes={post.likes} key={post.id} />)
 
 	const addNewPost = (formData: AddPostFormValuesType) => {
