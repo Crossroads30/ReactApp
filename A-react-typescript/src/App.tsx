@@ -19,7 +19,7 @@ import Preloader from './UI/components/common/Preloader/Preloader.jsx'
 //так называемая ленивая загрузка, когда компонент подгружается по необходимости
 import { lazy } from 'react'
 const DialogsContainer = React.lazy(() => import('./UI/components/dialogs-stuff/Dialogs/DialogsContainer.tsx'))
-const ProfileContainer = React.lazy(() => import('./UI/components/Profile-stuff/Profile/ProfileContainer.jsx'))
+const ProfileContainer = React.lazy(() => import('./UI/components/Profile-stuff/Profile/ProfileContainer.tsx'))
 
 // с ленивой загрузкой c помощью HOC: 
 import { withSuspense } from './HOC/withSuspense.tsx'
@@ -44,7 +44,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
 		window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors) //перехватываем все необработанные ошибки промисов
 	}
 
-	//обязательно убираем обработчик событий что был вызван раннее и передаем в него теже аргументы
+	//обязательно убираем обработчик событий что был вызван раннее и передаем в него те же аргументы
 	componentWillUnmount() {
 		window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
 	}
