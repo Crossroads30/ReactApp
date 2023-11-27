@@ -1,4 +1,4 @@
-import PostsContainer from '../Posts/PostsContainer'
+import PostsContainer from '../Posts/PostsContainer.tsx'
 import User from '../User/User'
 import cl from './Profile.module.css'
 
