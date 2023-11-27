@@ -35,7 +35,7 @@ const User: FC<PropsType> = ({
 	}
 
 	const onMainPhotoSelected = (event: ChangeEvent<HTMLInputElement>) => {
-		event.target.files?.length && savePhoto(event.target.files[0]) //условие - если фото есть(event.target.files.length), то тогда передаем его в props(в ts для типизации в это условие добавляем '?' после files(event.target.files?.length) )
+		event.target.files?.length && savePhoto(event.target.files[0]) //условие - если фото есть(event.target.files.length), то тогда передаем его в props(в ts для типизации в это условие добавляем '?' после files(event.target.files?.length) - это тоже что и if(event.target.files && event.target.files.length))
 	}
 
 	// const onSubmitEditForm = formData => {
