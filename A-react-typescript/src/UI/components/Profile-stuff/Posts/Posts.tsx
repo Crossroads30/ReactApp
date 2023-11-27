@@ -1,4 +1,4 @@
-import Post from '../Post/Post'
+import Post from '../Post/Post.tsx'
 import cl from './Posts.module.css'
 import React, { FC } from 'react'
 import { AddPostFormValuesType, PostsReduxForm } from './PostsForm.tsx'
