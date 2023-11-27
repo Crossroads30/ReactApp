@@ -2,7 +2,21 @@
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
+export const withRouter = (Children) => {
+	return props => {
+		const location = { location: useLocation() }
+		const match = { params: useParams() }
+		return (
+			<Children
+				{...props}
+				match={match}
+				location={location}
+			/>
+		)
+	}
+}
 
+//-------------------------
 // export const withRouter = Component => {
 // 	function ComponentWithRouterProp(props) {
 // 		let location = useLocation()
@@ -29,17 +43,3 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 // 	}
 // 	return ComponentWithRouterProp
 // }
-
-export const withRouter = (Children) => {
-	return props => {
-		const location = { location: useLocation() }
-		const match = { params: useParams() }
-		return (
-			<Children
-				{...props}
-				match={match}
-				location={location}
-			/>
-		)
-	}
-}
