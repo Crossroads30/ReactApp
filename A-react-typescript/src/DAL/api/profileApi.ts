@@ -20,6 +20,7 @@ type ProfileResponseType = {
 		small: string
 		large: string
 	}
+	aboutMe: string
 }
 
 type UpdatePhotoResponseType = {
