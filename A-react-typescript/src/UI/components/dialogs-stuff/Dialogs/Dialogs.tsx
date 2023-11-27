@@ -13,7 +13,6 @@ type OwnPropsType = {
 
 export type NewMassageFormValuesType = {
 	newMessageText: string 
-	
 }
 
 const Dialogs: React.FC<OwnPropsType> = props => {
