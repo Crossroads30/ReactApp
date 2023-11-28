@@ -1,6 +1,6 @@
 export type PostsType = {
 	id: number
-	message: string
+	message: string | undefined
 	likes: number
 }
 
