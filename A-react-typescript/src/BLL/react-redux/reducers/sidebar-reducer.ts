@@ -1,8 +1,9 @@
 import { userApi } from '../../../DAL/api/userApi'
+import { UserType } from '../../../types/types'
 import { BaseThunkType, InferActionsTypes } from './react-redux-store'
 
 let initialState = {
-	friends: [] as Array<object>,
+	friends: [] as Array<UserType>,
 	totalUsersCount: 50 as number,
 }
 
@@ -26,7 +27,7 @@ type ActionTypes = InferActionsTypes<typeof actions>
 //actionCreators:
 
 const actions = {
-	addFriends: (friends:Array<object>) => ({ type: 'sidebar/FRIENDS', friends } as const),
+	addFriends: (friends: Array<UserType>) => ({ type: 'sidebar/FRIENDS', friends } as const),
 }
 
 
@@ -38,7 +39,7 @@ type ThunkType = BaseThunkType<ActionTypes>
 //thunkCreators:
 export const getFriendsTC = (): ThunkType => async (dispatch) => {
 	const friendsData = await userApi.getFriends()
-	dispatch(actions.addFriends(friendsData))
+	dispatch(actions.addFriends(friendsData) )
 }
 
 export default sidebarReducer
