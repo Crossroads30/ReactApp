@@ -35,12 +35,12 @@ const profileReducer = (state = initialState, action: ActionTypes): InitialState
 		case 'profile/ADD_POST':
 			let newPost = {
 				id: 7,
-				message: action.newPostBody,
+				message: action.newPostText as string | undefined,
 				likes: 0,
 			}
 			return {
 				...state,
-				posts: [...state.posts, newPost],
+				posts: [...state.posts, newPost] ,
 			}
 		case 'profile/DELETE_POST':
 			return {
@@ -82,10 +82,10 @@ const profileReducer = (state = initialState, action: ActionTypes): InitialState
 type ActionTypes = InferActionsTypes<typeof actions>
 
 export const actions = {
-	addPost: (newPostBody: string) =>
+	addPost: (newPostText: string | undefined) =>
 		({
 			type: 'profile/ADD_POST',
-			newPostBody,
+			newPostText,
 		} as const),
 	deletePost: (postId: number) =>
 		({
