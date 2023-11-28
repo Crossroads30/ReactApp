@@ -19,8 +19,7 @@ const Posts: FC<MapPropsType & DispatchPropsType> = props => {
 	const postsElements = props.posts.map(post => <Post text={post.message} likes={post.likes} key={post.id} />)
 
 	const addNewPost = (formData: AddPostFormValuesType) => {
-		const newPostBody = formData.newPostText
-		props.addPost(newPostBody)
+		props.addPost(formData.newPostText) 
 	}
 
 	return (
