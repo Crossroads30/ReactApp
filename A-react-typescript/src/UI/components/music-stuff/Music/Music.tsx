@@ -1,6 +1,7 @@
 import cl from './Music.module.css'
+import React, { FC } from 'react'
 
-const Music = () => {
+const Music: FC = () => {
   return <div>Music</div>
 }
 
