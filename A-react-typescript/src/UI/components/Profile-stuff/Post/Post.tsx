@@ -3,7 +3,7 @@ import cl from './Post.module.css'
 import React from 'react'
 
 type PropsType = {
-	text: string
+	text: string | undefined
 	likes: number
 }
 
