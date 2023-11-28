@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 import {  userApi } from '../../../DAL/api/userApi.ts'
-import { ResultCodesEnum } from '../../../DAL/api/api.ts'
+import { BaseResponseType, ResultCodesEnum } from '../../../DAL/api/api.ts'
 import { UserType } from '../../../types/types'
 import { updateObjectInArray } from '../../../utils/helpers/object-helpers'
 import { BaseThunkType, InferActionsTypes } from './react-redux-store'
@@ -137,9 +137,10 @@ export const getUsers =
 		// третий вариант типизации thunk
 		//берем параметры с помощью замыкания в thunkCreator и возвращаем из нее thunk функцию с диспатчем, в которую приходят эти параметры:
 		dispatch(actions.setIsLoading(true)) //диспатчем actionCreator
+		dispatch(actions.setCurrentPage(currentPage))
 		const data = await userApi.getUsers(currentPage, pageSize)
 		// data - то что пришло из ajax-запроса в DAL/api/api.js
-		dispatch(actions.setCurrentPage(currentPage)) //диспатчем actionCreator
+		 //диспатчем actionCreator
 		dispatch(actions.setIsLoading(false)) //диспатчем actionCreator
 		dispatch(actions.setUsers(data)) //диспатчем actionCreator
 	}
@@ -149,7 +150,7 @@ const _followUnfollowFlow = async (
 	//код с одной общей функцией для follow/unfollow для избежания дублирования кода
 	dispatch: Dispatch<ActionsTypes>, // типизация для общей функции _followUnfollowFlow
 	userId: number,
-	apiMethod: any,
+	apiMethod: (userId: number) => Promise<BaseResponseType>,
 	actionCreator: (userId: number) => ActionsTypes
 ) => {
 	dispatch(actions.setDisableFetchingButton(true, userId))
@@ -161,7 +162,7 @@ const _followUnfollowFlow = async (
 
 //ThunkCreator follow:
 export const follow = (userId: number): ThunkType => async (dispatch) => {
-	_followUnfollowFlow(
+	await _followUnfollowFlow(
 		//с помощью диструктуризации передаем параметры в _followUnfollowFlow
 		dispatch,
 		userId,
@@ -174,13 +175,13 @@ export const follow = (userId: number): ThunkType => async (dispatch) => {
 export const unfollow =
 	(userId: number): ThunkType =>
 	async (dispatch) => {
-		_followUnfollowFlow(
-			//с помощью диструктуризации передаем параметры в _followUnfollowFlow
-			dispatch,
-			userId,
-			userApi.getUnFollow.bind(userId),
-			actions.unfollowUser
-		)
+	await _followUnfollowFlow(
+		//с помощью диструктуризации передаем параметры в _followUnfollowFlow
+		dispatch,
+		userId,
+		userApi.getUnFollow.bind(userId),
+		actions.unfollowUser
+	)
 	}
 
 	export default UsersReducer
