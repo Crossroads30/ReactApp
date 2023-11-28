@@ -1,5 +1,5 @@
 import cl from './Users.module.css'
-import Preloader from '../common/Preloader/Preloader.jsx'
+import Preloader from '../common/Preloader/Preloader.tsx'
 import { NavLink } from 'react-router-dom'
 import Paginator from '../common/Paginator/PagePaginator.tsx'
 import SeparateUser from './SeparateUser.tsx'
