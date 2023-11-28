@@ -1,18 +1,18 @@
 import './styles/App.css'
 // import ProfileContainer from './UI/components/Profile-stuff/Profile/ProfileContainer'
-import Sidebar from './UI/components/sidebar-stuff/Sidebar/Sidebar.jsx'
+import Sidebar from './UI/components/sidebar-stuff/Sidebar/Sidebar.tsx'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import Settings from './UI/components/settings-stuff/Settings/Settings.jsx'
-import News from './UI/components/news-stuff/News/News.jsx'
-import Music from './UI/components/music-stuff/Music/Music.jsx'
+import Settings from './UI/components/settings-stuff/Settings/Settings.tsx'
+import News from './UI/components/news-stuff/News/News.tsx'
+import Music from './UI/components/music-stuff/Music/Music.tsx'
 // import DialogsContainer from './UI/components/dialogs-stuff/Dialogs/DialogsContainer'
 import UsersContainer from './UI/components/Users/UsersContainer.tsx'
-import HeaderContainer from './UI/components/Header/HeaderContainer.jsx'
+import HeaderContainer from './UI/components/Header/HeaderContainer.tsx'
 import LoginPageContainer from './UI/components/login-stuff/LoginPage/LoginPageContainer.tsx'
 import React from 'react'
 import { connect } from 'react-redux'
 import { initializeApp } from './BLL/react-redux/reducers/app-reducer.ts'
-import Preloader from './UI/components/common/Preloader/Preloader.jsx'
+import Preloader from './UI/components/common/Preloader/Preloader.tsx'
 // import { compose } from 'redux'
 // import { withRouter } from './UI/components/Profile-stuff/Profile/HookWithRoute'
 
@@ -56,7 +56,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
 		}
 		return (
 			<div className='app-wrapper'>
-				<HeaderContainer />
+				<HeaderContainer logoutFromServer={function (): void{}} />
 				<Sidebar />
 				<div className='app-content'>
 					{/* Чтобы выполнялась так называемая ленивая загрузка страницы, нужно нужно в это время показывать загрузчик (любой div или компоненту). Чтобы отобразить загрузчик, нужно передать его в fallback в параметр компоненты React.Suspense, которой нужно обернуть импортированную компоненту. */}
@@ -104,7 +104,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
 						/> */}
 						<Route path='/login' element={<LoginPageContainer />} />
 
-						<Route path='*' element={<h2>404 - Page not found</h2>} /> 
+						<Route path='*' element={<h2>404 - Page not found</h2>} />
 						{/* <Route exact path='/' element={<Navigate from='/' to={'/profile/'} />} /> */}
 					</Routes>
 				</div>
