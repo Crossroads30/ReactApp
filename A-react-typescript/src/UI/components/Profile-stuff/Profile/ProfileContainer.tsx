@@ -8,10 +8,6 @@ import { withAuthRedirect } from '../../../../HOC/withAuthRedirect'
 import { AppStateType } from '../../../../BLL/react-redux/reducers/react-redux-store'
 import { ProfileType } from '../../../../types/types'
 
-type OwnPropsType = {
-	mainUserId: any
-}
-
 type MapPropsType = ReturnType<typeof setStateToProps>
 
 type DispatchPropsType = {
@@ -19,7 +15,7 @@ type DispatchPropsType = {
 	getStatus: (profileId: number) => void
 	updateStatus: (status: string) => void
 	savePhoto: (file: File) => void
-	saveUserData: (profile: ProfileType) => void
+	saveUserData: (profile: ProfileType) => Promise<any>
 }
 
 type PathParamsType = {
@@ -65,7 +61,7 @@ class ProfileContainer extends React.Component<PropsType> {
 				updateStatus={this.props.updateStatus}
 				savePhoto={this.props.savePhoto}
 				saveUserData={this.props.saveUserData}
-				userDataStatus={this.props.userDataStatus}
+				// userDataStatus={this.props.userDataStatus}
 			/>
 		)
 	}
@@ -77,7 +73,7 @@ const setStateToProps = (state: AppStateType) => {
 		status: state.profilePage.status,
 		authorizedUserId: state.auth.id,
 		isAuth: state.auth.isAuth,
-		userDataStatus: state.profilePage.userDataStatus,
+		// userDataStatus: state.profilePage.userDataStatus,
 	}
 }
 
