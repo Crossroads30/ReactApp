@@ -9,7 +9,7 @@ import { ProfileType } from '../../../../types/types'
 
 type PropsType = {
 	isOwner: boolean
-	userProfile: ProfileType
+	userProfile: ProfileType | null
 	status: string
 	updateStatus: (status: string) => void
 	savePhoto: (file: File) => void
